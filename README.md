@@ -1,7 +1,7 @@
 # Programa Top v28 -  Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
-- [Nombre del mentor](profiles/mentor-principal.md)
+- [Gustavo Morales](profiles/mentor-principal.md)
 - Mentor 2
 - Mentor 3
 
