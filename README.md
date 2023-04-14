@@ -1,4 +1,4 @@
-# Programa Top v__ -  Tiempo Parcial
+# Programa Top v28 -  Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
 - [Nombre del mentor](profiles/mentor-principal.md)
