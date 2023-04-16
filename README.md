@@ -1,9 +1,8 @@
 # Programa Top v28 -  Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
-- [Gustavo Morales](profiles/mentor-principal.md)
-- Mentor 2
-- Mentor 3
+- [Gustavo Morales](https://github.com/gmoralesc)
+- [Wendy Medina](https://github.com/endyleyms)
 
 ## Estudiantes 👩🏻‍💻🧑🏼‍💻
 - Estudiante 1
@@ -13,10 +12,10 @@
 
 ## Como es un semana de estudio durante el programa TOP?
 
-### Lunes, miércoles y jueves de 6:00 pm - 8:00 pm 🇨🇴
+### Lunes, miércoles y viernes de 6:00 pm - 8:00 pm 🇨🇴
 Clase Magistral con mentor principal
 
-### Martes y viernes desde las 6:00 pm  🇨🇴
+### Martes y jueves desde las 6:00 pm  🇨🇴
 Pueden ocurrir varias actividades en este rango de tiempo
 - Clase de habilidades blandas
 - Clase de ingles
