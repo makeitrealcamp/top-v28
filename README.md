@@ -5,10 +5,18 @@
 - [Wendy Medina](https://github.com/endyleyms)
 
 ## Estudiantes 👩🏻‍💻🧑🏼‍💻
-- Estudiante 1
-- Estudiante 2
-- Estudiante 3
-- ...
+- [Alejo Gomez Trejos](https://github.com/AlejoGomT)
+- [Andrés Marulanda](https://github.com/andresmarulandam)
+- [Brajan Pulgarin Olivero](https://github.com/BJPulgarin)
+- [Carlos Diaz](https://github.com/C4rlos9559)
+- [Daniel Arrubla Fúnez](https://github.com/darrubla)
+- [David Camilo Piedras Ruiz](https://github.com/Tapabocas)
+- [Fabio Calderon](https://github.com/FabioECalderon)
+- [Felipe Builes Henao](https://github.com/AndrewSnake961)
+- [Javier Chavez](https://github.com/GosuBoy)
+- [Manuel Ortega](https://github.com/ManuelOrtegaR)
+- [Michael Meza](https://github.com/mike1591991)
+- [Welinton Suarez](https://github.com/wesgdev1)
 
 ## Como es un semana de estudio durante el programa TOP?
 
