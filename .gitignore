@@ -101,3 +101,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Preview files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,361 @@
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.pokedex {
+  display: flex;
+  flex-direction: column;
+  margin: 24px auto;
+  width: 700px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid black;
+  background-color: #d5092b;
+  padding: 24px;
+}
+
+.lights {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+}
+
+.bright {
+  border-radius: 50%;
+}
+
+.big-light__container {
+  background-color: white;
+  border: solid black;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+}
+
+.big-light {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: solid black;
+}
+
+.big-light .bright {
+  margin-left: 8px;
+  margin-top: 8px;
+  height: 15px;
+  width: 15px;
+}
+
+.small-lights__container {
+  display: flex;
+  gap: 8px;
+}
+
+.small-light {
+  border: solid black;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+}
+
+.small-light .bright {
+  margin-left: 3px;
+  margin-top: 3px;
+  height: 5px;
+  width: 5px;
+}
+
+.screen__container {
+  border: 3px solid black;
+  border-bottom-left-radius: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 24px;
+  width: 80%;
+}
+
+.screen-indicators__container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.screen-indicators__container .small-light {
+  height: 8px;
+  width: 8px;
+}
+
+.screen {
+  border-radius: 24px;
+  border: 3px solid black;
+  border-radius: 24px;
+  height: 235px;
+  text-align: center;
+}
+
+.screen-controls__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu {
+  font-size: 32px;
+}
+
+.controls__container {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  gap: 12px;
+}
+
+.controls__section {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.action {
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+}
+
+.select,
+.start {
+  height: 12px;
+  width: 48px;
+}
+
+.label {
+  border: 3px solid black;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  height: 96px;
+  width: 96px;
+}
+
+.nav-button,
+.nav-blank {
+  height: 32px;
+  width: 32px;
+}
+
+.nav-button {
+  color: black;
+  text-align: center;
+}
+
+.display {
+  border: 3px solid black;
+  border-radius: 12px;
+  min-height: 128px;
+  padding: 0 12px;
+}
+
+.buttons__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 24px;
+}
+
+.buttons__container .button--square {
+  flex-basis: calc(25% - 4px);
+}
+
+.button--square {
+  width: 48px;
+  height: 48px;
+}
+
+.info__section {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.info-controls__container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-indicators__container {
+  display: flex;
+  gap: 8px;
+}
+
+.info-indicators__container .small-light {
+  height: 8px;
+  width: 8px;
+}
+
+.info-actions__container {
+  display: flex;
+}
+
+.info-indicator__container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.labels__container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 24px;
+}
+
+.labels__container .label {
+  flex-basis: 30%;
+}
+
+@media screen and (min-width: 768px) {
+  .pokedex {
+    flex-direction: row;
+    margin: 10% auto;
+    width: 700px;
+  }
+
+  .panel__left {
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
+
+  .panel__right {
+    border-top-right-radius: 24px;
+    border-bottom-right-radius: 24px;
+    padding-top: 112px;
+  }
+}
+
+.blue {
+  background-color: #7ca9f7;
+}
+
+.light-blue {
+  background-color: #85bdfe;
+}
+
+.green {
+  background-color: #32cb65;
+}
+
+.light-green {
+  background-color: #98cb98;
+}
+
+.yellow {
+  background-color: #fecb65;
+}
+
+.red {
+  background-color: #ff0000;
+}
+
+.black {
+  background-color: black;
+}
+
+.dark-grey {
+  background-color: #444;
+}
+
+.white {
+  background-color: #d7d7d7;
+}
+.grass {
+  background: linear-gradient(180deg, #9bcc50 50%, #9bcc50 50%);
+  background-color: #9bcc50;
+}
+.poison {
+  background: linear-gradient(180deg, #b97fc9 50%, #b97fc9 50%);
+  background-color: #b97fc9;
+}
+.fire {
+  background: linear-gradient(180deg, #fd7d24 50%, #fd7d24 50%);
+  background-color: #fd7d24;
+}
+.psychic {
+  background: linear-gradient(180deg, #f366b9 50%, #f366b9 50%);
+  background-color: #f366b9;
+}
+.ice {
+  background: linear-gradient(180deg, #51c4e7 50%, #51c4e7 50%);
+  background-color: #51c4e7;
+}
+.flying {
+  background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+  background-color: #3dc7ef;
+}
+.water {
+  background: linear-gradient(180deg, #4592c4 50%, #4592c4 50%);
+  background-color: #4592c4;
+}
+.ground {
+  background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%);
+  background-color: #f7de3f;
+}
+.rock {
+  background: linear-gradient(180deg, #a38c21 50%, #a38c21 50%);
+  background-color: #a38c21;
+}
+.electric {
+  background: linear-gradient(180deg, #eed535 50%, #eed535 50%);
+  background-color: #eed535;
+  color: #555;
+}
+.bug {
+  background: linear-gradient(180deg, #729f3f 50%, #729f3f 50%);
+  background-color: #729f3f;
+}
+.normal {
+  background: linear-gradient(180deg, #a4acaf 50%, #a4acaf 50%);
+  background-color: #a4acaf;
+}
+.fighting {
+  background: linear-gradient(180deg, #d56723 50%, #d56723 50%);
+  background-color: #d56723;
+}
+.fairy {
+  background: linear-gradient(180deg, #fdb9e9 50%, #fdb9e9 50%);
+  background-color: #fdb9e9;
+}
+.steel {
+  background: linear-gradient(180deg, #9eb7b8 50%, #9eb7b8 50%);
+  background-color: #9eb7b8;
+}
+.dark {
+  background: linear-gradient(180deg, #707070 50%, #707070 50%);
+  background-color: #707070;
+}
+.ghost {
+  background: linear-gradient(180deg, #7b62a3 50%, #7b62a3 50%);
+  background-color: #7b62a3;
+}
+.dragon {
+  background: linear-gradient(180deg, #53a4cf 50%, #f16e57 50%);
+  background-color: #53a4cf;
+}
