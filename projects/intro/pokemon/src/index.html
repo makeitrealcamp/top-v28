@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game</title>
+    <link rel="stylesheet" href="./main.css" />
+  </head>
+  <body>
+    <section id="arena">
+      <div class="column">
+        <div class="status">
+          <div class="info">
+            <p class="name">ivysaur</p>
+          </div>
+          <ul class="types">
+            <li class="button grass">grass</li>
+            <li class="button poison">poison</li>
+          </ul>
+          <div class="meter">
+            <span class="bar green" style="width: 100%"></span>
+          </div>
+          <div class="health">60/60</div>
+        </div>
+        <div class="pokemon">
+          <img
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
+          />
+        </div>
+      </div>
+      <div class="column">
+        <div class="pokemon">
+          <img
+            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"
+          />
+        </div>
+        <div class="status">
+          <div class="info">
+            <p class="name">charmeleon</p>
+          </div>
+          <ul class="types">
+            <li class="button fire">fire</li>
+          </ul>
+          <div class="meter">
+            <span class="bar green" style="width: 100%"></span>
+          </div>
+          <div class="health">59/59</div>
+        </div>
+      </div>
+    </section>
+    <section id="indicator">
+      <div class="column">
+        <div class="arrow"></div>
+      </div>
+      <div class="column"></div>
+    </section>
+    <section id="panel">
+      <div class="column">
+        <div class="dialog">
+          <p>
+            <span class="name">ivysaur</span>,
+            <span class="message">What attack do you want to use?</span>
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="moves">
+          <button class="button black">tackle</button>
+          <button class="button black">vine-whip</button>
+          <button class="button black">leech-seed</button>
+          <button class="button black">poison-powder</button>
+        </div>
+      </div>
+    </section>
+    <p id="disclaimer">
+      This is not an official pokemon game, this is only for educational
+      proposes
+    </p>
+  </body>
+</html>
