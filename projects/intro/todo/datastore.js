@@ -1,19 +1,22 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 
-function load(filepath) {
+const filename = 'data.json';
+const filepath = `./${filename}`;
+
+async function load() {
   try {
-    const content = fs.readFileSync(filepath, {
+    const content = await fs.readFile(filepath, {
       encoding: 'utf-8',
     });
     return JSON.parse(content);
   } catch (error) {
-    throw new Error(error);
+    return [];
   }
 }
 
-function save(filepath, data) {
+async function save(data) {
   try {
-    fs.writeFileSync(filepath, JSON.stringify(data, null, 2));
+    await fs.writeFile(filepath, JSON.stringify(data, null, 2));
   } catch (error) {
     throw new Error(error);
   }

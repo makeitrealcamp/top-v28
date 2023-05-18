@@ -1,10 +1,7 @@
-const fs = require('fs');
 const commandLineArgs = require('command-line-args');
 
 const { load, save } = require('./datastore');
 const { printList } = require('./utils');
-
-const filename = 'data.json';
 
 const optionDefinitions = [
   { name: 'name', alias: 'n', type: String },
@@ -15,16 +12,24 @@ const optionDefinitions = [
 const options = commandLineArgs(optionDefinitions);
 
 const { name = '', completed = false, date = '' } = options;
-const items = load(`./${filename}`);
 
-if (name) {
-  items.push({
-    name,
-    completed,
-    date,
-  });
+async function main() {
+  const items = await load();
 
-  save(`./${filename}`, items);
+  if (name) {
+    items.push({
+      name,
+      completed,
+      date,
+    });
+  }
+
+  try {
+    await save(items);
+    printList(items);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-printList(items);
+main();
