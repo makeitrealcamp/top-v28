@@ -1,16 +1,19 @@
-# Programa Top v28 -  Tiempo Parcial
+# Programa Top v28 - Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
+
 - [Gustavo Morales](https://github.com/gmoralesc)
 - [Wendy Medina](https://github.com/endyleyms)
 
 ## Estudiantes 👩🏻‍💻🧑🏼‍💻
+
 - [Alejo Gomez Trejos](https://github.com/AlejoGomT)
 - [Andrés Marulanda](https://github.com/andresmarulandam)
 - [Brajan Pulgarin Olivero](https://github.com/BJPulgarin)
 - [Carlos Diaz](https://github.com/C4rlos9559)
 - [Daniel Arrubla Fúnez](https://github.com/darrubla)
 - [David Camilo Piedras Ruiz](https://github.com/Tapabocas)
+- [Diana Patricia Bedoya Ruiz](https://github.com/dianabedoya570)
 - [Fabio Calderon](https://github.com/FabioECalderon)
 - [Felipe Builes Henao](https://github.com/AndrewSnake961)
 - [Javier Chavez](https://github.com/GosuBoy)
@@ -21,10 +24,13 @@
 ## Como es un semana de estudio durante el programa TOP?
 
 ### Lunes, miércoles y viernes de 6:00 pm - 8:00 pm 🇨🇴
+
 Clase Magistral con mentor principal
 
-### Martes y jueves desde las 6:00 pm  🇨🇴
+### Martes y jueves desde las 6:00 pm 🇨🇴
+
 Pueden ocurrir varias actividades en este rango de tiempo
+
 - Clase de habilidades blandas
 - Clase de ingles
 - Reuniones con mentores de apoyo
@@ -35,9 +41,10 @@ Pueden ocurrir varias actividades en este rango de tiempo
 - Retrospectiva del sprint
 - Terminar los retos o misiones que son asignados en clase
 
-__Estos son los tiempos minimos que se deben cumplir para poder culminar satisfactoriamente el programa. Pero muy seguramente vas a necesitar dedicarle mas tiempo a tu proyecto y a tu aprendizaje.__
+**Estos son los tiempos minimos que se deben cumplir para poder culminar satisfactoriamente el programa. Pero muy seguramente vas a necesitar dedicarle mas tiempo a tu proyecto y a tu aprendizaje.**
 
 ## Fases del programa
+
 - **Introducción: (3 sprints) - Proyecto en Parejas**: Para esta fase, el programa busca enseñar los conocimientos necesarios para crear una aplicación fullstack (React, node.js) que permita realizar las operaciones CRUD con un sistema de base de datos en memoria.
 - **Principal: (10 sprints) - Proyecto Grupal**: En esta fase el estudiante aplicará los conceptos previos para avanzar en temas más específicos a la hora de construir aplicaciones web escalables. El estudiante aprenderá los temas necesarios para implementar un proyecto grupal.
 - **Final: (2 sprints) - Proyecto Individual**: En la fase final, el bootcamp busca retar, incentivar a los estudiantes a crear un proyecto MVP de forma individual que utilice tecnologías emergentes en el desarrollo web, tales como GraphQL, Serverless, Next.js, Headless CMS, entre otras.
@@ -67,6 +74,11 @@ Deberás presentar y aprobar las siguienes misiones:
 
 Los lineamientos para los proyectos individuales y grupales son estos:
 
+**El Proyecto en Parejas debe tener:**
+
+- CRUD en Express y base de datos en memoria
+- CRUD en React y conectado con el servidor de Express
+
 **El Proyecto Grupal debe tener:**
 
 - Registro y autenticación de usuarios.
@@ -74,9 +86,9 @@ Los lineamientos para los proyectos individuales y grupales son estos:
 - El backend debe estar implementado en Node.js (Express) usando TypeScript y el frontend en React.
 - Debe incluir carga de imágenes y envío de correos.
 - Debe tener al menos una de las siguientes funcionalidades:
-    - Pagos
-    - Presentar información en un mapa.
-    - Tiempo Real (Web Sockets).
+  - Pagos
+  - Presentar información en un mapa.
+  - Tiempo Real (Web Sockets).
 - Debe estar desplegada en Internet (Netllify, Heroku, Vercel)
 - Debe al menos tener pruebas end-to-end con Cypress.
 
@@ -86,8 +98,8 @@ Los lineamientos para los proyectos individuales y grupales son estos:
 - Autenticación de usuarios.
 - Debe incluir carga de imágenes.
 - Se debe presentar un video a modo de DEMO de no mas de 7 minutos donde el estudiantes exponga los siguientes temas:
-    1. Introducción (Nombre del proyecto, URL’s).
-    2. Descripción de la aplicación.
-    3. Metodología (Jira, Github, SCRUM, sprintes)
-    4. Tecnologías (React, Material, Express, [Socket.io](http://socket.io/), MongoDB, )
-    5. Diagrama de como esta distribuida su aplicacion (arquitectura) backend, frontend, servicios extras
+  1. Introducción (Nombre del proyecto, URL’s).
+  2. Descripción de la aplicación.
+  3. Metodología (Jira, Github, SCRUM, sprintes)
+  4. Tecnologías (React, Material, Express, [Socket.io](http://socket.io/), MongoDB, )
+  5. Diagrama de como esta distribuida su aplicacion (arquitectura) backend, frontend, servicios extras
