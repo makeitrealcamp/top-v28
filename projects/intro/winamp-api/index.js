@@ -1,5 +1,6 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+const cors = require('cors');
 
 const app = express();
 const port = 3000;
@@ -19,10 +20,12 @@ const songs = [];
  * DELETE  /songs/:id  DELETE
  */
 
+app.use(cors());
+
 app.use(express.json());
 
 // CREATE
-app.post('/songs', async (req, res, next) => {
+app.post('/songs', (req, res, next) => {
   // body
   const { body = {} } = req;
 
