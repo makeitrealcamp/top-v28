@@ -36,7 +36,7 @@ function List({ songs = [], index = -1, onSelect }) {
         {songs.map(function (song, i) {
           return (
             <li
-              key={i}
+              key={song.id}
               onClick={function (event) {
                 onSelect(event, i);
               }}
@@ -51,16 +51,17 @@ function List({ songs = [], index = -1, onSelect }) {
   );
 }
 
-function Form({ show, toggleForm, onRemove, onAdd }) {
+function Form({ show, toggleForm, onRemove, onAdd, onUpdate, onSubmit }) {
   return (
     <div>
       {show === false ? (
         <div className="control">
-          <button onClick={toggleForm}>ADD</button>
+          <button onClick={onAdd}>ADD</button>
+          <button onClick={onUpdate}>UPD</button>
           <button onClick={onRemove}>REM</button>
         </div>
       ) : (
-        <form onSubmit={onAdd}>
+        <form onSubmit={onSubmit}>
           <input type="text" name="title" placeholder="title" />
           <input type="text" name="author" placeholder="author" />
 
@@ -76,21 +77,6 @@ function Form({ show, toggleForm, onRemove, onAdd }) {
   );
 }
 
-const data = [
-  {
-    title: 'Smells Like Teen Spirit',
-    author: 'Nirvana',
-  },
-  {
-    title: 'Blind',
-    author: 'KoRn',
-  },
-  {
-    title: 'Nookie',
-    author: 'Limp Bizkit',
-  },
-];
-
 function Panel({ title = '', className = '', children }) {
   return (
     <div className={`main-ui ${className}`}>
@@ -103,11 +89,35 @@ function Panel({ title = '', className = '', children }) {
   );
 }
 
+const baseURL = 'http://localhost:3000';
+
 function App() {
   // State
   const [index, setIndex] = React.useState(-1);
-  const [songs, setSongs] = React.useState(data);
+  const [songs, setSongs] = React.useState([]);
   const [showForm, setShowForm] = React.useState(false);
+  const [mode, setMode] = React.useState('ADD');
+  const [title, setTitle] = React.useState('');
+  const [author, setAuthor] = React.useState('');
+
+  async function loadSongs() {
+    try {
+      const response = await fetch(`${baseURL}/songs`);
+
+      if (response.ok) {
+        const songs = await response.json();
+
+        setSongs(songs);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // Mounted
+  React.useEffect(function () {
+    loadSongs();
+  }, []);
 
   // Events
   function onShuffle(event) {
@@ -118,31 +128,105 @@ function App() {
     setIndex(nextIndex);
   }
 
-  function onAdd(event) {
+  async function onSubmit(event) {
     event.preventDefault();
-    const { title: inputTitle, author: inputAuthor } = event.target.elements;
-    const newSong = {
-      title: inputTitle.value,
-      author: inputAuthor.value,
+
+    const data = {
+      title,
+      author,
     };
 
-    setSongs([...songs, newSong]);
-    setShowForm(!showForm);
-    setIndex(songs.length);
+    if (mode === 'ADD') {
+      try {
+        const response = await fetch(`${baseURL}/songs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const song = await response.json();
+
+          setSongs([...songs, song]);
+          setShowForm(!showForm);
+          setIndex(songs.length);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (mode === 'UPDATE') {
+      const selectedSong = songs[index];
+      const { id } = selectedSong;
+      try {
+        const response = await fetch(`${baseURL}/songs/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          loadSongs();
+          setShowForm(!showForm);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
-  function onRemove(event) {
+  async function onRemove(event) {
     if (index !== -1) {
-      const updatedSongs = songs.filter(function (_, i) {
-        return index !== i;
-      });
-      setSongs(updatedSongs);
-      setIndex(-1);
+      const selectedSong = songs[index];
+      const { id } = selectedSong;
+
+      try {
+        const response = await fetch(`${baseURL}/songs/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          // const updatedSongs = songs.filter(function (_, i) {
+          //   return index !== i;
+          // });
+
+          // setSongs(updatedSongs);
+          loadSongs();
+
+          setIndex(-1);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
   function toggleForm(event) {
     setShowForm(!showForm);
+  }
+
+  async function onAdd(event) {
+    setMode('ADD');
+
+    setTitle('');
+    setAuthor('');
+
+    toggleForm(event);
+  }
+
+  async function onUpdate(event) {
+    setMode('UPDATE');
+
+    const selectedSong = songs[index];
+    setTitle(selectedSong.title);
+    setAuthor(selectedSong.author);
+
+    toggleForm(event);
   }
 
   return (
@@ -159,12 +243,43 @@ function App() {
         <div className="list b-black">
           <List songs={songs} index={index} onSelect={onPlay} />
         </div>
-        <Form
-          show={showForm}
-          toggleForm={toggleForm}
-          onRemove={onRemove}
-          onAdd={onAdd}
-        />
+        <div>
+          {showForm === false ? (
+            <div className="control">
+              <button onClick={onAdd}>ADD</button>
+              <button onClick={onUpdate}>UPD</button>
+              <button onClick={onRemove}>REM</button>
+            </div>
+          ) : (
+            <form onSubmit={onSubmit}>
+              <input
+                type="text"
+                name="title"
+                placeholder="title"
+                value={title}
+                onChange={function (event) {
+                  setTitle(event.target.value);
+                }}
+              />
+              <input
+                type="text"
+                name="author"
+                placeholder="author"
+                value={author}
+                onChange={function (event) {
+                  setAuthor(event.target.value);
+                }}
+              />
+
+              <div className="control">
+                <button type="submit">Ok</button>
+                <button type="button" onClick={toggleForm}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </Panel>
     </React.Fragment>
   );
