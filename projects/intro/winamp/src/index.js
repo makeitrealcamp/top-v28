@@ -89,7 +89,7 @@ function Panel({ title = '', className = '', children }) {
   );
 }
 
-const baseURL = 'http://localhost:3000';
+const baseURL = 'https://winamp-api.onrender.com';
 
 function App() {
   // State
