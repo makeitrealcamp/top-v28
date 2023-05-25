@@ -1,4 +1,4 @@
-function getState() {
+export function getState() {
   const state = {
     pokemons: [
       {
