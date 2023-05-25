@@ -1,10 +1,12 @@
+$primary-color: #333;
+
 body {
-  background-color: black;
-  background-image: url("./arena.jpg");
+  background-color: $primary-color;
+  background-image: url('./arena.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   padding: 32px 0;
 }
 section {
@@ -94,19 +96,23 @@ section {
 }
 .pokemon {
   clear: both;
+  img {
+    max-width: 80%;
+  }
 }
-.pokemon img {
-  max-width: 80%;
+
+.moves {
+  .button {
+    width: 164px;
+  }
 }
-.moves .button {
-  width: 164px;
-}
+
 .button {
   border: 2px solid white;
   border-radius: 8px;
   color: #fff;
   display: inline-block;
-  font-family: "Courier New", Courier, monospace;
+  font-family: 'Courier New', Courier, monospace;
   list-style: none;
   margin: 0;
   padding: 4px 8px;
@@ -115,7 +121,7 @@ section {
   -webkit-font-smoothing: antialiased;
 }
 .button.black {
-  background-color: #313131;
+  background-color: $primary-color;
   font-size: 18px;
   padding: 8px;
   text-transform: capitalize;
