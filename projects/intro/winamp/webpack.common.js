@@ -1,6 +1,10 @@
+const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 module.exports = {
   entry: './src/index.js',
@@ -12,6 +16,9 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify(process.env.API_URL),
     }),
   ],
   module: {
@@ -29,6 +36,7 @@ module.exports = {
                   targets: '> 0.25%, not dead',
                 },
               ],
+              '@babel/preset-react',
             ],
           },
         },
