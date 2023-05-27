@@ -4,7 +4,7 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'production',
   externals: {
-    react: 'react',
-    'react-dom': 'react-dom',
+    react: 'React',
+    'react-dom': 'ReactDOM',
   },
 });
