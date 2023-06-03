@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import Account from './components/Account';
 import Tweet from './components/Tweet';
 import Create from './components/Create';
+import Aside from './components/Aside';
 
 function App() {
   const user = null;
@@ -25,7 +26,9 @@ function App() {
           <Tweet />
           <Tweet />
         </Col>
-        <Col></Col>
+        <Col>
+          <Aside />
+        </Col>
       </Row>
     </Container>
   );
