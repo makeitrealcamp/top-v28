@@ -1,0 +1,30 @@
+@import './custom.scss';
+
+:export {
+  white: $white;
+  @each $name, $value in $grays {
+    gray-#{unquote($name)}: $value;
+  }
+  black: $black;
+  @each $name, $value in $colors {
+    color-#{unquote($name)}: $value;
+  }
+  @each $name, $value in $theme-colors {
+    theme-color-#{unquote($name)}: $value;
+  }
+  @each $name, $value in $font-sizes {
+    font-#{$name}: $value;
+  }
+  @each $name, $value in $spacers {
+    spacer-#{$name}: $value;
+  }
+  @each $name, $value in $border-widths {
+    border-width-#{$name}: $value;
+  }
+  border-radius: $border-radius;
+  border-radius-sm: $border-radius-sm;
+  border-radius-lg: $border-radius-lg;
+  border-radius-xl: $border-radius-xl;
+  border-radius-xxl: $border-radius-xxl;
+  border-radius-pill: $border-radius-pill;
+}

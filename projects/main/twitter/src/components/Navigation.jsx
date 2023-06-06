@@ -1,55 +1,74 @@
 import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
+import styled from '@emotion/styled';
+
+const NavLinkStyled = styled(Nav.Link)(({ theme }) => ({
+  borderRadius: theme.border.radius.pill,
+  color: theme.colors['gray-900'],
+  paddingRight: theme.space[4],
+  '&:hover': {
+    backgroundColor: theme.colors['gray-200'],
+    color: theme.colors['gray-900'],
+  },
+}));
+
+const IconStyled = styled('i')(({ theme }) => ({
+  fontSize: theme.fonts[4],
+  marginRight: theme.space[3],
+}));
 
 export default function Navigation() {
   const user = null;
   return (
     <nav className="mb-4">
-      <Nav defaultActiveKey="/home" className="flex-column fs-5 gap-2">
+      <Nav
+        defaultActiveKey="/home"
+        className="flex-column fs-5 gap-2 align-items-start"
+      >
         <Nav.Link>
-          <i className="bi bi-twitter fs-2"></i>
+          <IconStyled className="bi bi-twitter fs-2" />
         </Nav.Link>
-        <Nav.Link href="/home" className="text-dark" active>
-          <i className="bi bi-house-door-fill me-3 fs-4"></i>
-          <strong>Home</strong>
-        </Nav.Link>
-        <Nav.Link href="/" className="text-dark">
-          <i className="bi bi-hash me-3 fs-4"></i>
+        <NavLinkStyled href="/home" active>
+          <IconStyled className="bi bi-house-door-fill" />
+          Home
+        </NavLinkStyled>
+        <NavLinkStyled href="/">
+          <IconStyled className="bi bi-hash" />
           Explore
-        </Nav.Link>
+        </NavLinkStyled>
         {user && (
           <>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-bell me-3 fs-4"></i>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-bell" />
               Notifications
-            </Nav.Link>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-envelope me-3 fs-4"></i>
+            </NavLinkStyled>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-envelope" />
               Messages
-            </Nav.Link>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-card-list me-3 fs-4"></i>
+            </NavLinkStyled>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-card-list" />
               Lists
-            </Nav.Link>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-bookmark me-3 fs-4"></i>
+            </NavLinkStyled>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-bookmark" />
               Bookmarks
-            </Nav.Link>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-twitter me-3 fs-4"></i>
+            </NavLinkStyled>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-twitter" />
               Twitter Blue
-            </Nav.Link>
-            <Nav.Link href="/" className="text-dark">
-              <i className="bi bi-person me-3 fs-4"></i>
+            </NavLinkStyled>
+            <NavLinkStyled href="/">
+              <IconStyled className="bi bi-person" />
               Profile
-            </Nav.Link>
+            </NavLinkStyled>
           </>
         )}
       </Nav>
       {user && (
         <div className="d-flex">
-          <Button className="rounded-pill flex-grow-1 m-2 py-2 fs-5">
+          <Button className="rounded-pill text-white flex-grow-1 m-2 py-2 fs-5">
             Tweet
           </Button>
         </div>
