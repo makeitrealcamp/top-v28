@@ -1,12 +1,8 @@
 import React from 'react';
-import Profile from './Profile';
 import Button from 'react-bootstrap/Button';
 
 export default function Account() {
-  const user = null;
-  return user ? (
-    <Profile />
-  ) : (
+  return (
     <div className="d-flex mt-2 py-4 border-top">
       <div className="d-flex flex-grow-1 flex-column">
         <span>New on Twitter?</span>
