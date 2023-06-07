@@ -1,14 +1,14 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Navigation from './components/Navigation';
-import Profile from './components/Profile';
-import Tweet from './components/Tweet';
-import Create from './components/Create';
-import Aside from './components/Aside';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Navigation from "./components/Navigation";
+import Profile from "./components/Profile";
+import Tweet from "./components/Tweet";
+import Create from "./components/Create";
+import Aside from "./components/Aside";
 
 function App() {
-  const user = null;
+  const user = {};
   return (
     <Container fluid>
       <Row>
