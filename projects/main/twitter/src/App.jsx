@@ -8,7 +8,7 @@ import Create from './components/Create';
 import Aside from './components/Aside';
 
 function App() {
-  const user = null;
+  const user = {};
   return (
     <Container fluid>
       <Row>
@@ -16,8 +16,8 @@ function App() {
           <Navigation />
           {user && <Profile />}
         </Col>
-        <Col md={6} className="border-start border-end">
-          <h1 className="fs-5 my-2 fw-bolder">Home</h1>
+        <Col md={6} className='border-start border-end'>
+          <h1 className='fs-5 my-2 fw-bolder'>Home</h1>
           {user && <Create />}
           <Tweet />
           <Tweet />

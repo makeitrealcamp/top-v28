@@ -21,54 +21,54 @@ const IconStyled = styled('i')(({ theme }) => ({
 export default function Navigation() {
   const user = null;
   return (
-    <nav className="mb-4">
+    <nav className='mb-4'>
       <Nav
-        defaultActiveKey="/home"
-        className="flex-column fs-5 gap-2 align-items-start"
+        defaultActiveKey='/home'
+        className='flex-column fs-5 gap-2 align-items-start'
       >
         <Nav.Link>
-          <IconStyled className="bi bi-twitter fs-2" />
+          <IconStyled className='bi bi-twitter fs-2' />
         </Nav.Link>
-        <NavLinkStyled href="/home" active>
-          <IconStyled className="bi bi-house-door-fill" />
+        <NavLinkStyled href='/home' active>
+          <IconStyled className='bi bi-house-door-fill' />
           Home
         </NavLinkStyled>
-        <NavLinkStyled href="/">
-          <IconStyled className="bi bi-hash" />
+        <NavLinkStyled href='/'>
+          <IconStyled className='bi bi-hash' />
           Explore
         </NavLinkStyled>
         {user && (
           <>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-bell" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-bell' />
               Notifications
             </NavLinkStyled>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-envelope" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-envelope' />
               Messages
             </NavLinkStyled>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-card-list" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-card-list' />
               Lists
             </NavLinkStyled>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-bookmark" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-bookmark' />
               Bookmarks
             </NavLinkStyled>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-twitter" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-twitter' />
               Twitter Blue
             </NavLinkStyled>
-            <NavLinkStyled href="/">
-              <IconStyled className="bi bi-person" />
+            <NavLinkStyled href='/'>
+              <IconStyled className='bi bi-person' />
               Profile
             </NavLinkStyled>
           </>
         )}
       </Nav>
       {user && (
-        <div className="d-flex">
-          <Button className="rounded-pill text-white flex-grow-1 m-2 py-2 fs-5">
+        <div className='d-flex'>
+          <Button className='rounded-pill text-white flex-grow-1 m-2 py-2 fs-5'>
             Tweet
           </Button>
         </div>
