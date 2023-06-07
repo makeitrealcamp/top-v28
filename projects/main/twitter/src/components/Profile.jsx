@@ -3,9 +3,21 @@ import User from './User';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
+import styled from '@emotion/styled';
+
+const StyledUser = styled(User)(({ theme }) => ({
+  borderRadius: theme.border.radius.pill,
+  color: theme.colors['gray-900'],
+  paddingRight: theme.space[4],
+  '&:hover': {
+    backgroundColor: theme.colors['gray-200'],
+    color: theme.colors['gray-900'],
+  },
+}))
+
 export default function Profile() {
   return (
-    <User>
+    <StyledUser>
       <div className="d-flex me-4 align-items-center">
         <DropdownButton
           drop="up"
@@ -18,6 +30,6 @@ export default function Profile() {
           <Dropdown.Item eventKey="3">Sign Out</Dropdown.Item>
         </DropdownButton>
       </div>
-    </User>
+    </StyledUser>
   );
 }

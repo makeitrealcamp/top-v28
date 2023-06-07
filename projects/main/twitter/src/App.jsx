@@ -8,7 +8,7 @@ import Create from './components/Create';
 import Aside from './components/Aside';
 
 function App() {
-  const user = null;
+  const user = true;
   return (
     <Container fluid>
       <Row>
