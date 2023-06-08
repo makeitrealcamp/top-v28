@@ -20,7 +20,10 @@ export default function Create() {
               placeholder="What is happening?!"
             />
           </Form.Group>
-          <Button variant="primary" className="rounded-pill align-self-end">
+          <Button
+            variant="primary"
+            className="rounded-pill align-self-end text-white"
+          >
             Tweet
           </Button>
         </Form>
