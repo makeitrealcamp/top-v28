@@ -4,13 +4,37 @@ import Button from 'react-bootstrap/Button';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
 
-const NavLinkStyled = styled(NavLink)(({ theme }) => ({
-  borderRadius: theme.border.radius.pill,
-  color: theme.colors['gray-900'],
-  paddingRight: theme.space[4],
+const NavLinkStyled = styled(NavLink)(({ theme }) => {
+  const color = theme.colors['gray-900'];
+  const backgroundColor = theme.colors['gray-200'];
+
+  return {
+    borderRadius: theme.border.radius.pill,
+    color,
+    paddingRight: theme.space[4],
+    '&:hover': {
+      backgroundColor,
+      color,
+    },
+    '&.active': {
+      backgroundColor,
+      color,
+    },
+  };
+});
+
+// Override NavLinkStyled for Twitter Icon
+const NavLinkHomeStyled = styled(NavLinkStyled)(({ theme }) => ({
+  color: theme.colors.primary,
+  marginTop: theme.space[2],
+  paddingRight: 0,
   '&:hover': {
     backgroundColor: theme.colors['gray-200'],
-    color: theme.colors['gray-900'],
+    color: theme.colors.primary,
+  },
+  '&.active': {
+    backgroundColor: theme.colors.white,
+    color: theme.colors.primary,
   },
 }));
 
@@ -27,9 +51,9 @@ export default function Navigation() {
         defaultActiveKey="/home"
         className="flex-column fs-5 gap-2 align-items-start"
       >
-        <NavLink to="/" className="nav-link">
+        <NavLinkHomeStyled to="/" className="nav-link">
           <IconStyled className="bi bi-twitter fs-2" />
-        </NavLink>
+        </NavLinkHomeStyled>
         <NavLinkStyled to="/home" className="nav-link">
           <IconStyled className="bi bi-house-door-fill" />
           Home
