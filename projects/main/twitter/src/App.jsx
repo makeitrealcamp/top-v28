@@ -23,15 +23,15 @@ function App() {
           <Navigation />
           {user && <Profile />}
         </Col>
-        <Col md={6} className="border-start border-end">
+        <Col md={6} className='border-start border-end'>
           <Suspense fallback={null}>
             <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/compose" element={<Compose />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/tweet/:id" element={<Post />} />
-              <Route path="*" element={<Home />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/compose' element={<Compose />} />
+              <Route path='/signin' element={<SignIn />} />
+              <Route path='/signup' element={<SignUp />} />
+              <Route path='/tweet/:id' element={<Post />} />
+              <Route path='*' element={<Home />} />
             </Routes>
           </Suspense>
         </Col>
