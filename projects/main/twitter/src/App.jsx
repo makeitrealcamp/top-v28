@@ -8,6 +8,7 @@ import Navigation from './components/Navigation';
 import Profile from './components/Profile';
 import Aside from './components/Aside';
 import { UserProvider } from './containers/UserContext';
+import ProtectedRoute from './containers/ProtectedRoute';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Compose = lazy(() => import('./pages/Compose.jsx'));
@@ -28,7 +29,14 @@ function App() {
             <Suspense fallback={null}>
               <Routes>
                 <Route path="/home" element={<Home />} />
-                <Route path="/compose" element={<Compose />} />
+                <Route
+                  path="/compose"
+                  element={
+                    <ProtectedRoute>
+                      <Compose />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/tweet/:id" element={<Post />} />
