@@ -7,7 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Profile from './components/Profile';
 import Aside from './components/Aside';
-import UserContext from './containers/UserContext';
+import { UserProvider } from './containers/UserContext';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Compose = lazy(() => import('./pages/Compose.jsx'));
@@ -16,14 +16,8 @@ const SignUp = lazy(() => import('./pages/SignUp.jsx'));
 const Post = lazy(() => import('./pages/Post.jsx'));
 
 function App() {
-  const [user, setUser] = useState();
   return (
-    <UserContext.Provider
-      value={{
-        user,
-        setUser,
-      }}
-    >
+    <UserProvider>
       <Container fluid>
         <Row>
           <Col>
@@ -47,7 +41,7 @@ function App() {
           </Col>
         </Row>
       </Container>
-    </UserContext.Provider>
+    </UserProvider>
   );
 }
 
