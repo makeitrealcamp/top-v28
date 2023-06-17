@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Formik, ErrorMessage } from 'formik';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+import UserContext from '../containers/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -10,6 +13,9 @@ const signInSchema = z.object({
 });
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+
   const initialValues = {
     email: '',
     password: '',
@@ -21,8 +27,11 @@ export default function SignIn() {
       <Formik
         initialValues={initialValues}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(JSON.stringify(values, null, 2));
+          setUser({
+            email: values.email,
+          });
           setSubmitting(false);
+          navigate('/home');
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
       >

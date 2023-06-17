@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import UserContext from '../containers/UserContext';
 import PropTypes from 'prop-types';
 
 export default function User({ children, name, username, photo }) {
+  const { user } = useContext(UserContext);
+
   return (
-    <div className="d-flex gap-2 justify-content-between rounded-pill p-2">
-      <div className="d-flex">
-        <div className="p-2">
-          <img src={photo} className="rounded-circle" />
+    user && (
+      <div className="d-flex gap-2 justify-content-between rounded-pill p-2">
+        <div className="d-flex">
+          <div className="p-2">
+            <img src={photo || user.photo} className="rounded-circle" />
+          </div>
+          <div className="d-flex flex-column">
+            <strong>{name || user.name}</strong>
+            <span>@{username || user.username}</span>
+          </div>
         </div>
-        <div className="d-flex flex-column">
-          <strong>{name}</strong>
-          <span>@{username}</span>
-        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    )
   );
 }
 
