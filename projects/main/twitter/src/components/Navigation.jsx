@@ -1,8 +1,9 @@
-import React from 'react';
+import { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import styled from '@emotion/styled';
 import { NavLink } from 'react-router-dom';
+import UserContext from '../containers/UserContext';
 
 const NavLinkStyled = styled(NavLink)(({ theme }) => {
   const color = theme.colors['gray-900'];
@@ -44,7 +45,7 @@ const IconStyled = styled('i')(({ theme }) => ({
 }));
 
 export default function Navigation() {
-  const user = null;
+  const { user } = useContext(UserContext);
   return (
     <nav className="mb-4">
       <Nav
@@ -64,27 +65,27 @@ export default function Navigation() {
         </NavLinkStyled>
         {user && (
           <>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/notifications" className="nav-link">
               <IconStyled className="bi bi-bell" />
               Notifications
             </NavLinkStyled>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/messages" className="nav-link">
               <IconStyled className="bi bi-envelope" />
               Messages
             </NavLinkStyled>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/lists" className="nav-link">
               <IconStyled className="bi bi-card-list" />
               Lists
             </NavLinkStyled>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/bookmarks" className="nav-link">
               <IconStyled className="bi bi-bookmark" />
               Bookmarks
             </NavLinkStyled>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/blue" className="nav-link">
               <IconStyled className="bi bi-twitter" />
               Twitter Blue
             </NavLinkStyled>
-            <NavLinkStyled to="/" className="nav-link">
+            <NavLinkStyled to="/profile" className="nav-link">
               <IconStyled className="bi bi-person" />
               Profile
             </NavLinkStyled>
