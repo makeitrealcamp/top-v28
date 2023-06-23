@@ -1,0 +1,14 @@
+{
+  "en": {
+    "translation": {
+      "home": {
+        "title": "Home",
+        "header": {
+          "tweets_one": "There is {{count}} tweet",
+          "tweets_other": "There are {{count}} tweets"
+        },
+        "message": "hello <bold>{{user}}</bold>, welcome"
+      }
+    }
+  }
+}
