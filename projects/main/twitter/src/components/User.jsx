@@ -10,11 +10,11 @@ export default function User({ children, name, username, photo }) {
       <div className="d-flex gap-2 justify-content-between rounded-pill p-2">
         <div className="d-flex">
           <div className="p-2">
-            <img src={photo || user.photo} className="rounded-circle" />
+            <img src={user.photo || photo} className="rounded-circle" />
           </div>
           <div className="d-flex flex-column">
-            <strong>{name || user.name}</strong>
-            <span>@{username || user.username}</span>
+            <strong>{user.name || name}</strong>
+            <span>@{user.username || username}</span>
           </div>
         </div>
         {children}
@@ -24,18 +24,12 @@ export default function User({ children, name, username, photo }) {
 }
 
 User.propTypes = {
-  name: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  photo: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  username: PropTypes.string,
+  photo: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]),
-};
-
-User.defaultProps = {
-  name: 'Gustavo Morales',
-  username: 'gmoralesc',
-  photo: 'https://placehold.co/40x40',
 };

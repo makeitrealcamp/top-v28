@@ -26,9 +26,8 @@ export default function Tweet({
       <article className="d-flex flex-column gap-1">
         <header>
           <strong>{name}</strong>{' '}
-          <span className="text-secondary">
-            @{username} • {createdAt}
-          </span>
+          <span className="text-secondary">@{username}</span>
+          <span className="text-secondary"> • {createdAt}</span>
         </header>
         <div>{content}</div>
         <footer className="d-flex justify-content-between">
