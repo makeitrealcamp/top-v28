@@ -2,8 +2,8 @@ import { createContext, useEffect, useState } from 'react';
 
 const UserContext = createContext({});
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState();
+export function UserProvider({ children, overrides }) {
+  const [user, setUser] = useState(overrides);
 
   // Mounted
   useEffect(() => {

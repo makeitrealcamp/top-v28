@@ -20,15 +20,14 @@ export default function Tweet({
     <div className="d-flex gap-2 border-bottom py-3">
       <div className="d-flex">
         <div className="p-2">
-          <img src={photo} className="rounded-circle" />
+          <img src={photo} className="rounded-circle" width="50" />
         </div>
       </div>
       <article className="d-flex flex-column gap-1">
         <header>
           <strong>{name}</strong>{' '}
-          <span className="text-secondary">
-            @{username} • {createdAt}
-          </span>
+          <span className="text-secondary">@{username}</span>
+          <span className="text-secondary"> • {createdAt}</span>
         </header>
         <div>{content}</div>
         <footer className="d-flex justify-content-between">
