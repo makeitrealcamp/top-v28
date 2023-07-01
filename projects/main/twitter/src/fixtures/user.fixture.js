@@ -5,6 +5,7 @@ export function getUser(overrides = {}) {
   const lastName = faker.person.lastName();
   return Object.assign(
     {
+      id: faker.string.uuid(),
       name: faker.person.fullName({
         firstName,
         lastName,
