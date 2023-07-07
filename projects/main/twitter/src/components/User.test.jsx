@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
 import { getUser } from '../fixtures/user.fixture';
-import { UserProvider } from '../containers/UserContext';
 import User from './User';
 
 describe('User component', () => {
@@ -9,9 +8,7 @@ describe('User component', () => {
     const user = getUser();
 
     render(
-      <UserProvider overrides={user}>
-        <User />
-      </UserProvider>,
+      <User name={user.name} username={user.username} photo={user.photo} />,
     );
 
     expect(screen.getByText(user.name)).toBeTruthy();

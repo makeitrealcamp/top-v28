@@ -14,30 +14,32 @@ const ProfileContainer = styled('div')(({ theme }) => ({
 }));
 
 export default function Profile() {
-  const { setUser } = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
 
   function SignOut() {
     setUser(null);
   }
 
   return (
-    <ProfileContainer>
-      <User>
-        <div className="d-flex align-items-center">
-          <DropdownButton
-            drop="up"
-            variant=""
-            title={<i className="bi bi-three-dots fs-5"></i>}
-          >
-            <Dropdown.Item eventKey="1">Profile</Dropdown.Item>
-            <Dropdown.Item eventKey="2">Security & Password</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item eventKey="3" onClick={SignOut}>
-              Sign Out
-            </Dropdown.Item>
-          </DropdownButton>
-        </div>
-      </User>
-    </ProfileContainer>
+    user && (
+      <ProfileContainer>
+        <User name={user.name} username={user.username} photo={user.photo}>
+          <div className="d-flex align-items-center">
+            <DropdownButton
+              drop="up"
+              variant=""
+              title={<i className="bi bi-three-dots fs-5"></i>}
+            >
+              <Dropdown.Item eventKey="1">Profile</Dropdown.Item>
+              <Dropdown.Item eventKey="2">Security & Password</Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item eventKey="3" onClick={SignOut}>
+                Sign Out
+              </Dropdown.Item>
+            </DropdownButton>
+          </div>
+        </User>
+      </ProfileContainer>
+    )
   );
 }
