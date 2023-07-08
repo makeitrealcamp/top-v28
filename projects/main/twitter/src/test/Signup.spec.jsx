@@ -73,18 +73,14 @@ describe('Sign in', () => {
       },
     });
 
+    // 5. Click on Submit Button display no errors
+
     const submit = screen.getByText('Submit');
 
     fireEvent.click(submit);
 
-    // 5. Click on Submit Button display no errors
-
-    // expect(await screen.findByText('Required')).toThrowError();
-    // const element = screen.queryByText('Required');
-    // expect(element).toBeNull();
-
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    expect(await screen.queryByText('Required')).toBeNull();
+    expect(screen.queryByText('Required')).toBeNull();
 
     debug();
   });
