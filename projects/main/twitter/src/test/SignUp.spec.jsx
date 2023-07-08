@@ -23,9 +23,9 @@ describe("SingUp", () => {
     expect(await screen.findByText("Personal information")).toBeTruthy();
 
     const name = screen.getByPlaceholderText("Enter Name");
-    const username = screen.getByPlaceholderText(/Enter Username/i);
-    const biography = screen.getByPlaceholderText(/About you/i);
-    const location = screen.getByPlaceholderText(/Location/i);
+    const username = screen.getByPlaceholderText("Enter Username");
+    const biography = screen.getByPlaceholderText("About you");
+    const location = screen.getByPlaceholderText("Location");
     const email = screen.getByPlaceholderText(/email/i);
     const password = screen.getByPlaceholderText(/password/i);
 
@@ -41,12 +41,12 @@ describe("SingUp", () => {
     });
     fireEvent.change(biography, {
       target: {
-        value: "test",
+        value: "Biography Test",
       },
     });
     fireEvent.change(location, {
       target: {
-        value: "location test",
+        value: "Location test",
       },
     });
     fireEvent.change(email, {
