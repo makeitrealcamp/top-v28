@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -79,9 +79,9 @@ describe('Sign in', () => {
 
     fireEvent.click(submit);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    expect(screen.queryByText('Required')).toBeNull();
+    //await new Promise((resolve) => setTimeout(resolve, 2000));
+    await waitFor(() => expect(screen.queryByText('Required')).toBeNull());
 
-    debug();
+    //debug();
   });
 });
