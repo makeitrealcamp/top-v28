@@ -1,38 +1,31 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { ThemeProvider } from '@emotion/react';
-import { BrowserRouter } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { ThemeProvider } from "@emotion/react";
+import { BrowserRouter } from "react-router-dom";
 
-import theme from '../theme';
-import App from '../App';
-import { getUser } from '../fixtures/user.fixture';
+import theme from "../theme";
+import App from "../App";
+import { getUser } from "../fixtures/user.fixture";
 
-describe('Sign in', () => {
-  test('redirects to home page after signing in', async () => {
+describe("SingUp", () => {
+  test("create the account", async () => {
     const user = getUser();
 
-    // 1. Visit Home Page
-    const { debug } = render(
+    render(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <App />
         </ThemeProvider>
-      </BrowserRouter>,
+      </BrowserRouter>
     );
 
-    // 2. Click on 'Sign Up' button
+    fireEvent.click(screen.getByText("Sign Up"));
 
-    fireEvent.click(screen.getByText('Sign Up'));
+    expect(await screen.findByText("Personal information")).toBeTruthy();
 
-    // 3. Visit 'Sign Up' page
-
-    expect(await screen.findByText('Personal information')).toBeTruthy();
-
-    // 4. Fill out form and Fill out field by field
-
-    const name = screen.getByPlaceholderText('Enter Name');
-    const username = screen.getByPlaceholderText(/Username/i);
-    const biography = screen.getByPlaceholderText(/About/i);
-    const location = screen.getByPlaceholderText(/location/i);
+    const name = screen.getByPlaceholderText("Enter Name");
+    const username = screen.getByPlaceholderText("Enter Username");
+    const biography = screen.getByPlaceholderText("About you");
+    const location = screen.getByPlaceholderText("Location");
     const email = screen.getByPlaceholderText(/email/i);
     const password = screen.getByPlaceholderText(/password/i);
 
@@ -41,26 +34,21 @@ describe('Sign in', () => {
         value: user.name,
       },
     });
-
     fireEvent.change(username, {
       target: {
         value: user.username,
       },
     });
-
     fireEvent.change(biography, {
       target: {
-        value:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem totam voluptatum, nihil sit accusamus minima rem corrupti adipisci nobis, commodi ratione voluptate non rerum molestiae porro dicta et officiis magnam.',
+        value: "Biography Test",
       },
     });
-
     fireEvent.change(location, {
       target: {
-        value: 'Bogota',
+        value: "Location test",
       },
     });
-
     fireEvent.change(email, {
       target: {
         value: user.email,
@@ -69,19 +57,13 @@ describe('Sign in', () => {
 
     fireEvent.change(password, {
       target: {
-        value: '12345678',
+        value: "12345678",
       },
     });
 
-    // 5. Click on Submit Button display no errors
-
-    const submit = screen.getByText('Submit');
+    const submit = screen.getByText("Submit");
 
     fireEvent.click(submit);
-
-    //await new Promise((resolve) => setTimeout(resolve, 2000));
-    await waitFor(() => expect(screen.queryByText('Required')).toBeNull());
-
-    //debug();
+    await waitFor(() => expect(screen.queryByText("Required")).toBeNull());
   });
 });
