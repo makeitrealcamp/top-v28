@@ -1,0 +1,23 @@
+{
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "editor.fontFamily": "Fira Mono for Powerline",
+  "editor.fontSize": 20,
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "terminal.integrated.fontFamily": "Fira Mono for Powerline",
+  "terminal.integrated.fontSize": 20,
+  "prettier.trailingComma": "all",
+  "prettier.singleQuote": true,
+  "workbench.editor.untitled.hint": "hidden",
+  "workbench.sideBar.location": "right",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorTheme": "Gruvbox Dark Soft"
+}
