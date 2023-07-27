@@ -1,5 +1,6 @@
 import { prisma } from '../../../database.js';
-import { parsePaginationParams } from '../../../utils.js';
+import { fields } from './model.js';
+import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
   const { body = {} } = req;
@@ -21,12 +22,19 @@ export const create = async (req, res, next) => {
 export const all = async (req, res, next) => {
   const { query } = req;
   const { offset, limit } = parsePaginationParams(query);
+  const { orderBy, direction } = parseOrderParams({
+    fields,
+    ...query,
+  });
 
   try {
     const [result, total] = await Promise.all([
       prisma.tweet.findMany({
         skip: offset,
         take: limit,
+        orderBy: {
+          [orderBy]: direction,
+        },
       }),
       prisma.tweet.count(),
     ]);
@@ -37,6 +45,8 @@ export const all = async (req, res, next) => {
         limit,
         offset,
         total,
+        orderBy,
+        direction,
       },
     });
   } catch (error) {
