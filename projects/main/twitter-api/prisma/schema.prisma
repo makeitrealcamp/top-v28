@@ -16,3 +16,13 @@ model Tweet {
   createdAt DateTime  @default(now())
   updatedAt DateTime?
 }
+
+model User {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String
+  username  String
+  email     String
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+}
