@@ -1,3 +1,5 @@
+// import { Prisma } from '@prisma/client';
+
 import { prisma } from '../../../database.js';
 import { fields } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
@@ -57,16 +59,35 @@ export const all = async (req, res, next) => {
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   try {
+    // Method 2: findUniqueAndThrow
     const result = await prisma.tweet.findUnique({
       where: {
         id: params.id,
       },
     });
 
-    req.result = result;
-
-    next();
+    // Method 1
+    if (result === null) {
+      next({
+        message: 'Tweet not found',
+        status: 404,
+      });
+    } else {
+      req.result = result;
+      next();
+    }
   } catch (error) {
+    // Method 2
+    // if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    //   if (error.code === 'P2025') {
+    //     next({
+    //       message: 'Tweet not found',
+    //       status: 404,
+    //     });
+    //   }
+    // } else {
+    //   next(error);
+    // }
     next(error);
   }
 };
