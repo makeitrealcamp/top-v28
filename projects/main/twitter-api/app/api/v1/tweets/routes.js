@@ -1,6 +1,8 @@
 import { Router } from 'express';
 
 import * as controller from './controller.js';
+import { router as commentsRouter } from '../comments/routes.js';
+// import { all as commentsAll } from '../comments/controller.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -23,3 +25,6 @@ router
   .put(controller.update)
   .patch(controller.update)
   .delete(controller.remove);
+
+router.use('/:tweetId/comments', commentsRouter);
+// router.route('/:tweetId/comments').get(commentsAll);

@@ -22,12 +22,13 @@ export const create = async (req, res, next) => {
 };
 
 export const all = async (req, res, next) => {
-  const { query } = req;
+  const { query, params } = req;
   const { offset, limit } = parsePaginationParams(query);
   const { orderBy, direction } = parseOrderParams({
     fields,
     ...query,
   });
+  const { tweetId } = params;
 
   try {
     const [result, total] = await Promise.all([
@@ -49,6 +50,9 @@ export const all = async (req, res, next) => {
               id: true,
             },
           },
+        },
+        where: {
+          tweetId,
         },
       }),
       prisma.comment.count(),
