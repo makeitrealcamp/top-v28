@@ -44,6 +44,11 @@ export const all = async (req, res, next) => {
               username: true,
             },
           },
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
         },
       }),
       prisma.tweet.count(),
