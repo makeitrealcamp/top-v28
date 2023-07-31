@@ -8,7 +8,7 @@ export const create = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const result = await prisma.tweet.create({
+    const result = await prisma.comment.create({
       data: body,
     });
 
@@ -22,16 +22,17 @@ export const create = async (req, res, next) => {
 };
 
 export const all = async (req, res, next) => {
-  const { query } = req;
+  const { query, params } = req;
   const { offset, limit } = parsePaginationParams(query);
   const { orderBy, direction } = parseOrderParams({
     fields,
     ...query,
   });
+  const { tweetId } = params;
 
   try {
     const [result, total] = await Promise.all([
-      prisma.tweet.findMany({
+      prisma.comment.findMany({
         skip: offset,
         take: limit,
         orderBy: {
@@ -44,14 +45,17 @@ export const all = async (req, res, next) => {
               username: true,
             },
           },
-          _count: {
+          tweet: {
             select: {
-              comments: true,
+              id: true,
             },
           },
         },
+        where: {
+          tweetId,
+        },
       }),
-      prisma.tweet.count(),
+      prisma.comment.count(),
     ]);
 
     res.json({
@@ -73,7 +77,7 @@ export const id = async (req, res, next) => {
   const { params = {} } = req;
   try {
     // Method 2: findUniqueAndThrow
-    const result = await prisma.tweet.findUnique({
+    const result = await prisma.comment.findUnique({
       where: {
         id: params.id,
       },
@@ -82,7 +86,7 @@ export const id = async (req, res, next) => {
     // Method 1
     if (result === null) {
       next({
-        message: 'Tweet not found',
+        message: 'comment not found',
         status: 404,
       });
     } else {
@@ -94,7 +98,7 @@ export const id = async (req, res, next) => {
     // if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //   if (error.code === 'P2025') {
     //     next({
-    //       message: 'Tweet not found',
+    //       message: 'user not found',
     //       status: 404,
     //     });
     //   }
@@ -116,7 +120,7 @@ export const update = async (req, res, next) => {
   const { id } = params;
 
   try {
-    const result = await prisma.tweet.update({
+    const result = await prisma.comment.update({
       where: {
         id,
       },
@@ -139,7 +143,7 @@ export const remove = async (req, res) => {
   const { id } = params;
 
   try {
-    await prisma.tweet.delete({
+    await prisma.comment.delete({
       where: { id },
     });
 

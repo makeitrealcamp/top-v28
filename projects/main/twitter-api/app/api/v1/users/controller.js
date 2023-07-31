@@ -8,7 +8,7 @@ export const create = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const result = await prisma.tweet.create({
+    const result = await prisma.user.create({
       data: body,
     });
 
@@ -31,27 +31,14 @@ export const all = async (req, res, next) => {
 
   try {
     const [result, total] = await Promise.all([
-      prisma.tweet.findMany({
+      prisma.user.findMany({
         skip: offset,
         take: limit,
         orderBy: {
           [orderBy]: direction,
         },
-        include: {
-          user: {
-            select: {
-              name: true,
-              username: true,
-            },
-          },
-          _count: {
-            select: {
-              comments: true,
-            },
-          },
-        },
       }),
-      prisma.tweet.count(),
+      prisma.user.count(),
     ]);
 
     res.json({
@@ -73,7 +60,7 @@ export const id = async (req, res, next) => {
   const { params = {} } = req;
   try {
     // Method 2: findUniqueAndThrow
-    const result = await prisma.tweet.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         id: params.id,
       },
@@ -82,7 +69,7 @@ export const id = async (req, res, next) => {
     // Method 1
     if (result === null) {
       next({
-        message: 'Tweet not found',
+        message: 'user not found',
         status: 404,
       });
     } else {
@@ -94,7 +81,7 @@ export const id = async (req, res, next) => {
     // if (error instanceof Prisma.PrismaClientKnownRequestError) {
     //   if (error.code === 'P2025') {
     //     next({
-    //       message: 'Tweet not found',
+    //       message: 'user not found',
     //       status: 404,
     //     });
     //   }
@@ -116,7 +103,7 @@ export const update = async (req, res, next) => {
   const { id } = params;
 
   try {
-    const result = await prisma.tweet.update({
+    const result = await prisma.user.update({
       where: {
         id,
       },
@@ -139,7 +126,7 @@ export const remove = async (req, res) => {
   const { id } = params;
 
   try {
-    await prisma.tweet.delete({
+    await prisma.user.delete({
       where: { id },
     });
 
