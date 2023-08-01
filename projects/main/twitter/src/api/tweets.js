@@ -1,10 +1,25 @@
-import { getTweet } from '../fixtures/tweet.fixture';
+function transformTweet(item = {}) {
+  return {
+    ...item,
+    user: {
+      name: item.user?.name ?? 'Unknown',
+      username: item.user?.username ?? 'unknown',
+    },
+  };
+}
 
-export function getTweets() {
-  const result = [];
-  for (let index = 0; index < 10; index++) {
-    const tweet = getTweet();
-    result.push(tweet);
+// API Agent
+export async function getTweets() {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/tweets/`);
+  if (response.ok) {
+    const json = await response.json();
+    const data = json.data.map(transformTweet);
+
+    return {
+      data,
+      meta: json.meta,
+    };
+  } else {
+    return Promise.reject('Network error');
   }
-  return result;
 }
