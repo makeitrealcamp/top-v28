@@ -77,6 +77,14 @@ export const id = async (req, res, next) => {
       where: {
         id: params.id,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+          },
+        },
+      },
     });
 
     // Method 1
