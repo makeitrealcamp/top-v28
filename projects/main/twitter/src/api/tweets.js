@@ -38,3 +38,26 @@ export async function getTweet({ id }) {
   }
   return Promise.reject('Network error');
 }
+
+export async function createTweet(payload) {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/tweets/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...payload,
+      userId: 'ee36e6ae-ee5e-4725-82ec-ca089bb419f8',
+    }),
+  });
+  if (response.ok) {
+    const json = await response.json();
+    const data = transformTweet(json.data);
+
+    return {
+      data,
+    };
+  } else {
+    return Promise.reject('Network error');
+  }
+}
