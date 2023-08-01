@@ -1,4 +1,5 @@
-import React from 'react';
+import { formatRelative } from 'date-fns';
+
 import { formatNumber } from '../utils';
 import styled from '@emotion/styled';
 
@@ -31,7 +32,10 @@ export default function Tweet({
         <header>
           <strong>{name}</strong>{' '}
           <span className="text-secondary">@{username}</span>
-          <span className="text-secondary"> • {createdAt}</span>
+          <span className="text-secondary">
+            {' '}
+            • {formatRelative(new Date(createdAt), new Date())}
+          </span>
         </header>
         <div>{content}</div>
         <footer className="d-flex justify-content-between">
