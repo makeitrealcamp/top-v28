@@ -7,7 +7,7 @@ import Create from '../components/Create';
 import Tweet from '../components/Tweet';
 import UserContext from '../containers/UserContext';
 
-import { getTweets } from '../api/tweets';
+import { createTweet, getTweets } from '../api/tweets';
 
 export default function Home() {
   const { user } = useContext(UserContext);
@@ -35,6 +35,11 @@ export default function Home() {
     navigate(`/tweet/${id}`);
   }
 
+  async function onCreate(payload) {
+    await createTweet(payload);
+    loadTweets();
+  }
+
   useEffect(() => {
     loadTweets();
   }, []);
@@ -42,7 +47,7 @@ export default function Home() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Home</h1>
-      {user && <Create />}
+      {user && <Create onCreate={onCreate} />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
       {data.map(function (item) {

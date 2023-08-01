@@ -1,8 +1,10 @@
-import React from 'react';
+import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function Create() {
+export default function Create({ onCreate }) {
+  const [content, setContent] = useState('');
+
   return (
     <div className="d-flex border-bottom pb-2 mb-2">
       <div className="d-flex">
@@ -18,11 +20,21 @@ export default function Create() {
               rows={2}
               className="border border-0"
               placeholder="What is happening?!"
+              value={content}
+              onChange={(event) => {
+                setContent(event.target.value);
+              }}
             />
           </Form.Group>
           <Button
             variant="primary"
             className="rounded-pill align-self-end text-white"
+            onClick={() => {
+              onCreate({
+                content,
+              });
+              setContent('');
+            }}
           >
             Tweet
           </Button>
