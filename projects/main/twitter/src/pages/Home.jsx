@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -10,6 +11,7 @@ import { getTweets } from '../api/tweets';
 
 export default function Home() {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -29,6 +31,10 @@ export default function Home() {
     }
   }
 
+  function displayTweet({ id }) {
+    navigate(`/tweet/${id}`);
+  }
+
   useEffect(() => {
     loadTweets();
   }, []);
@@ -39,7 +45,7 @@ export default function Home() {
       {user && <Create />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
-      {data.map(function (item, index) {
+      {data.map(function (item) {
         return (
           <Tweet
             key={item.id}
@@ -48,6 +54,7 @@ export default function Home() {
             photo={item.user.photo}
             content={item.content}
             createdAt={item.createdAt}
+            onClick={() => displayTweet(item)}
           />
         );
       })}

@@ -14,6 +14,7 @@ export default function Tweet({
   photo = '',
   username = '',
   statistics = {},
+  onClick = () => undefined,
 }) {
   const {
     commentsCount = 0,
@@ -22,7 +23,7 @@ export default function Tweet({
     viewsCount = 0,
   } = statistics;
   return (
-    <div className="d-flex gap-2 border-bottom py-3">
+    <div className="d-flex gap-2 border-bottom py-3" onClick={onClick}>
       <div className="d-flex">
         <div className="p-2">
           <img src={photo} className="rounded-circle" width="50" />
