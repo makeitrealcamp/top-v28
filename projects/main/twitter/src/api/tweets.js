@@ -1,4 +1,4 @@
-import axios from 'axios';
+import http from './http';
 
 function transformTweet(item = {}) {
   return {
@@ -12,9 +12,7 @@ function transformTweet(item = {}) {
 
 export async function getTweets() {
   try {
-    const { data: response } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/tweets/`,
-    );
+    const { data: response } = await http.get('/tweets/');
     const data = response.data.map(transformTweet);
 
     return {
@@ -28,9 +26,7 @@ export async function getTweets() {
 
 export async function getTweet({ id }) {
   try {
-    const { data: response } = await axios.get(
-      `${import.meta.env.VITE_API_URL}/tweets/${id}`,
-    );
+    const { data: response } = await http.get(`/tweets/${id}`);
     const data = transformTweet(response.data);
 
     return {
@@ -43,14 +39,7 @@ export async function getTweet({ id }) {
 
 export async function createTweet(payload) {
   try {
-    const { data: response } = await axios.post(
-      `${import.meta.env.VITE_API_URL}/tweets/`,
-      {
-        ...payload,
-        userId: 'ee36e6ae-ee5e-4725-82ec-ca089bb419f8',
-      },
-    );
-
+    const { data: response } = await http.post(`/tweets/`, payload);
     const data = transformTweet(response.data);
 
     return {
