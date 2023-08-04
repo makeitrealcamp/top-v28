@@ -1,16 +1,43 @@
 import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
 import UserContext from '../containers/UserContext';
-import { getTweets } from '../api/tweets';
+
+import { createTweet, getTweets } from '../api/tweets';
 
 export default function Home() {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function loadTweets() {
-    const response = await getTweets();
-    setData(response);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await getTweets();
+
+      setData(response.data);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function displayTweet({ id }) {
+    navigate(`/tweet/${id}`);
+  }
+
+  async function onCreate(payload) {
+    await createTweet(payload);
+    loadTweets();
   }
 
   useEffect(() => {
@@ -20,8 +47,10 @@ export default function Home() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Home</h1>
-      {user && <Create />}
-      {data.map(function (item, index) {
+      {user && <Create onCreate={onCreate} />}
+      {loading && <Spinner />}
+      {error && <Alert variant="danger">{error}</Alert>}
+      {data.map(function (item) {
         return (
           <Tweet
             key={item.id}
@@ -30,6 +59,7 @@ export default function Home() {
             photo={item.user.photo}
             content={item.content}
             createdAt={item.createdAt}
+            onClick={() => displayTweet(item)}
           />
         );
       })}

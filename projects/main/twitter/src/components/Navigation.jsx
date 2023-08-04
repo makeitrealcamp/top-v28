@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import UserContext from '../containers/UserContext';
 
 const NavLinkStyled = styled(NavLink)(({ theme }) => {
@@ -46,6 +47,8 @@ const IconStyled = styled('i')(({ theme }) => ({
 
 export default function Navigation() {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
   return (
     <nav className="mb-4">
       <Nav
@@ -94,7 +97,10 @@ export default function Navigation() {
       </Nav>
       {user && (
         <div className="d-flex">
-          <Button className="rounded-pill text-white flex-grow-1 m-2 py-2 fs-5">
+          <Button
+            className="rounded-pill text-white flex-grow-1 m-2 py-2 fs-5"
+            onClick={() => navigate('/compose')}
+          >
             Tweet
           </Button>
         </div>
