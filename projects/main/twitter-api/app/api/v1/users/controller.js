@@ -1,20 +1,75 @@
 // import { Prisma } from '@prisma/client';
 
 import { prisma } from '../../../database.js';
-import { fields } from './model.js';
+import { encryptPassword, fields, verifyPassword } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
-export const create = async (req, res, next) => {
+export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const result = await prisma.user.create({
-      data: body,
+    const password = await encryptPassword(body.password);
+    const user = await prisma.user.create({
+      data: {
+        ...body,
+        password,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        createdAt: true,
+      },
     });
 
     res.status(201);
     res.json({
-      data: result,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const signin = async (req, res, next) => {
+  const { body } = req;
+  const { email, password } = body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        createdAt: true,
+        password: true,
+      },
+    });
+
+    if (user === null) {
+      return next({
+        message: 'Invalid email or password',
+        status: 401,
+      });
+    }
+
+    const passwordMatch = await verifyPassword(password, user.password);
+
+    if (!passwordMatch) {
+      return next({
+        message: 'Invalid email or password',
+        status: 401,
+      });
+    }
+
+    res.json({
+      data: {
+        ...user,
+        password: undefined,
+      },
     });
   } catch (error) {
     next(error);
@@ -36,6 +91,12 @@ export const all = async (req, res, next) => {
         take: limit,
         orderBy: {
           [orderBy]: direction,
+        },
+        select: {
+          name: true,
+          email: true,
+          username: true,
+          createdAt: true,
         },
       }),
       prisma.user.count(),
@@ -63,6 +124,12 @@ export const id = async (req, res, next) => {
     const result = await prisma.user.findUnique({
       where: {
         id: params.id,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        createdAt: true,
       },
     });
 
@@ -110,6 +177,12 @@ export const update = async (req, res, next) => {
       data: {
         ...body,
         updatedAt: new Date().toISOString(),
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        createdAt: true,
       },
     });
 

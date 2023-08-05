@@ -6,14 +6,15 @@ import * as controller from './controller.js';
 export const router = Router();
 
 /**
- * /api/v1/users POST        - CREATE
- * /api/v1/users GET         - READ ALL
+ * /api/v1/users/signup POST
+ * /api/v1/users/signin POST
  * /api/v1/users/:id GET     - READ ONE
  * /api/v1/users/:id PUT     - UPDATE
  * /api/v1/users/:id DELETE  - DELETE
  */
 
-router.route('/').post(controller.create).get(controller.all);
+router.route('/signup').post(controller.signup);
+router.route('/signin').post(controller.signin);
 
 router.param('id', controller.id);
 
