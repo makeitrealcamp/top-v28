@@ -5,11 +5,15 @@ import { fields } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
-  const { body = {} } = req;
+  const { body = {}, decoded = {} } = req;
+  const { id: userId } = decoded;
 
   try {
     const result = await prisma.tweet.create({
-      data: body,
+      data: {
+        ...body,
+        userId,
+      },
     });
 
     res.status(201);
@@ -94,7 +98,7 @@ export const id = async (req, res, next) => {
         status: 404,
       });
     } else {
-      req.result = result;
+      req.data = result;
       next();
     }
   } catch (error) {
@@ -115,7 +119,7 @@ export const id = async (req, res, next) => {
 
 export const read = async (req, res, next) => {
   res.json({
-    data: req.result,
+    data: req.data,
   });
 };
 

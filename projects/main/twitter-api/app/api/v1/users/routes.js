@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import * as controller from './controller.js';
+import { auth, me } from '../auth.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -20,7 +21,7 @@ router.param('id', controller.id);
 
 router
   .route('/:id')
-  .get(controller.read)
-  .put(controller.update)
-  .patch(controller.update)
-  .delete(controller.remove);
+  .get(auth, me, controller.read)
+  .put(auth, me, controller.update)
+  .patch(auth, me, controller.update)
+  .delete(auth, me, controller.remove);

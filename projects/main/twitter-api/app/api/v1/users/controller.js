@@ -3,6 +3,7 @@
 import { prisma } from '../../../database.js';
 import { encryptPassword, fields, verifyPassword } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
+import { signToken } from '../auth.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
@@ -41,6 +42,7 @@ export const signin = async (req, res, next) => {
         email,
       },
       select: {
+        id: true,
         name: true,
         email: true,
         username: true,
@@ -65,10 +67,16 @@ export const signin = async (req, res, next) => {
       });
     }
 
+    const token = signToken({ id: user.id });
+
     res.json({
       data: {
         ...user,
+        id: undefined,
         password: undefined,
+      },
+      meta: {
+        token,
       },
     });
   } catch (error) {

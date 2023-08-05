@@ -5,11 +5,15 @@ import { fields } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
-  const { body = {} } = req;
+  const { body = {}, decoded = {} } = req;
+  const { id: userId } = decoded;
 
   try {
     const result = await prisma.comment.create({
-      data: body,
+      data: {
+        ...body,
+        userId,
+      },
     });
 
     res.status(201);
