@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
+import { signUp } from '../api/users';
+import { useNavigate } from 'react-router-dom';
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -14,6 +16,7 @@ const signUpSchema = z.object({
 });
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const initialValues = {
     name: '',
     username: '',
@@ -27,9 +30,10 @@ export default function SignUp() {
       <h1 className="fs-4 my-2 fw-bolder">Sign Up</h1>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log(JSON.stringify(values, null, 2));
+        onSubmit={async (values, { setSubmitting }) => {
+          const { data } = await signUp(values);
           setSubmitting(false);
+          navigate('/signin');
         }}
         validationSchema={toFormikValidationSchema(signUpSchema)}
       >
