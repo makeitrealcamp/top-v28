@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { clearSession, getSession } from './session';
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -7,6 +8,13 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+
+    // Append token in Authorization header if is present
+    const token = getSession();
+    if (token && config.method !== 'GET') {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   function (error) {
@@ -26,7 +34,10 @@ instance.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
 
-    // console.log(JSON.stringify(error, null, 2));
+    if (error.response?.status === 401) {
+      clearSession();
+      window.location = '/signin';
+    }
 
     // Procesar los errores de todas las respuestas del backend
     // en un solo lugar

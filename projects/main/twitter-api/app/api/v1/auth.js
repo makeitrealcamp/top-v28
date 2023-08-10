@@ -20,7 +20,7 @@ export const auth = (req, res, next) => {
   if (!token) {
     return next({
       message: 'Forbidden',
-      status: 403,
+      status: 401,
     });
   }
 
@@ -28,7 +28,7 @@ export const auth = (req, res, next) => {
     if (err) {
       return next({
         message: 'Forbidden',
-        status: 403,
+        status: 401,
       });
     }
 

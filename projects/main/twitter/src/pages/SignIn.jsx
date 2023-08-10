@@ -1,11 +1,13 @@
+import { Formik, ErrorMessage } from 'formik';
 import { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Formik, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+
 import UserContext from '../containers/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { signIn } from '../api/users';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -26,10 +28,10 @@ export default function SignIn() {
       <h1 className="fs-4 my-2 fw-bolder">Sign In</h1>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values, { setSubmitting }) => {
-          setUser({
-            email: values.email,
-          });
+        onSubmit={async (values, { setSubmitting }) => {
+          const { data } = await signIn(values);
+
+          setUser(data);
           setSubmitting(false);
           navigate('/home');
         }}
