@@ -1,15 +1,15 @@
-import http from "./http";
-import { setSession } from "./session";
+import http from './http';
+import { setSession } from './session';
 
 export async function signIn({ email, password }) {
   try {
-    const { data: response } = await http.post("/users/signin", {
+    const { data: response } = await http.post('/users/signin', {
       email,
       password,
     });
 
     const { data, meta } = response;
-    const { token = "" } = meta;
+    const { token = '' } = meta;
 
     setSession(token);
 
@@ -22,7 +22,7 @@ export async function signIn({ email, password }) {
 }
 export async function signUp({ name, username, email, password }) {
   try {
-    const { data: response } = await http.post("/users/signup", {
+    const { data: response } = await http.post('/users/signup', {
       name,
       username,
       email,
