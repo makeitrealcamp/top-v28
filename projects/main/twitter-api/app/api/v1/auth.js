@@ -19,16 +19,16 @@ export const auth = (req, res, next) => {
 
   if (!token) {
     return next({
-      message: 'Forbidden',
-      status: 403,
+      message: 'Unauthorized',
+      status: 401,
     });
   }
 
   jwt.verify(token, secret, function (err, decoded) {
     if (err) {
       return next({
-        message: 'Forbidden',
-        status: 403,
+        message: 'Unauthorized',
+        status: 401,
       });
     }
 

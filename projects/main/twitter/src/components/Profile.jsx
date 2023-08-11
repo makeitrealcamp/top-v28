@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import styled from '@emotion/styled';
 import UserContext from '../containers/UserContext';
+import { clearSession } from '../api/session';
 
 const ProfileContainer = styled('div')(({ theme }) => ({
   borderRadius: theme.border.radius.pill,
@@ -18,6 +19,7 @@ export default function Profile() {
 
   function SignOut() {
     setUser(null);
+    clearSession();
   }
 
   return (
