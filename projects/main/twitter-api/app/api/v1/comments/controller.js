@@ -1,7 +1,5 @@
-// import { Prisma } from '@prisma/client';
-
 import { prisma } from '../../../database.js';
-import { fields } from './model.js';
+import { CommentSchema, fields } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
@@ -9,9 +7,17 @@ export const create = async (req, res, next) => {
   const { id: userId } = decoded;
 
   try {
+    const { success, data, error } = await CommentSchema.safeParseAsync(body);
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
     const result = await prisma.comment.create({
       data: {
-        ...body,
+        ...data,
         userId,
       },
     });
@@ -80,14 +86,12 @@ export const all = async (req, res, next) => {
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   try {
-    // Method 2: findUniqueAndThrow
     const result = await prisma.comment.findUnique({
       where: {
         id: params.id,
       },
     });
 
-    // Method 1
     if (result === null) {
       next({
         message: 'comment not found',
@@ -98,17 +102,6 @@ export const id = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    // Method 2
-    // if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    //   if (error.code === 'P2025') {
-    //     next({
-    //       message: 'user not found',
-    //       status: 404,
-    //     });
-    //   }
-    // } else {
-    //   next(error);
-    // }
     next(error);
   }
 };
@@ -124,12 +117,22 @@ export const update = async (req, res, next) => {
   const { id } = params;
 
   try {
+    const { success, data, error } =
+      await CommentSchema.partial().safeParseAsync(body);
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
     const result = await prisma.comment.update({
       where: {
         id,
       },
       data: {
-        ...body,
+        ...data,
         updatedAt: new Date().toISOString(),
       },
     });

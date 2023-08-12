@@ -24,13 +24,14 @@ app.use((req, res, next) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-  const { message = '', status = 500 } = err;
+  const { message = '', status = 500, error } = err;
 
   res.status(status);
   res.json({
     error: {
       message,
       status,
+      error,
     },
   });
 });
