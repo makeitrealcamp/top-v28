@@ -17,10 +17,10 @@ export const router = Router();
 router.route('/signup').post(controller.signup);
 router.route('/signin').post(controller.signin);
 
-router.param('id', controller.id);
+router.param('username', controller.username);
 
 router
-  .route('/:id')
+  .route('/:username')
   .get(auth, me, controller.read)
   .put(auth, me, controller.update)
   .patch(auth, me, controller.update)

@@ -88,7 +88,8 @@ export const signin = async (req, res, next) => {
       });
     }
 
-    const token = signToken({ id: user.id });
+    const { id, username } = user;
+    const token = signToken({ id, username });
 
     res.json({
       data: {
@@ -105,14 +106,14 @@ export const signin = async (req, res, next) => {
   }
 };
 
-export const id = async (req, res, next) => {
+export const username = async (req, res, next) => {
   const { params = {} } = req;
-  const { id } = params;
+  const { username } = params;
 
   try {
     const result = await prisma.user.findUnique({
       where: {
-        id,
+        username,
       },
       select: {
         name: true,
@@ -144,7 +145,7 @@ export const read = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   const { body = {}, params = {} } = req;
-  const { id } = params;
+  const { username } = params;
 
   try {
     const { success, data, error } = await UserSchema.partial().safeParseAsync(
@@ -160,7 +161,7 @@ export const update = async (req, res, next) => {
 
     const result = await prisma.user.update({
       where: {
-        id,
+        username,
       },
       data: {
         ...data,
@@ -184,11 +185,11 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res) => {
   const { params = {} } = req;
-  const { id } = params;
+  const { username } = params;
 
   try {
     await prisma.user.delete({
-      where: { id },
+      where: { username },
     });
 
     res.status(204);
