@@ -1,7 +1,5 @@
-// import { Prisma } from '@prisma/client';
-
 import { prisma } from '../../../database.js';
-import { fields } from './model.js';
+import { fields, TweetSchema } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
@@ -9,9 +7,18 @@ export const create = async (req, res, next) => {
   const { id: userId } = decoded;
 
   try {
+    const { success, data, error } = await TweetSchema.safeParseAsync(body);
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
     const result = await prisma.tweet.create({
       data: {
-        ...body,
+        ...data,
         userId,
       },
     });
@@ -76,7 +83,6 @@ export const all = async (req, res, next) => {
 export const id = async (req, res, next) => {
   const { params = {} } = req;
   try {
-    // Method 2: findUniqueAndThrow
     const result = await prisma.tweet.findUnique({
       where: {
         id: params.id,
@@ -91,7 +97,6 @@ export const id = async (req, res, next) => {
       },
     });
 
-    // Method 1
     if (result === null) {
       next({
         message: 'Tweet not found',
@@ -102,17 +107,6 @@ export const id = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    // Method 2
-    // if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    //   if (error.code === 'P2025') {
-    //     next({
-    //       message: 'Tweet not found',
-    //       status: 404,
-    //     });
-    //   }
-    // } else {
-    //   next(error);
-    // }
     next(error);
   }
 };
@@ -128,12 +122,23 @@ export const update = async (req, res, next) => {
   const { id } = params;
 
   try {
+    const { success, data, error } = await TweetSchema.partial().safeParseAsync(
+      body,
+    );
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
     const result = await prisma.tweet.update({
       where: {
         id,
       },
       data: {
-        ...body,
+        ...data,
         updatedAt: new Date().toISOString(),
       },
     });

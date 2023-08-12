@@ -1,18 +1,30 @@
-// import { Prisma } from '@prisma/client';
-
 import { prisma } from '../../../database.js';
-import { encryptPassword, fields, verifyPassword } from './model.js';
-import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
+import {
+  encryptPassword,
+  verifyPassword,
+  UserSchema,
+  LoginSchema,
+} from './model.js';
+
 import { signToken } from '../auth.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const password = await encryptPassword(body.password);
+    const { success, data, error } = await UserSchema.safeParseAsync(body);
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
+    const password = await encryptPassword(data.password);
     const user = await prisma.user.create({
       data: {
-        ...body,
+        ...data,
         password,
       },
       select: {
@@ -34,9 +46,18 @@ export const signup = async (req, res, next) => {
 
 export const signin = async (req, res, next) => {
   const { body } = req;
-  const { email, password } = body;
 
   try {
+    const { success, data, error } = await LoginSchema.safeParseAsync(body);
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
+    const { email, password } = data;
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -84,54 +105,14 @@ export const signin = async (req, res, next) => {
   }
 };
 
-export const all = async (req, res, next) => {
-  const { query } = req;
-  const { offset, limit } = parsePaginationParams(query);
-  const { orderBy, direction } = parseOrderParams({
-    fields,
-    ...query,
-  });
-
-  try {
-    const [result, total] = await Promise.all([
-      prisma.user.findMany({
-        skip: offset,
-        take: limit,
-        orderBy: {
-          [orderBy]: direction,
-        },
-        select: {
-          name: true,
-          email: true,
-          username: true,
-          createdAt: true,
-        },
-      }),
-      prisma.user.count(),
-    ]);
-
-    res.json({
-      data: result,
-      meta: {
-        limit,
-        offset,
-        total,
-        orderBy,
-        direction,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const id = async (req, res, next) => {
   const { params = {} } = req;
+  const { id } = params;
+
   try {
-    // Method 2: findUniqueAndThrow
     const result = await prisma.user.findUnique({
       where: {
-        id: params.id,
+        id,
       },
       select: {
         name: true,
@@ -141,7 +122,6 @@ export const id = async (req, res, next) => {
       },
     });
 
-    // Method 1
     if (result === null) {
       next({
         message: 'user not found',
@@ -152,17 +132,6 @@ export const id = async (req, res, next) => {
       next();
     }
   } catch (error) {
-    // Method 2
-    // if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    //   if (error.code === 'P2025') {
-    //     next({
-    //       message: 'user not found',
-    //       status: 404,
-    //     });
-    //   }
-    // } else {
-    //   next(error);
-    // }
     next(error);
   }
 };
@@ -178,12 +147,23 @@ export const update = async (req, res, next) => {
   const { id } = params;
 
   try {
+    const { success, data, error } = await UserSchema.partial().safeParseAsync(
+      body,
+    );
+    if (!success) {
+      return next({
+        message: 'Validator error',
+        status: 400,
+        error,
+      });
+    }
+
     const result = await prisma.user.update({
       where: {
         id,
       },
       data: {
-        ...body,
+        ...data,
         updatedAt: new Date().toISOString(),
       },
       select: {
