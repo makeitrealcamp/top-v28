@@ -39,10 +39,10 @@ export const auth = (req, res, next) => {
 
 export const me = (req, res, next) => {
   const { decoded = {}, params = {} } = req;
-  const { id: userId } = decoded;
-  const { id } = params;
+  const { username } = decoded;
+  const { username: usernameParam } = params;
 
-  if (userId !== id) {
+  if (username !== usernameParam) {
     return next({
       message: 'Forbidden',
       status: 403,
