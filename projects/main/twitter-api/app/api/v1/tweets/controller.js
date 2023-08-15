@@ -53,6 +53,7 @@ export const all = async (req, res, next) => {
             select: {
               name: true,
               username: true,
+              email: true,
             },
           },
           _count: {
@@ -92,6 +93,7 @@ export const id = async (req, res, next) => {
           select: {
             name: true,
             username: true,
+            email: true,
           },
         },
       },

@@ -31,7 +31,6 @@ export const signup = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
       },
     });
 
@@ -67,7 +66,6 @@ export const signin = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
         password: true,
       },
     });
