@@ -1,5 +1,6 @@
 import { Formik, ErrorMessage } from 'formik';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 
 import UserContext from '../containers/UserContext';
 import { signIn } from '../api/users';
+import { formatError } from '../utils';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -17,6 +19,7 @@ const signInSchema = z.object({
 export default function SignIn() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const [error, setError] = useState('');
 
   const initialValues = {
     email: '',
@@ -26,14 +29,20 @@ export default function SignIn() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Sign In</h1>
+      {error && <Alert variant="danger">{error}</Alert>}
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const { data } = await signIn(values);
+          try {
+            const { data } = await signIn(values);
 
-          setUser(data);
-          setSubmitting(false);
-          navigate('/home');
+            setUser(data);
+            setSubmitting(false);
+            navigate('/home');
+          } catch (e) {
+            const message = formatError(e);
+            setError(message);
+          }
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
       >
