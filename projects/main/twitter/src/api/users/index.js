@@ -1,5 +1,6 @@
-import http from './http';
-import { setSession } from './session';
+import http from '../http';
+import { setSession } from '../session';
+import { decodeUserOutput } from './decoders';
 
 export async function signIn({ email, password }) {
   try {
@@ -8,8 +9,9 @@ export async function signIn({ email, password }) {
       password,
     });
 
-    const { data, meta } = response;
-    const { token = '' } = meta;
+    const data = await decodeUserOutput(response.data);
+
+    const { token = '' } = response.meta;
 
     setSession(token);
 
@@ -17,9 +19,10 @@ export async function signIn({ email, password }) {
       data,
     };
   } catch (error) {
-    return Promise.reject(error.message);
+    return Promise.reject(error);
   }
 }
+
 export async function signUp({ name, username, email, password }) {
   try {
     const { data: response } = await http.post('/users/signup', {
@@ -29,12 +32,12 @@ export async function signUp({ name, username, email, password }) {
       password,
     });
 
-    const { data } = response;
+    const data = await decodeUserOutput(response.data);
 
     return {
       data,
     };
   } catch (error) {
-    return Promise.reject(error.message);
+    return Promise.reject(error);
   }
 }
