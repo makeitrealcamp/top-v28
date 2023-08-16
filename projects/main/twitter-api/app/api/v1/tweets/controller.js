@@ -21,6 +21,15 @@ export const create = async (req, res, next) => {
         ...data,
         userId,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
     });
 
     res.status(201);
@@ -96,6 +105,11 @@ export const id = async (req, res, next) => {
             email: true,
           },
         },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
     });
 
@@ -142,6 +156,20 @@ export const update = async (req, res, next) => {
       data: {
         ...data,
         updatedAt: new Date().toISOString(),
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
       },
     });
 
