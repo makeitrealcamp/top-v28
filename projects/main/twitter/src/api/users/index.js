@@ -1,5 +1,4 @@
 import http from '../http';
-import { setSession } from '../session';
 import { decodeUserOutput } from './decoders';
 
 export async function signIn({ email, password }) {
@@ -10,10 +9,6 @@ export async function signIn({ email, password }) {
     });
 
     const data = await decodeUserOutput(response.data);
-
-    const { token = '' } = response.meta;
-
-    setSession(token);
 
     return {
       data,
