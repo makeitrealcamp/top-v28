@@ -1,11 +1,15 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
 
 import { router as api } from './api/v1/index.js';
 import { logger, HTTPlogger } from './logger.js';
 
 export const app = express();
+
+// Reduce Fingerprinting
+app.disable('x-powered-by');
 
 // Request ID
 app.use((req, res, next) => {
@@ -20,7 +24,14 @@ app.use((req, res, next) => {
 app.use(HTTPlogger);
 
 // CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.ORIGIN,
+  }),
+);
+
+// Use Helmet!
+app.use(helmet());
 
 // Parse JSON body
 app.use(express.json());
