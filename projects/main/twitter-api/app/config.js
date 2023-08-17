@@ -19,4 +19,8 @@ export const configuration = {
     secret: process.env.TOKEN_SECRET,
     expires: process.env.TOKEN_EXPIRES,
   },
+  rateLimit: {
+    points: process.env.RATE_LIMIT_POINTS,
+    duration: process.env.RATE_LIMIT_DURATION,
+  },
 };
