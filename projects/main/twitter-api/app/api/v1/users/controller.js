@@ -88,15 +88,20 @@ export const signin = async (req, res, next) => {
 
     const { id, username } = user;
     const token = signToken({ id, username });
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1);
+
+    res.cookie('authToken', token, {
+      expires,
+      secure: true,
+      httpOnly: true,
+    });
 
     res.json({
       data: {
         ...user,
         id: undefined,
         password: undefined,
-      },
-      meta: {
-        token,
       },
     });
   } catch (error) {

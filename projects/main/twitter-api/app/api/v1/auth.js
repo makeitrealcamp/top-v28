@@ -19,7 +19,7 @@ export const signToken = (payload, expiresIn = expires) => {
 };
 
 export const auth = (req, res, next) => {
-  let token = req.headers.authorization || '';
+  let token = req.headers.authorization || req.cookies.authToken || '';
   if (token.startsWith('Bearer')) {
     token = token.substring(7);
   }

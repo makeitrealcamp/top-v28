@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
+import cookieParser from 'cookie-parser';
 
 import { router as api } from './api/v1/index.js';
 import { logger, HTTPlogger } from './logger.js';
@@ -35,6 +36,9 @@ app.use(helmet());
 
 // Parse JSON body
 app.use(express.json());
+
+// Parse Cookie
+app.use(cookieParser());
 
 app.use('/api', api);
 app.use('/api/v1', api);
