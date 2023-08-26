@@ -36,6 +36,7 @@
     "jsonwebtoken": "^9.0.1",
     "morgan": "^1.10.0",
     "rate-limiter-flexible": "^2.4.2",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "validator": "^13.11.0",
     "winston": "^3.10.0",
