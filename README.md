@@ -10,7 +10,7 @@
 - [Alejo Gomez Trejos](https://github.com/AlejoGomT)
 - [Andrés Marulanda](https://github.com/andresmarulandam)
 - [Brajan Pulgarin Olivero](https://github.com/BJPulgarin)
-- [Carlos Diaz](https://github.com/C4rlos9559)
+- [Carlos Diaz](https://github.com/carlos-ediaz)
 - [Daniel Arrubla Fúnez](https://github.com/darrubla)
 - [David Camilo Piedras Ruiz](https://github.com/Tapabocas)
 - [Diana Patricia Bedoya Ruiz](https://github.com/dianabedoya570)
