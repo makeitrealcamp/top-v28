@@ -1,0 +1,255 @@
+{
+  "paths": {
+    "/tweets": {
+      "get": {
+        "description": "Get all tweets",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "10"
+            },
+            "description": "UUID of the Tweet"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "0"
+            },
+            "description": "UUID of the Tweet"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create a tweet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TweetCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Tweet"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "$ref": "#/components/schemas/UnauthorizedError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tweets/{tweetId}": {
+      "get": {
+        "description": "Get a Tweet by UUID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tweetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "UUID of the Tweet"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Tweet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update a Tweet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tweetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "UUID of the Tweet"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TweetCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Tweet"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a Tweet",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tweetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "UUID of the Tweet"
+          }
+        ],
+        "responses": {
+          "204": {
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "07826e33-3537-48b0-94e5-ed2a1561a650"
+          },
+          "content": {
+            "type": "string",
+            "example": "Hello World"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-25T23:43:14.110Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-08-25T23:43:14.110Z"
+          }
+        }
+      },
+      "TweetCreate": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "example": "Hello World"
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "status": {
+            "type": "number",
+            "example": "401"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "apiKey",
+        "scheme": "bearer",
+        "in": "header",
+        "name": "Authorization",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

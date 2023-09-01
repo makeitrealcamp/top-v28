@@ -21,6 +21,7 @@
     "eslint": "^8.44.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-json": "^3.1.0",
     "prisma": "^5.0.0",
     "supertest": "^6.3.3",
     "vitest": "^0.34.2"
@@ -36,6 +37,7 @@
     "jsonwebtoken": "^9.0.1",
     "morgan": "^1.10.0",
     "rate-limiter-flexible": "^2.4.2",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "validator": "^13.11.0",
     "winston": "^3.10.0",

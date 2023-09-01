@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
+import swaggerUI from 'swagger-ui-express';
 
 import { router as api } from './api/v1/index.js';
+import { swaggerDefinition } from './api/v1/docs.js';
 import { logger, HTTPlogger } from './logger.js';
 
 export const app = express();
@@ -36,8 +38,12 @@ app.use(helmet());
 // Parse JSON body
 app.use(express.json());
 
+// Ednpoints
 app.use('/api', api);
 app.use('/api/v1', api);
+
+// Docs
+app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
 
 // No route found handler
 app.use((req, res, next) => {
@@ -57,6 +63,7 @@ app.use((err, req, res, next) => {
     error,
     traceId: req.id,
     body: req.body,
+    headers: req.headers,
   };
 
   if (status < 500) {
