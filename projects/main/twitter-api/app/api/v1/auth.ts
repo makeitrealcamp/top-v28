@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
-import { configuration } from '../../config.js';
+import { configuration } from '../../config.ts';
+import { NextFunction, Request } from 'express';
+import { RequestWithDecoded } from '../../types.ts';
 
 const { token, rateLimit } = configuration;
 const { secret, expires } = token;
@@ -12,13 +14,16 @@ const rateLimiter = new RateLimiterMemory({
   duration,
 });
 
-export const signToken = (payload, expiresIn = expires) => {
+export const signToken = (
+  payload: Record<string, string>,
+  expiresIn = expires,
+) => {
   return jwt.sign(payload, secret, {
     expiresIn,
   });
 };
 
-export const auth = (req, res, next) => {
+export const auth = (req: Request, res: Response, next: NextFunction) => {
   let token = req.headers.authorization || '';
   if (token.startsWith('Bearer')) {
     token = token.substring(7);
@@ -39,14 +44,14 @@ export const auth = (req, res, next) => {
       });
     }
 
-    req.decoded = decoded;
+    (req as RequestWithDecoded).decoded = decoded as Record<string, string>;
     next();
   });
 };
 
-export const me = (req, res, next) => {
-  const { decoded = {}, params = {} } = req;
-  const { username } = decoded;
+export const me = (req: Request, res: Response, next: NextFunction) => {
+  const { params = {} } = req;
+  const { username } = (req as RequestWithDecoded).decoded;
   const { username: usernameParam } = params;
 
   if (username !== usernameParam) {
@@ -59,9 +64,9 @@ export const me = (req, res, next) => {
   next();
 };
 
-export const owner = (req, res, next) => {
-  const { decoded = {}, data = {} } = req;
-  const { id: ownerId } = decoded;
+export const owner = (req: Request, res: Response, next: NextFunction) => {
+  const { data = {} } = req;
+  const { id: ownerId } = (req as RequestWithDecoded).decoded;
   const { userId } = data;
 
   if (ownerId !== userId) {
@@ -74,7 +79,11 @@ export const owner = (req, res, next) => {
   next();
 };
 
-export const limit = async (req, res, next) => {
+export const limit = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const ip = req.ip;
   try {
     await rateLimiter.consume(ip, 1);

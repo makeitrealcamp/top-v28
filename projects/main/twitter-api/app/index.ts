@@ -1,12 +1,13 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
 import swaggerUI from 'swagger-ui-express';
 
-import { router as api } from './api/v1/index.js';
-import { swaggerDefinition } from './api/v1/docs.js';
+import { router as api } from './api/v1/index.ts';
+import { swaggerDefinition } from './api/v1/docs.ts';
 import { logger, HTTPlogger } from './logger.js';
+import { APIError, RequestWithId } from './types.ts';
 
 export const app = express();
 
@@ -14,9 +15,9 @@ export const app = express();
 app.disable('x-powered-by');
 
 // Request ID
-app.use((req, res, next) => {
+app.use((req, res, next): void => {
   const id = uuidv4();
-  req.id = id;
+  (req as RequestWithId).id = id;
   res.setHeader('X-Request-Id', id);
 
   next();
@@ -54,30 +55,32 @@ app.use((req, res, next) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
-  const { message = '', status = 500, error } = err;
+app.use(
+  (err: APIError, req: Request, res: Response, next: NextFunction): void => {
+    const { message = '', status = 500, error } = err;
 
-  const data = {
-    message,
-    status,
-    error,
-    traceId: req.id,
-    body: req.body,
-    headers: req.headers,
-  };
-
-  if (status < 500) {
-    logger.warn(data);
-  } else {
-    logger.error(data);
-  }
-
-  res.status(status);
-  res.json({
-    error: {
+    const data = {
       message,
       status,
       error,
-    },
-  });
-});
+      traceId: (req as RequestWithId).id,
+      body: req.body,
+      headers: req.headers,
+    };
+
+    if (status < 500) {
+      logger.warn(data);
+    } else {
+      logger.error(data);
+    }
+
+    res.status(status);
+    res.json({
+      error: {
+        message,
+        status,
+        error,
+      },
+    });
+  },
+);

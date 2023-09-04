@@ -1,4 +1,5 @@
-import { configuration } from './config.js';
+import { configuration } from './config.ts';
+import { OrderOptions } from './types.ts';
 
 const { order, pagination } = configuration;
 
@@ -18,6 +19,10 @@ export const parseOrderParams = ({
   fields = [],
   orderBy = order.orderBy,
   direction = order.direction,
+}: {
+  fields: string[];
+  orderBy: string;
+  direction: OrderOptions.ASC | OrderOptions.DESC;
 }) => ({
   orderBy: fields.includes(orderBy) ? orderBy : order.orderBy,
   direction: order.options.includes(direction) ? direction : order.direction,

@@ -1,18 +1,19 @@
-import { prisma } from '../../../database.js';
+import { prisma } from '../../../database.ts';
 import {
   encryptPassword,
   verifyPassword,
   UserSchema,
   LoginSchema,
-} from './model.js';
+} from './model.ts';
 
-import { signToken } from '../auth.js';
+import { signToken } from '../auth.ts';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
     const { success, data, error } = await UserSchema.safeParseAsync(body);
+
     if (!success) {
       return next({
         message: 'Validator error',
@@ -181,7 +182,7 @@ export const update = async (req, res, next) => {
   }
 };
 
-export const remove = async (req, res) => {
+export const remove = async (req, res, next) => {
   const { params = {} } = req;
   const { username } = params;
 

@@ -1,6 +1,8 @@
 import winston from 'winston';
 import morgan from 'morgan';
 
+import { RequestWithId } from './types.ts';
+
 export const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp(),
@@ -15,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-morgan.token('id', (req) => req.id);
+morgan.token('id', (req: RequestWithId) => req.id);
 
 export const HTTPlogger = morgan(
   ':remote-addr - :remote-user [:date[iso]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" :id',

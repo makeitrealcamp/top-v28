@@ -1,4 +1,6 @@
-import { parsePaginationParams } from './utils';
+import { describe, test, expect } from 'vitest';
+
+import { parsePaginationParams } from './utils.ts';
 
 describe('Utils', () => {
   test('parsePaginationParams', () => {

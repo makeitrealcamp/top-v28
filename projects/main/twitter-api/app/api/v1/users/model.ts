@@ -29,6 +29,8 @@ export const PersonSchema = z
   })
   .strict();
 
+type PersonSchemaType = z.infer<typeof PersonSchema>;
+
 export const LoginSchema = z
   .object({
     email: z
@@ -46,7 +48,11 @@ export const LoginSchema = z
   })
   .strict();
 
+type LoginSchemaType = z.infer<typeof LoginSchema>;
+
 export const UserSchema = PersonSchema.merge(LoginSchema);
+
+export type User = z.infer<typeof UserSchema>;
 
 export const fields = [
   ...Object.keys(UserSchema.shape),
@@ -55,10 +61,10 @@ export const fields = [
   'updatedAt',
 ];
 
-export const encryptPassword = (password) => {
+export const encryptPassword = (password: string) => {
   return hash(password, 10);
 };
 
-export const verifyPassword = (password, encryptPassword) => {
+export const verifyPassword = (password: string, encryptPassword: string) => {
   return compare(password, encryptPassword);
 };
