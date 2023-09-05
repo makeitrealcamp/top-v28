@@ -13,6 +13,7 @@ export default function Tweet({
   name = '',
   photo = '',
   username = '',
+  tweetPhoto = '',
   statistics = {},
   onClick = () => undefined,
 }) {
@@ -39,6 +40,12 @@ export default function Tweet({
           </span>
         </header>
         <div>{content}</div>
+        {tweetPhoto && (
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${tweetPhoto}`}
+            width="100%"
+          />
+        )}
         <footer className="d-flex justify-content-between">
           <StatisticContainer>
             <i className="bi bi-chat"></i> {formatNumber(commentsCount)}

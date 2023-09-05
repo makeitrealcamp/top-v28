@@ -44,6 +44,7 @@ export default function Post() {
           username={data.user.username}
           photo={data.user.photo}
           content={data.content}
+          tweetPhoto={data.photo}
           createdAt={data.createdAt}
         />
       )}

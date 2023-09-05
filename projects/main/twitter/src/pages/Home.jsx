@@ -36,8 +36,17 @@ export default function Home() {
   }
 
   async function onCreate(payload) {
-    await createTweet(payload);
-    loadTweets();
+    setLoading(true);
+    setError('');
+
+    try {
+      await createTweet(payload);
+      loadTweets();
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -58,6 +67,7 @@ export default function Home() {
             username={item.user.username}
             photo={item.user.photo}
             content={item.content}
+            tweetPhoto={item.photo}
             createdAt={item.createdAt}
             onClick={() => displayTweet(item)}
           />

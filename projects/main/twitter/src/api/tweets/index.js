@@ -11,7 +11,7 @@ export async function getTweets() {
       data,
       meta: response.meta,
     };
-} catch (error) {
+  } catch (error) {
     return Promise.reject(error.message);
   }
 }
