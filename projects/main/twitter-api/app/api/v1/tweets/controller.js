@@ -7,7 +7,11 @@ export const create = async (req, res, next) => {
   const { id: userId } = decoded;
 
   try {
-    const { success, data, error } = await TweetSchema.safeParseAsync(body);
+    const { success, data, error } = await TweetSchema.safeParseAsync({
+      ...body,
+      photo: req.file?.path,
+    });
+
     if (!success) {
       return next({
         message: 'Validator error',
@@ -139,7 +143,10 @@ export const update = async (req, res, next) => {
 
   try {
     const { success, data, error } = await TweetSchema.partial().safeParseAsync(
-      body,
+      {
+        ...body,
+        photo: req.file?.path,
+      },
     );
     if (!success) {
       return next({
