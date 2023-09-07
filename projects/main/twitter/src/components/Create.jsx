@@ -11,7 +11,6 @@ export default function Create({ onCreate }) {
 
     formData.append('content', content.value);
     formData.append('photo', photo.files[0]);
-
     content.value = '';
     photo.value = '';
 

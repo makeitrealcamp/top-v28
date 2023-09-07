@@ -1,6 +1,6 @@
-import { prisma } from '../../../database.js';
-import { fields, TweetSchema } from './model.js';
-import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
+import { prisma } from "../../../database.js";
+import { fields, TweetSchema } from "./model.js";
+import { parseOrderParams, parsePaginationParams } from "../../../utils.js";
 
 export const create = async (req, res, next) => {
   const { body = {}, decoded = {} } = req;
@@ -14,7 +14,7 @@ export const create = async (req, res, next) => {
 
     if (!success) {
       return next({
-        message: 'Validator error',
+        message: "Validator error",
         status: 400,
         error,
       });
@@ -119,7 +119,7 @@ export const id = async (req, res, next) => {
 
     if (result === null) {
       next({
-        message: 'Tweet not found',
+        message: "Tweet not found",
         status: 404,
       });
     } else {
@@ -146,11 +146,11 @@ export const update = async (req, res, next) => {
       {
         ...body,
         photo: req.file?.path,
-      },
+      }
     );
     if (!success) {
       return next({
-        message: 'Validator error',
+        message: "Validator error",
         status: 400,
         error,
       });

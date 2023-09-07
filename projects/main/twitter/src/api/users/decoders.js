@@ -1,4 +1,4 @@
-import { UserOutput } from './types';
+import { UserOutput } from "./types";
 
 export async function decodeUserOutput(payload) {
   try {

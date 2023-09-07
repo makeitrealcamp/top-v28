@@ -5,6 +5,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
 import { signUp } from '../api/users';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -13,6 +14,7 @@ const signUpSchema = z.object({
   location: z.string(),
   email: z.string().email(),
   password: z.string().min(6).max(16),
+  photo: z.any(),
 });
 
 export default function SignUp() {
@@ -24,14 +26,23 @@ export default function SignUp() {
     location: '',
     email: '',
     password: '',
+    photo: '',
   };
+  const [pic, setPic] = useState();
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Sign Up</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const { data } = await signUp(values);
+          const payload = new FormData();
+          payload.append("name", values.name);
+          payload.append("username", values.username);
+          payload.append("email", values.email);
+          payload.append("password", values.password);
+          payload.append("photo", pic);
+
+          const { data } = await signUp(payload);
           setSubmitting(false);
           navigate('/signin');
         }}
@@ -48,7 +59,18 @@ export default function SignUp() {
         }) => (
           <Form onSubmit={handleSubmit}>
             <h2 className="fs-5 my-4">Personal information</h2>
-
+            <Form.Group>
+            <Form.Control type="file" 
+            onBlur={handleBlur}
+            name="photo" 
+            value={values.photo}
+            onChange={(event) => {
+              values.photo = event.currentTarget.files[0];
+              setPic(event.currentTarget.files[0]);
+              handleChange(event); // Para asegurarte de que Formik también maneje el cambio
+            }}
+            />
+          </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control

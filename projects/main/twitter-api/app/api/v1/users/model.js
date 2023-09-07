@@ -1,6 +1,6 @@
-import { hash, compare } from 'bcrypt';
-import { z } from 'zod';
-import escape from 'validator/lib/escape.js';
+import { hash, compare } from "bcrypt";
+import { z } from "zod";
+import escape from "validator/lib/escape.js";
 // import isAlphanumeric from 'validator/lib/isAlphanumeric.js';
 
 export const PersonSchema = z
@@ -26,7 +26,9 @@ export const PersonSchema = z
       .transform(function (value) {
         return escape(value);
       }),
+    photo: z.string().optional(),
   })
+
   .strict();
 
 export const LoginSchema = z
@@ -50,9 +52,9 @@ export const UserSchema = PersonSchema.merge(LoginSchema);
 
 export const fields = [
   ...Object.keys(UserSchema.shape),
-  'id',
-  'createdAt',
-  'updatedAt',
+  "id",
+  "createdAt",
+  "updatedAt",
 ];
 
 export const encryptPassword = (password) => {

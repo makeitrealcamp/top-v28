@@ -1,17 +1,18 @@
-import http from '../http';
-import { setSession } from '../session';
-import { decodeUserOutput } from './decoders';
+import http from "../http";
+import { setSession } from "../session";
+import { decodeUserOutput } from "./decoders";
 
 export async function signIn({ email, password }) {
+
   try {
-    const { data: response } = await http.post('/users/signin', {
+    const { data: response } = await http.post("/users/signin", {
       email,
       password,
     });
 
     const data = await decodeUserOutput(response.data);
 
-    const { token = '' } = response.meta;
+    const { token = "" } = response.meta;
 
     setSession(token);
 
@@ -23,14 +24,17 @@ export async function signIn({ email, password }) {
   }
 }
 
-export async function signUp({ name, username, email, password }) {
+export async function signUp(payload) {
   try {
-    const { data: response } = await http.post('/users/signup', {
+    const { data: response } = await http.post(`/users/signup`, payload);
+    /*
+    const { data: response } = await http.post("/users/signup", {
       name,
       username,
       email,
       password,
-    });
+      photo,
+    });*/
 
     const data = await decodeUserOutput(response.data);
 

@@ -1,21 +1,25 @@
-import { prisma } from '../../../database.js';
+import { prisma } from "../../../database.js";
 import {
   encryptPassword,
   verifyPassword,
   UserSchema,
   LoginSchema,
-} from './model.js';
+} from "./model.js";
 
-import { signToken } from '../auth.js';
+import { signToken } from "../auth.js";
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const { success, data, error } = await UserSchema.safeParseAsync(body);
+    const { success, data, error } = await UserSchema.safeParseAsync({
+      ...body,
+      photo: req.file?.path,
+    });
+
     if (!success) {
       return next({
-        message: 'Validator error',
+        message: "Validator error",
         status: 400,
         error,
       });
@@ -47,15 +51,17 @@ export const signin = async (req, res, next) => {
   const { body } = req;
 
   try {
-    const { success, data, error } = await LoginSchema.safeParseAsync(body);
+    const { success, data, error } = await LoginSchema.safeParseAsync({
+      ...body,
+      // photo: req.file?.path,
+    });
     if (!success) {
       return next({
-        message: 'Validator error',
+        message: "Validator error",
         status: 400,
         error,
       });
     }
-
     const { email, password } = data;
     const user = await prisma.user.findUnique({
       where: {
@@ -67,12 +73,13 @@ export const signin = async (req, res, next) => {
         email: true,
         username: true,
         password: true,
+        photo: true,
       },
     });
 
     if (user === null) {
       return next({
-        message: 'Invalid email or password',
+        message: "Invalid email or password",
         status: 401,
       });
     }
@@ -81,7 +88,7 @@ export const signin = async (req, res, next) => {
 
     if (!passwordMatch) {
       return next({
-        message: 'Invalid email or password',
+        message: "Invalid email or password",
         status: 401,
       });
     }
@@ -123,7 +130,7 @@ export const username = async (req, res, next) => {
 
     if (result === null) {
       next({
-        message: 'user not found',
+        message: "user not found",
         status: 404,
       });
     } else {
@@ -147,11 +154,11 @@ export const update = async (req, res, next) => {
 
   try {
     const { success, data, error } = await UserSchema.partial().safeParseAsync(
-      body,
+      body
     );
     if (!success) {
       return next({
-        message: 'Validator error',
+        message: "Validator error",
         status: 400,
         error,
       });

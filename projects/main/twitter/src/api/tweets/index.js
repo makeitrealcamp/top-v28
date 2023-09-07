@@ -1,10 +1,10 @@
-import http from '../http';
+import http from "../http";
 
-import { decodeTweetOutput } from './decoders';
+import { decodeTweetOutput } from "./decoders";
 
 export async function getTweets() {
   try {
-    const { data: response } = await http.get('/tweets/');
+    const { data: response } = await http.get("/tweets/");
     const data = await Promise.all(response.data.map(decodeTweetOutput));
 
     return {
@@ -32,6 +32,7 @@ export async function getTweet({ id }) {
 export async function createTweet(payload) {
   try {
     const { data: response } = await http.post(`/tweets/`, payload);
+
     const data = await decodeTweetOutput(response.data);
 
     return {
