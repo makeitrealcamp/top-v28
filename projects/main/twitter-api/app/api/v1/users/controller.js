@@ -11,8 +11,15 @@ import { signToken } from '../auth.js';
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
+  console.log({ body });
+  console.log(req.file);
+
   try {
-    const { success, data, error } = await UserSchema.safeParseAsync(body);
+    const { success, data, error } = await UserSchema.safeParseAsync({
+      ...body,
+      photo: req.file?.path,
+    });
+    console.log(req.file?.path);
     if (!success) {
       return next({
         message: 'Validator error',
@@ -67,6 +74,7 @@ export const signin = async (req, res, next) => {
         email: true,
         username: true,
         password: true,
+        photo: true,
       },
     });
 

@@ -1,18 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { createTweet } from '../api/tweets';
-import Create from '../components/Create';
+import { createTweet } from "../api/tweets";
+import Create from "../components/Create";
 
 export default function Compose() {
   const navigate = useNavigate();
 
   async function onCreate(payload) {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       await createTweet(payload);
-      navigate('/home');
+      navigate("/home");
     } catch (error) {
       setError(error);
     } finally {

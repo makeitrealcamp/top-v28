@@ -1,19 +1,19 @@
-import { formatRelative } from 'date-fns';
+import { formatRelative } from "date-fns";
 
-import { formatNumber } from '../utils';
-import styled from '@emotion/styled';
+import { formatNumber } from "../utils";
+import styled from "@emotion/styled";
 
-const StatisticContainer = styled('div')(({ theme }) => ({
+const StatisticContainer = styled("div")(({ theme }) => ({
   fontSize: theme.fonts[0],
 }));
 
 export default function Tweet({
-  content = '',
-  createdAt = '',
-  name = '',
-  photo = '',
-  username = '',
-  tweetPhoto = '',
+  content = "",
+  createdAt = "",
+  name = "",
+  photo = "",
+  username = "",
+  tweetPhoto = "",
   statistics = {},
   onClick = () => undefined,
 }) {
@@ -27,15 +27,19 @@ export default function Tweet({
     <div className="d-flex gap-2 border-bottom py-3" onClick={onClick}>
       <div className="d-flex">
         <div className="p-2">
-          <img src={photo} className="rounded-circle" width="50" />
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${photo}`}
+            className="rounded-circle"
+            width="50"
+          />
         </div>
       </div>
       <article className="d-flex flex-column gap-1">
         <header>
-          <strong>{name}</strong>{' '}
+          <strong>{name}</strong>{" "}
           <span className="text-secondary">@{username}</span>
           <span className="text-secondary">
-            {' '}
+            {" "}
             • {formatRelative(new Date(createdAt), new Date())}
           </span>
         </header>

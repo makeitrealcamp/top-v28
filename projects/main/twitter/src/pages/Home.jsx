@@ -1,24 +1,24 @@
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
-import Spinner from 'react-bootstrap/Spinner';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 
-import Create from '../components/Create';
-import Tweet from '../components/Tweet';
-import UserContext from '../containers/UserContext';
+import Create from "../components/Create";
+import Tweet from "../components/Tweet";
+import UserContext from "../containers/UserContext";
 
-import { createTweet, getTweets } from '../api/tweets';
+import { createTweet, getTweets } from "../api/tweets";
 
 export default function Home() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   async function loadTweets() {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await getTweets();
@@ -37,7 +37,7 @@ export default function Home() {
 
   async function onCreate(payload) {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       await createTweet(payload);
@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Home</h1>
-      {user && <Create onCreate={onCreate} />}
+      {user && <Create onCreate={onCreate} user={user} />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
       {data.map(function (item) {

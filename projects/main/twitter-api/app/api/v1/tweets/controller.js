@@ -67,6 +67,7 @@ export const all = async (req, res, next) => {
               name: true,
               username: true,
               email: true,
+              photo: true,
             },
           },
           _count: {

@@ -1,15 +1,16 @@
-import { Formik, ErrorMessage } from 'formik';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
-import { z } from 'zod';
-import { signUp } from '../api/users';
-import { useNavigate } from 'react-router-dom';
+import { Formik, ErrorMessage } from "formik";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { z } from "zod";
+import { signUp } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 const signUpSchema = z.object({
   name: z.string(),
   username: z.string(),
   biography: z.string(),
+  photo: z.any(),
   location: z.string(),
   email: z.string().email(),
   password: z.string().min(6).max(16),
@@ -18,12 +19,13 @@ const signUpSchema = z.object({
 export default function SignUp() {
   const navigate = useNavigate();
   const initialValues = {
-    name: '',
-    username: '',
-    biography: '',
-    location: '',
-    email: '',
-    password: '',
+    name: "",
+    username: "",
+    biography: "",
+    photo: "",
+    location: "",
+    email: "",
+    password: "",
   };
   return (
     <>
@@ -31,9 +33,19 @@ export default function SignUp() {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const { data } = await signUp(values);
+          const formData = new FormData();
+
+          formData.append("name", values.name);
+          formData.append("username", values.username);
+          formData.append("biography", values.biography);
+          formData.append("photo", values.photo);
+          formData.append("location", values.location);
+          formData.append("email", values.email);
+          formData.append("password", values.password);
+          const { data } = await signUp(formData);
+
           setSubmitting(false);
-          navigate('/signin');
+          navigate("/signin");
         }}
         validationSchema={toFormikValidationSchema(signUpSchema)}
       >
@@ -45,8 +57,9 @@ export default function SignUp() {
           handleBlur,
           handleSubmit,
           isSubmitting,
+          setFieldValue,
         }) => (
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} encType="multipart/form-data">
             <h2 className="fs-5 my-4">Personal information</h2>
 
             <Form.Group className="mb-3">
@@ -58,7 +71,7 @@ export default function SignUp() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.name}
-                className={touched.name && errors.name ? 'is-invalid' : ''}
+                className={touched.name && errors.name ? "is-invalid" : ""}
               />
               <ErrorMessage
                 name="name"
@@ -77,7 +90,7 @@ export default function SignUp() {
                 onBlur={handleBlur}
                 value={values.username}
                 className={
-                  touched.username && errors.username ? 'is-invalid' : ''
+                  touched.username && errors.username ? "is-invalid" : ""
                 }
               />
               <ErrorMessage
@@ -98,7 +111,7 @@ export default function SignUp() {
                 onBlur={handleBlur}
                 value={values.biography}
                 className={
-                  touched.biography && errors.biography ? 'is-invalid' : ''
+                  touched.biography && errors.biography ? "is-invalid" : ""
                 }
               />
               <ErrorMessage
@@ -117,7 +130,7 @@ export default function SignUp() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.location}
-                className={touched.location && errors.email ? 'is-invalid' : ''}
+                className={touched.location && errors.email ? "is-invalid" : ""}
               />
               <ErrorMessage
                 name="location"
@@ -125,6 +138,24 @@ export default function SignUp() {
                 className="invalid-feedback"
               />
             </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Imagen de Perfil</Form.Label>
+              <Form.Control
+                type="file"
+                name="photo"
+                onBlur={handleBlur}
+                onChange={(event) => {
+                  setFieldValue("photo", event.currentTarget.files[0]);
+                }}
+                className={touched.photo && errors.photo ? "is-invalid" : ""}
+              />
+            </Form.Group>
+            <ErrorMessage
+              name="photo"
+              component="div"
+              className="invalid-feedback"
+            />
 
             <h2 className="fs-5 my-4">Login information</h2>
 
@@ -137,7 +168,7 @@ export default function SignUp() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
-                className={touched.email && errors.email ? 'is-invalid' : ''}
+                className={touched.email && errors.email ? "is-invalid" : ""}
               />
               <ErrorMessage
                 name="email"
@@ -156,7 +187,7 @@ export default function SignUp() {
                 onBlur={handleBlur}
                 value={values.password}
                 className={
-                  touched.password && errors.password ? 'is-invalid' : ''
+                  touched.password && errors.password ? "is-invalid" : ""
                 }
               />
               <ErrorMessage
