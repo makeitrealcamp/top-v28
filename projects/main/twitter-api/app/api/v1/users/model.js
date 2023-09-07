@@ -26,6 +26,9 @@ export const PersonSchema = z
       .transform(function (value) {
         return escape(value);
       }),
+    biography: z.string().optional(),
+    location: z.string().optional(),
+    profilePhoto: z.string().optional(),
   })
   .strict();
 

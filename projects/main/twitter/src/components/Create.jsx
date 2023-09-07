@@ -2,7 +2,10 @@ import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function Create({ onCreate }) {
+export default function Create({
+  onCreate,
+  profilePhoto = 'https://placehold.co/48x48',
+}) {
   function onSubmit(event) {
     event.preventDefault();
 
@@ -22,7 +25,12 @@ export default function Create({ onCreate }) {
     <div className="d-flex border-bottom pb-2 mb-2">
       <div className="d-flex">
         <div className="p-2">
-          <img src="https://placehold.co/48x48" className="rounded-circle" />
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${profilePhoto}`}
+            className="rounded-circle object-fit-cover"
+            width={48}
+            height={48}
+          />
         </div>
       </div>
       <div className="flex-grow-1">

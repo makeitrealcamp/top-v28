@@ -11,7 +11,7 @@ export default function Tweet({
   content = '',
   createdAt = '',
   name = '',
-  photo = '',
+  profilePhoto = '',
   username = '',
   tweetPhoto = '',
   statistics = {},
@@ -27,7 +27,16 @@ export default function Tweet({
     <div className="d-flex gap-2 border-bottom py-3" onClick={onClick}>
       <div className="d-flex">
         <div className="p-2">
-          <img src={photo} className="rounded-circle" width="50" />
+          {profilePhoto ? (
+            <img
+              src={`${import.meta.env.VITE_API_URL}/${profilePhoto}`}
+              className="rounded-circle object-fit-cover"
+              width={48}
+              height={48}
+            />
+          ) : (
+            <img src="https://placehold.co/48x48" className="rounded-circle " />
+          )}
         </div>
       </div>
       <article className="d-flex flex-column gap-1">
