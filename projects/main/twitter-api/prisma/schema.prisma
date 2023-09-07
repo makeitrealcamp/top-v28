@@ -26,6 +26,7 @@ model User {
   username  String    @unique
   email     String    @unique
   password  String
+  active    Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   tweets    Tweet[]

@@ -28,16 +28,81 @@ export const signup = async (req, res, next) => {
         password,
       },
       select: {
-        name: true,
         email: true,
-        username: true,
       },
     });
 
-    res.status(201);
-    res.json({
-      data: user,
+    req.body.email = user.email;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const confirmation = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email } = body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+        // TODO: Filter by active
+      },
     });
+
+    if (user === null) {
+      next({
+        message: 'Confirmation failed',
+        status: 400,
+      });
+    } else {
+      const token = signToken({ email }, '2h');
+
+      // TODO: Send Email
+
+      res.status(201);
+      res.json({
+        data: {
+          email,
+        },
+        // FIXME: Remove once we send the email
+        meta: {
+          token,
+        },
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const activate = async (req, res, next) => {
+  const { decoded = {} } = req;
+  const { email } = decoded;
+
+  try {
+    const user = await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        active: true,
+      },
+    });
+
+    if (user === null) {
+      next({
+        message: 'Activation failed',
+        status: 400,
+      });
+    } else {
+      res.json({
+        data: {
+          email,
+        },
+      });
+    }
   } catch (error) {
     next(error);
   }

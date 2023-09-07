@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import * as controller from './controller.js';
-import { auth, me, limit } from '../auth.js';
+import { auth, me, limit, activate } from '../auth.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -14,8 +14,10 @@ export const router = Router();
  * /api/v1/users/:id DELETE  - DELETE
  */
 
-router.route('/signup').post(limit, controller.signup);
+router.route('/signup').post(limit, controller.signup, controller.confirmation);
 router.route('/signin').post(limit, controller.signin);
+router.route('/confirmation').post(controller.confirmation);
+router.route('/activate/:token').get(activate, controller.activate);
 
 router.param('username', controller.username);
 
