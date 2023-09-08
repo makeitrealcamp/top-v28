@@ -12,7 +12,11 @@ export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const { success, data, error } = await UserSchema.safeParseAsync(body);
+    const { success, data, error } = await UserSchema.safeParseAsync({
+      ...body,
+      profilePhoto: req.file?.path,
+    });
+
     if (!success) {
       return next({
         message: 'Validator error',
@@ -132,6 +136,7 @@ export const signin = async (req, res, next) => {
         email: true,
         username: true,
         password: true,
+        profilePhoto: true,
       },
     });
 
@@ -212,7 +217,7 @@ export const update = async (req, res, next) => {
 
   try {
     const { success, data, error } = await UserSchema.partial().safeParseAsync(
-      body,
+      body
     );
     if (!success) {
       return next({

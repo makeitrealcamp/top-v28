@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { v4 as uuidv4 } from 'uuid';
 import swaggerUI from 'swagger-ui-express';
+import multer from 'multer';
 
 import { router as api } from './api/v1/index.js';
 import { swaggerDefinition } from './api/v1/docs.js';
@@ -33,7 +34,7 @@ app.use(
 );
 
 // Use Helmet!
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
 // Parse JSON body
 app.use(express.json());
@@ -45,6 +46,9 @@ app.use('/api/v1', api);
 // Docs
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
 
+// Uploads
+app.use('/api/uploads', express.static('uploads'));
+
 // No route found handler
 app.use((req, res, next) => {
   next({
@@ -55,7 +59,8 @@ app.use((req, res, next) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-  const { message = '', status = 500, error } = err;
+  const { message = '', error } = err;
+  let { status = 500 } = err;
 
   const data = {
     message,
@@ -65,6 +70,11 @@ app.use((err, req, res, next) => {
     body: req.body,
     headers: req.headers,
   };
+
+  // Error Multer
+  if (err instanceof multer.MulterError) {
+    status = 400;
+  }
 
   if (status < 500) {
     logger.warn(data);

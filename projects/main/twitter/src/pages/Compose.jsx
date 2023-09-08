@@ -7,8 +7,17 @@ export default function Compose() {
   const navigate = useNavigate();
 
   async function onCreate(payload) {
-    await createTweet(payload);
-    navigate('/home');
+    setLoading(true);
+    setError('');
+
+    try {
+      await createTweet(payload);
+      navigate('/home');
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
