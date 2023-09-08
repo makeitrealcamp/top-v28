@@ -67,6 +67,7 @@ export const all = async (req, res, next) => {
               name: true,
               username: true,
               email: true,
+              profilePhoto: true,
             },
           },
           _count: {
@@ -107,6 +108,7 @@ export const id = async (req, res, next) => {
             name: true,
             username: true,
             email: true,
+            profilePhoto: true,
           },
         },
         _count: {
@@ -146,7 +148,7 @@ export const update = async (req, res, next) => {
       {
         ...body,
         photo: req.file?.path,
-      },
+      }
     );
     if (!success) {
       return next({

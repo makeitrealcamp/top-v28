@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Home</h1>
-      {user && <Create onCreate={onCreate} />}
+      {user && <Create onCreate={onCreate} profilePhoto={user.profilePhoto} />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
       {data.map(function (item) {
@@ -65,7 +65,7 @@ export default function Home() {
             key={item.id}
             name={item.user.name}
             username={item.user.username}
-            photo={item.user.photo}
+            profilePhoto={item.user.profilePhoto}
             content={item.content}
             tweetPhoto={item.photo}
             createdAt={item.createdAt}

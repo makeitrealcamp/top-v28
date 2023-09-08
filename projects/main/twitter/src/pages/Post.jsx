@@ -42,7 +42,7 @@ export default function Post() {
         <Tweet
           name={data.user.name}
           username={data.user.username}
-          photo={data.user.photo}
+          profilePhoto={data.user.profilePhoto}
           content={data.content}
           tweetPhoto={data.photo}
           createdAt={data.createdAt}
