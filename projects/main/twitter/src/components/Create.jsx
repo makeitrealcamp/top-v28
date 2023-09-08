@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import UserContext from '../containers/UserContext';
 
 export default function Create({ onCreate }) {
+  const { user } = useContext(UserContext);
   function onSubmit(event) {
     event.preventDefault();
 
@@ -22,7 +24,11 @@ export default function Create({ onCreate }) {
     <div className="d-flex border-bottom pb-2 mb-2">
       <div className="d-flex">
         <div className="p-2">
-          <img src="https://placehold.co/48x48" className="rounded-circle" />
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`}
+            className="rounded-circle"
+            width="80px"
+          />
         </div>
       </div>
       <div className="flex-grow-1">

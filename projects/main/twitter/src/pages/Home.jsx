@@ -65,7 +65,7 @@ export default function Home() {
             key={item.id}
             name={item.user.name}
             username={item.user.username}
-            photo={item.user.photo}
+            photo={item.user.profilePhoto}
             content={item.content}
             tweetPhoto={item.photo}
             createdAt={item.createdAt}

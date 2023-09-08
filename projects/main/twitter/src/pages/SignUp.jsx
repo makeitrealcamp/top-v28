@@ -13,6 +13,7 @@ const signUpSchema = z.object({
   location: z.string(),
   email: z.string().email(),
   password: z.string().min(6).max(16),
+  profilePhoto: z.string().nullable().optional(),
 });
 
 export default function SignUp() {
@@ -25,13 +26,27 @@ export default function SignUp() {
     email: '',
     password: '',
   };
+
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Sign Up</h1>
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const { data } = await signUp(values);
+          const formData = new FormData();
+
+          formData.append('name', values.name);
+          formData.append('username', values.username);
+          formData.append('email', values.email);
+          formData.append('password', values.password);
+          formData.append('biography', values.biography);
+          formData.append('location', values.location);
+          formData.append('profilePhoto', values.file);
+
+          // content.value = '';
+          // photo.value = '';
+
+          const { data } = await signUp(formData);
           setSubmitting(false);
           navigate('/signin');
         }}
@@ -45,6 +60,7 @@ export default function SignUp() {
           handleBlur,
           handleSubmit,
           isSubmitting,
+          setFieldValue,
         }) => (
           <Form onSubmit={handleSubmit}>
             <h2 className="fs-5 my-4">Personal information</h2>
@@ -84,6 +100,16 @@ export default function SignUp() {
                 name="username"
                 component="div"
                 className="invalid-feedback"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Profile Photo</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(event) => {
+                  setFieldValue('file', event.currentTarget.files[0]);
+                }}
               />
             </Form.Group>
 

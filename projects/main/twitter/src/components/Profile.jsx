@@ -25,7 +25,11 @@ export default function Profile() {
   return (
     user && (
       <ProfileContainer>
-        <User name={user.name} username={user.username} photo={user.photo}>
+        <User
+          name={user.name}
+          username={user.username}
+          photo={user.profilePhoto}
+        >
           <div className="d-flex align-items-center">
             <DropdownButton
               drop="up"

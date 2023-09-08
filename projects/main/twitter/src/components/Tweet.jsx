@@ -27,7 +27,11 @@ export default function Tweet({
     <div className="d-flex gap-2 border-bottom py-3" onClick={onClick}>
       <div className="d-flex">
         <div className="p-2">
-          <img src={photo} className="rounded-circle" width="50" />
+          <img
+            src={`${import.meta.env.VITE_API_URL}/${photo}`}
+            className="rounded-circle"
+            width="50"
+          />
         </div>
       </div>
       <article className="d-flex flex-column gap-1">
