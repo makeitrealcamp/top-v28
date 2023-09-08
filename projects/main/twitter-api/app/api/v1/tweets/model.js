@@ -12,6 +12,7 @@ export const TweetSchema = z
       .transform(function (value) {
         return escape(value);
       }),
+    photo: z.string().optional(),
   })
   .strict();
 

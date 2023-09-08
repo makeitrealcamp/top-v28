@@ -42,7 +42,11 @@ instance.interceptors.response.use(
     // Procesar los errores de todas las respuestas del backend
     // en un solo lugar
 
-    return Promise.reject(error.message);
+    if (error.response.data.error) {
+      return Promise.reject(error.response.data.error);
+    }
+
+    return Promise.reject(error);
   },
 );
 

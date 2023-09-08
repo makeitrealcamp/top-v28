@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import * as controller from './controller.js';
 import { auth, me, limit } from '../auth.js';
+import { upload } from '../upload.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -14,7 +15,9 @@ export const router = Router();
  * /api/v1/users/:id DELETE  - DELETE
  */
 
-router.route('/signup').post(limit, controller.signup);
+router
+  .route('/signup')
+  .post(limit, upload.single('profilePhoto'), controller.signup);
 router.route('/signin').post(limit, controller.signin);
 
 router.param('username', controller.username);

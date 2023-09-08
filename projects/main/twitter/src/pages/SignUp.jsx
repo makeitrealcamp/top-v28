@@ -31,7 +31,12 @@ export default function SignUp() {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          const { data } = await signUp(values);
+          const formData = new FormData();
+          for (const value in values) {
+            formData.append(value, values[value]);
+          }
+
+          const { data } = await signUp(formData);
           setSubmitting(false);
           navigate('/signin');
         }}
@@ -45,6 +50,7 @@ export default function SignUp() {
           handleBlur,
           handleSubmit,
           isSubmitting,
+          setFieldValue,
         }) => (
           <Form onSubmit={handleSubmit}>
             <h2 className="fs-5 my-4">Personal information</h2>
@@ -84,6 +90,18 @@ export default function SignUp() {
                 name="username"
                 component="div"
                 className="invalid-feedback"
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Profile Photo</Form.Label>
+              <Form.Control
+                type="file"
+                name="profilePhoto"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setFieldValue('profilePhoto', file);
+                }}
               />
             </Form.Group>
 
