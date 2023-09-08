@@ -22,15 +22,18 @@ model Tweet {
 }
 
 model User {
-  id        String    @id @default(uuid()) @db.Uuid
-  name      String
-  username  String    @unique
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  tweets    Tweet[]
-  comments  Comment[]
+  id                String    @id @default(uuid()) @db.Uuid
+  name              String
+  username          String    @unique
+  email             String    @unique
+  password          String
+  biography         String
+  location          String
+  profilePhoto      String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime?
+  tweets            Tweet[]
+  comments          Comment[]
 }
 
 model Comment {

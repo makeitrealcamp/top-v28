@@ -26,6 +26,28 @@ export const PersonSchema = z
       .transform(function (value) {
         return escape(value);
       }),
+    profilePhoto: z
+      // Validation
+      .string()
+      .optional(),
+    biography: z
+      // Validation
+      .string()
+      .trim()
+      .max(256)
+      // Sanitize
+      .transform(function (value) {
+        return escape(value);
+      }),
+    location: z
+      // Validation
+      .string()
+      .trim()
+      .max(256)
+      // Sanitize
+      .transform(function (value) {
+        return escape(value);
+      }),
   })
   .strict();
 
