@@ -51,7 +51,13 @@ export const confirmation = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: {
         email,
-        // TODO: Filter by active
+        active: false,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        profilePhoto: true,
       },
     });
 
@@ -67,9 +73,7 @@ export const confirmation = async (req, res, next) => {
 
       res.status(201);
       res.json({
-        data: {
-          email,
-        },
+        data: user,
         // FIXME: Remove once we send the email
         meta: {
           token,
@@ -90,6 +94,12 @@ export const activate = async (req, res, next) => {
       where: {
         email,
       },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        profilePhoto: true,
+      },
       data: {
         active: true,
       },
@@ -102,9 +112,7 @@ export const activate = async (req, res, next) => {
       });
     } else {
       res.json({
-        data: {
-          email,
-        },
+        data: user,
       });
     }
   } catch (error) {
@@ -129,6 +137,7 @@ export const signin = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: {
         email,
+        active: true,
       },
       select: {
         id: true,
@@ -187,7 +196,7 @@ export const username = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
+        profilePhoto: true,
       },
     });
 
@@ -217,7 +226,7 @@ export const update = async (req, res, next) => {
 
   try {
     const { success, data, error } = await UserSchema.partial().safeParseAsync(
-      body
+      body,
     );
     if (!success) {
       return next({
@@ -239,7 +248,7 @@ export const update = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
+        profilePhoto: true,
       },
     });
 
