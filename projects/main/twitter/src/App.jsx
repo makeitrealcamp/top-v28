@@ -14,6 +14,9 @@ const Home = lazy(() => import('./pages/Home.jsx'));
 const Compose = lazy(() => import('./pages/Compose.jsx'));
 const SignIn = lazy(() => import('./pages/SignIn.jsx'));
 const SignUp = lazy(() => import('./pages/SignUp.jsx'));
+const Signed = lazy(() => import('./pages/Signed.jsx'));
+const Activate = lazy(() => import('./pages/Activate.jsx'));
+const Confirmation = lazy(() => import('./pages/Confirmation.jsx'));
 const Post = lazy(() => import('./pages/Post.jsx'));
 
 function App() {
@@ -39,6 +42,9 @@ function App() {
                 />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/signed" element={<Signed />} />
+                <Route path="/activate/:token" element={<Activate />} />
+                <Route path="/confirmation" element={<Confirmation />} />
                 <Route path="/tweet/:id" element={<Post />} />
                 <Route path="*" element={<Home />} />
               </Routes>
