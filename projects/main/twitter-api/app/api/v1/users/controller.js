@@ -7,6 +7,7 @@ import {
 } from './model.js';
 
 import { signToken } from '../auth.js';
+import { sendMail } from '../../../mail.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
@@ -69,15 +70,29 @@ export const confirmation = async (req, res, next) => {
     } else {
       const token = signToken({ email }, '2h');
 
-      // TODO: Send Email
+      await sendMail({
+        to: email,
+        subject: 'Activate your account',
+        text: `
+          Visit the following link to activate your account:
+          ${process.env.WEB_URL}/activate/${token}
+        `,
+        html: `
+          <p>
+            Visit the following link to activate your account:
+            <a 
+              href="${process.env.WEB_URL}/activate/${token}"
+              target="_blank"
+            >
+              Activate
+            </a>
+          </p>
+        `,
+      });
 
       res.status(201);
       res.json({
         data: user,
-        // FIXME: Remove once we send the email
-        meta: {
-          token,
-        },
       });
     }
   } catch (error) {
