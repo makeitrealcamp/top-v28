@@ -36,3 +36,33 @@ export async function signUp(payload) {
     return Promise.reject(error);
   }
 }
+
+export async function activateUser(token) {
+  try {
+    const { data: response } = await http.get(`/users/activate/${token}`);
+
+    const data = await decodeUserOutput(response.data);
+
+    return {
+      data,
+    };
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+export async function confirmUser(email) {
+  try {
+    const { data: response } = await http.post(`/users/confirmation`, {
+      email,
+    });
+
+    const data = await decodeUserOutput(response.data);
+
+    return {
+      data,
+    };
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}

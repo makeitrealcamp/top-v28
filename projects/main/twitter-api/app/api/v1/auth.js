@@ -44,6 +44,29 @@ export const auth = (req, res, next) => {
   });
 };
 
+export const activate = (req, res, next) => {
+  let token = req.params.token || '';
+
+  if (!token) {
+    return next({
+      message: 'No correct link for activation has been provided',
+      status: 400,
+    });
+  }
+
+  jwt.verify(token, secret, function (err, decoded) {
+    if (err) {
+      return next({
+        message: 'No valid',
+        status: 400,
+      });
+    }
+
+    req.decoded = decoded;
+    next();
+  });
+};
+
 export const me = (req, res, next) => {
   const { decoded = {}, params = {} } = req;
   const { username } = decoded;

@@ -7,6 +7,7 @@ import {
 } from './model.js';
 
 import { signToken } from '../auth.js';
+import { sendMail } from '../../../mail.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
@@ -32,16 +33,103 @@ export const signup = async (req, res, next) => {
         password,
       },
       select: {
-        name: true,
         email: true,
-        username: true,
       },
     });
 
-    res.status(201);
-    res.json({
-      data: user,
+    req.body.email = user.email;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const confirmation = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email } = body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+        active: false,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        profilePhoto: true,
+      },
     });
+
+    if (user === null) {
+      next({
+        message: 'Confirmation failed',
+        status: 400,
+      });
+    } else {
+      const token = signToken({ email }, '2h');
+
+      await sendMail({
+        to: email,
+        subject: 'Activate your account',
+        text: `
+          Visit the following link to activate your account:
+          ${process.env.WEB_URL}/activate/${token}
+        `,
+        html: `
+          <p>
+            Visit the following link to activate your account:
+            <a 
+              href="${process.env.WEB_URL}/activate/${token}"
+              target="_blank"
+            >
+              Activate
+            </a>
+          </p>
+        `,
+      });
+
+      res.status(201);
+      res.json({
+        data: user,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const activate = async (req, res, next) => {
+  const { decoded = {} } = req;
+  const { email } = decoded;
+
+  try {
+    const user = await prisma.user.update({
+      where: {
+        email,
+      },
+      select: {
+        name: true,
+        email: true,
+        username: true,
+        profilePhoto: true,
+      },
+      data: {
+        active: true,
+      },
+    });
+
+    if (user === null) {
+      next({
+        message: 'Activation failed',
+        status: 400,
+      });
+    } else {
+      res.json({
+        data: user,
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -64,6 +152,7 @@ export const signin = async (req, res, next) => {
     const user = await prisma.user.findUnique({
       where: {
         email,
+        active: true,
       },
       select: {
         id: true,
@@ -122,7 +211,7 @@ export const username = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
+        profilePhoto: true,
       },
     });
 
@@ -152,7 +241,7 @@ export const update = async (req, res, next) => {
 
   try {
     const { success, data, error } = await UserSchema.partial().safeParseAsync(
-      body
+      body,
     );
     if (!success) {
       return next({
@@ -174,7 +263,7 @@ export const update = async (req, res, next) => {
         name: true,
         email: true,
         username: true,
-        createdAt: true,
+        profilePhoto: true,
       },
     });
 
