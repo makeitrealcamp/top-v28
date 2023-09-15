@@ -167,7 +167,7 @@ export const signin = async (req, res, next) => {
     if (user === null) {
       return next({
         message: 'Invalid email or password',
-        status: 401,
+        status: 400,
       });
     }
 
@@ -176,7 +176,7 @@ export const signin = async (req, res, next) => {
     if (!passwordMatch) {
       return next({
         message: 'Invalid email or password',
-        status: 401,
+        status: 400,
       });
     }
 
