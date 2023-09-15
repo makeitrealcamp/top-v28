@@ -24,7 +24,10 @@ export default function Tweet({
     viewsCount = 0,
   } = statistics;
   return (
-    <div className="d-flex gap-2 border-bottom py-3" onClick={onClick}>
+    <section
+      className="tweet d-flex gap-2 border-bottom py-3"
+      onClick={onClick}
+    >
       <div className="d-flex">
         <div className="p-2">
           {profilePhoto ? (
@@ -48,7 +51,7 @@ export default function Tweet({
             • {formatRelative(new Date(createdAt), new Date())}
           </span>
         </header>
-        <div>{content}</div>
+        <section>{content}</section>
         {tweetPhoto && (
           <img
             src={`${import.meta.env.VITE_API_URL}/${tweetPhoto}`}
@@ -56,13 +59,13 @@ export default function Tweet({
           />
         )}
         <footer className="d-flex justify-content-between">
-          <StatisticContainer>
+          <StatisticContainer data-cy="comment">
             <i className="bi bi-chat"></i> {formatNumber(commentsCount)}
           </StatisticContainer>
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer>
+          <StatisticContainer data-cy="likes">
             <i className="bi bi-heart"></i> {formatNumber(likesCount)}
           </StatisticContainer>
           <StatisticContainer>
@@ -73,6 +76,6 @@ export default function Tweet({
           </StatisticContainer>
         </footer>
       </article>
-    </div>
+    </section>
   );
 }
