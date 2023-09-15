@@ -1,0 +1,62 @@
+{
+  "data": [
+    {
+      "id": "4e57a298-9764-404d-bb6c-4096370c964c",
+      "content": "Hello from Cypress",
+      "photo": null,
+      "createdAt": "2023-09-13T00:20:03.999Z",
+      "updatedAt": null,
+      "userId": "4a08dfe8-1d02-401a-8a0a-9f25e7556dcf",
+      "user": {
+        "name": "Gustavo Morales",
+        "username": "gmoralesc",
+        "email": "gustavo.morales@gmail.com",
+        "profilePhoto": "uploads/7e0595df-6820-40d0-9057-a60c0cdf43f3_me.jpg"
+      },
+      "_count": {
+        "comments": 0
+      }
+    },
+    {
+      "id": "4e57a298-9764-404d-bb6c-4096370c964c",
+      "content": "Working to Cypress",
+      "photo": null,
+      "createdAt": "2023-09-13T00:20:03.999Z",
+      "updatedAt": null,
+      "userId": "4a08dfe8-1d02-401a-8a0a-9f25e7556dcf",
+      "user": {
+        "name": "Gustavo Morales",
+        "username": "gmoralesc",
+        "email": "gustavo.morales@gmail.com",
+        "profilePhoto": "uploads/7e0595df-6820-40d0-9057-a60c0cdf43f3_me.jpg"
+      },
+      "_count": {
+        "comments": 0
+      }
+    },
+    {
+      "id": "4e57a298-9764-404d-bb6c-4096370c964c",
+      "content": "Welcome to Cypress",
+      "photo": null,
+      "createdAt": "2023-09-13T00:20:03.999Z",
+      "updatedAt": null,
+      "userId": "4a08dfe8-1d02-401a-8a0a-9f25e7556dcf",
+      "user": {
+        "name": "Gustavo Morales",
+        "username": "gmoralesc",
+        "email": "gustavo.morales@gmail.com",
+        "profilePhoto": "uploads/7e0595df-6820-40d0-9057-a60c0cdf43f3_me.jpg"
+      },
+      "_count": {
+        "comments": 0
+      }
+    }
+  ],
+  "meta": {
+    "limit": 10,
+    "offset": 0,
+    "total": 3,
+    "orderBy": "createdAt",
+    "direction": "desc"
+  }
+}
