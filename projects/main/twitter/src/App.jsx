@@ -17,6 +17,8 @@ const SignUp = lazy(() => import('./pages/SignUp.jsx'));
 const Signed = lazy(() => import('./pages/Signed.jsx'));
 const Activate = lazy(() => import('./pages/Activate.jsx'));
 const Confirmation = lazy(() => import('./pages/Confirmation.jsx'));
+const Blue = lazy(() => import('./pages/Blue.jsx'));
+const BlueSuccess = lazy(() => import('./pages/BlueSuccess.jsx'));
 const Post = lazy(() => import('./pages/Post.jsx'));
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
                 <Route path="/signed" element={<Signed />} />
                 <Route path="/activate/:token" element={<Activate />} />
                 <Route path="/confirmation" element={<Confirmation />} />
+                <Route path="/blue/success" element={<BlueSuccess />} />
+                <Route path="/blue" element={<Blue />} />
                 <Route path="/tweet/:id" element={<Post />} />
                 <Route path="*" element={<Home />} />
               </Routes>
