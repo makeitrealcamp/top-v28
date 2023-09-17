@@ -3,6 +3,7 @@ import { Router } from 'express';
 import * as controller from './controller.js';
 import { auth, me, limit, activate } from '../auth.js';
 import { upload } from '../upload.js';
+import { checkoutSession, validateCheckoutSession } from '../stripe.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -26,6 +27,8 @@ router
 router.route('/signin').post(limit, controller.signin);
 router.route('/confirmation').post(controller.confirmation);
 router.route('/activate/:token').get(activate, controller.activate);
+router.route('/blue').post(auth, checkoutSession);
+router.route('/blue/validate/:session_id').get(auth, validateCheckoutSession);
 
 router.param('username', controller.username);
 
