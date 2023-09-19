@@ -8,6 +8,7 @@ import multer from 'multer';
 import { router as api } from './api/v1/index.js';
 import { swaggerDefinition } from './api/v1/docs.js';
 import { logger, HTTPlogger } from './logger.js';
+import { payments } from './api/v1/stripe.js';
 
 export const app = express();
 
@@ -42,6 +43,9 @@ app.use(express.json());
 // Ednpoints
 app.use('/api', api);
 app.use('/api/v1', api);
+
+// Payments
+app.use('/api/v1/payments', payments);
 
 // Docs
 app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
