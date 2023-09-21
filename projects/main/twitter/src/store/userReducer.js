@@ -1,5 +1,15 @@
+const rawState = localStorage.getItem('state');
+let user;
+
+if (rawState) {
+  const state = JSON.parse(rawState);
+  user = state.user;
+} else {
+  user = null;
+}
+
 const initialValues = {
-  user: null,
+  user,
 };
 
 export default function userReducer(state = initialValues, action) {
