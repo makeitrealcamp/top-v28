@@ -7,10 +7,11 @@ import { createTweet, getTweets } from '../api/tweets';
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
 import { useSelector } from 'react-redux';
+import { getUser } from '../store/userReducer';
 
 export default function Home() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector(getUser);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { getUser } from '../store/userReducer';
 
 const NavLinkStyled = styled(NavLink)(({ theme }) => {
   const color = theme.colors['gray-900'];
@@ -45,7 +46,7 @@ const IconStyled = styled('i')(({ theme }) => ({
 
 export default function Navigation() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const user = useSelector(getUser);
 
   return (
     <nav className="mb-4">

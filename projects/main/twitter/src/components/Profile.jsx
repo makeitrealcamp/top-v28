@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { clearSession } from '../api/session';
 import User from './User';
+import { getUser, setUser } from '../store/userReducer';
 
 const ProfileContainer = styled('div')(({ theme }) => ({
   borderRadius: theme.border.radius.pill,
@@ -16,15 +17,10 @@ const ProfileContainer = styled('div')(({ theme }) => ({
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const setUser = (payload) =>
-    dispatch({
-      type: 'SET_USER',
-      payload,
-    });
+  const user = useSelector(getUser);
 
   function SignOut() {
-    setUser(null);
+    dispatch(setUser(null));
     clearSession();
   }
 

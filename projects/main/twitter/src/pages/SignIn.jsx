@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 
 import { signIn } from '../api/users';
 import { formatError } from '../utils';
+import { setUser } from '../store/userReducer';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -20,13 +21,6 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState('');
-
-  function setUser(payload) {
-    dispatch({
-      type: 'SET_USER',
-      payload,
-    });
-  }
 
   const initialValues = {
     email: '',
@@ -43,7 +37,7 @@ export default function SignIn() {
           try {
             const { data } = await signIn(values);
 
-            setUser(data);
+            dispatch(setUser(data));
             setSubmitting(false);
             navigate('/home');
           } catch (e) {

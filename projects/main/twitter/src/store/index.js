@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer, { initialValues as userInitialState } from './userReducer';
+import userReducer, { initialState as userInitialState } from './userReducer';
 
 const reducer = {
   user: userReducer,
