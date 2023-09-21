@@ -6,10 +6,11 @@ import Spinner from 'react-bootstrap/Spinner';
 import { createTweet, getTweets } from '../api/tweets';
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
+import { useSelector } from 'react-redux';
 
 export default function Home() {
-  const user = null;
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

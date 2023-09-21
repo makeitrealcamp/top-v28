@@ -1,9 +1,11 @@
 import Form from 'react-bootstrap/Form';
 
 import Account from './Account';
+import { useSelector } from 'react-redux';
 
 export default function Aside() {
-  const user = null;
+  const user = useSelector((state) => state.user);
+
   return (
     <aside>
       {user ? (

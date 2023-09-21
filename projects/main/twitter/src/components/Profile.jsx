@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { clearSession } from '../api/session';
 import User from './User';
@@ -14,8 +14,14 @@ const ProfileContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-function Profile({ user }) {
-  const setUser = () => {};
+export default function Profile() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const setUser = (payload) =>
+    dispatch({
+      type: 'SET_USER',
+      payload,
+    });
 
   function SignOut() {
     setUser(null);
@@ -49,11 +55,3 @@ function Profile({ user }) {
     )
   );
 }
-
-function mapStateToProps(state) {
-  return {
-    user: state.user,
-  };
-}
-
-export default connect(mapStateToProps)(Profile);

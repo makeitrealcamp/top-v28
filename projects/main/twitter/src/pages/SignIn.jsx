@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { signIn } from '../api/users';
 import { formatError } from '../utils';
@@ -16,9 +16,17 @@ const signInSchema = z.object({
   password: z.string().min(6).max(16),
 });
 
-function SignIn({ setUser }) {
+export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState('');
+
+  function setUser(payload) {
+    dispatch({
+      type: 'SET_USER',
+      payload,
+    });
+  }
 
   const initialValues = {
     email: '',
@@ -107,15 +115,3 @@ function SignIn({ setUser }) {
     </>
   );
 }
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setUser: (user) =>
-      dispatch({
-        type: 'SET_USER',
-        payload: user,
-      }),
-  };
-}
-
-export default connect(null, mapDispatchToProps)(SignIn);
