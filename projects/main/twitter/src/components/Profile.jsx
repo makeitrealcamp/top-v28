@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import User from './User';
+import styled from '@emotion/styled';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import styled from '@emotion/styled';
-import UserContext from '../containers/UserContext';
+import { connect } from 'react-redux';
+
 import { clearSession } from '../api/session';
+import User from './User';
 
 const ProfileContainer = styled('div')(({ theme }) => ({
   borderRadius: theme.border.radius.pill,
@@ -14,8 +14,8 @@ const ProfileContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-export default function Profile() {
-  const { setUser, user } = useContext(UserContext);
+function Profile({ user }) {
+  const setUser = () => {};
 
   function SignOut() {
     setUser(null);
@@ -49,3 +49,11 @@ export default function Profile() {
     )
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+
+export default connect(mapStateToProps)(Profile);

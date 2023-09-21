@@ -1,13 +1,13 @@
 import { Formik, ErrorMessage } from 'formik';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { connect } from 'react-redux';
 
-import UserContext from '../containers/UserContext';
 import { signIn } from '../api/users';
 import { formatError } from '../utils';
 
@@ -16,9 +16,8 @@ const signInSchema = z.object({
   password: z.string().min(6).max(16),
 });
 
-export default function SignIn() {
+function SignIn({ setUser }) {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
   const [error, setError] = useState('');
 
   const initialValues = {
@@ -108,3 +107,15 @@ export default function SignIn() {
     </>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUser: (user) =>
+      dispatch({
+        type: 'SET_USER',
+        payload: user,
+      }),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SignIn);

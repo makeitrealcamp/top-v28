@@ -7,7 +7,6 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Profile from './components/Profile';
 import Aside from './components/Aside';
-import { UserProvider } from './containers/UserContext';
 import ProtectedRoute from './containers/ProtectedRoute';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
@@ -23,43 +22,41 @@ const Post = lazy(() => import('./pages/Post.jsx'));
 
 function App() {
   return (
-    <UserProvider>
-      <Container fluid>
-        <Row>
-          <Col>
-            <Navigation />
-            <Profile />
-          </Col>
-          <Col md={6} className="border-start border-end">
-            <Suspense fallback={null}>
-              <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route
-                  path="/compose"
-                  element={
-                    <ProtectedRoute>
-                      <Compose />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/signed" element={<Signed />} />
-                <Route path="/activate/:token" element={<Activate />} />
-                <Route path="/confirmation" element={<Confirmation />} />
-                <Route path="/blue/success" element={<BlueSuccess />} />
-                <Route path="/blue" element={<Blue />} />
-                <Route path="/tweet/:id" element={<Post />} />
-                <Route path="*" element={<Home />} />
-              </Routes>
-            </Suspense>
-          </Col>
-          <Col>
-            <Aside />
-          </Col>
-        </Row>
-      </Container>
-    </UserProvider>
+    <Container fluid>
+      <Row>
+        <Col>
+          <Navigation />
+          <Profile />
+        </Col>
+        <Col md={6} className="border-start border-end">
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route
+                path="/compose"
+                element={
+                  <ProtectedRoute>
+                    <Compose />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signed" element={<Signed />} />
+              <Route path="/activate/:token" element={<Activate />} />
+              <Route path="/confirmation" element={<Confirmation />} />
+              <Route path="/blue/success" element={<BlueSuccess />} />
+              <Route path="/blue" element={<Blue />} />
+              <Route path="/tweet/:id" element={<Post />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </Suspense>
+        </Col>
+        <Col>
+          <Aside />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

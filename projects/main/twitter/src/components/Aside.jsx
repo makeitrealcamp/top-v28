@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import Form from 'react-bootstrap/Form';
+
 import Account from './Account';
-import UserContext from '../containers/UserContext';
 
 export default function Aside() {
-  const { user } = useContext(UserContext);
+  const user = null;
   return (
     <aside>
       {user ? (

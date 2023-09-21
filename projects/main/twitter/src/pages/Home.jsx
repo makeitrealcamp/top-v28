@@ -1,16 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
+import { createTweet, getTweets } from '../api/tweets';
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
-import UserContext from '../containers/UserContext';
-
-import { createTweet, getTweets } from '../api/tweets';
 
 export default function Home() {
-  const { user } = useContext(UserContext);
+  const user = null;
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
