@@ -31,6 +31,7 @@ export const create = async (req, res, next) => {
             name: true,
             username: true,
             email: true,
+            profilePhoto: true,
           },
         },
       },
@@ -148,7 +149,7 @@ export const update = async (req, res, next) => {
       {
         ...body,
         photo: req.file?.path,
-      }
+      },
     );
     if (!success) {
       return next({
@@ -172,6 +173,7 @@ export const update = async (req, res, next) => {
             name: true,
             username: true,
             email: true,
+            profilePhoto: true,
           },
         },
         _count: {
