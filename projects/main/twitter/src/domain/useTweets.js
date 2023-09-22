@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { getTweets } from '../api/tweets';
+import { createTweet, getTweets } from '../api/tweets';
 
-export default function useTweets({ refresh }) {
+export default function useTweets() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -22,13 +22,30 @@ export default function useTweets({ refresh }) {
     }
   }
 
+  async function create(payload) {
+    setLoading(true);
+    setError('');
+
+    try {
+      await createTweet(payload);
+      loadTweets();
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     loadTweets();
-  }, [refresh]);
+  }, []);
 
   return {
     data,
     loading,
     error,
+    actions: {
+      create,
+    },
   };
 }
