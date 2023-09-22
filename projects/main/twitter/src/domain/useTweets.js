@@ -1,48 +1,33 @@
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 import { createTweet, getTweets } from '../api/tweets';
 
 export default function useTweets() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  async function loadTweets() {
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await getTweets();
-
-      setData(response.data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const {
+    data: response,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR('tweets', getTweets);
 
   async function create(payload) {
-    setLoading(true);
-    setError('');
+    // Update remotely
+    await createTweet(payload);
+    mutate(true);
 
-    try {
-      await createTweet(payload);
-      loadTweets();
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
+    // Update locally
+    // const item = await createTweet(payload);
+    // mutate(
+    //   {
+    //     data: [item.data, ...response?.data],
+    //   },
+    //   false,
+    // );
   }
 
-  useEffect(() => {
-    loadTweets();
-  }, []);
-
   return {
-    data,
-    loading,
+    data: response?.data,
+    loading: isLoading,
     error,
     actions: {
       create,
