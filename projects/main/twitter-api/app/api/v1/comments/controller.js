@@ -20,6 +20,16 @@ export const create = async (req, res, next) => {
         ...data,
         userId,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+            profilePhoto: true,
+          },
+        },
+      },
     });
 
     res.status(201);
@@ -53,11 +63,8 @@ export const all = async (req, res, next) => {
             select: {
               name: true,
               username: true,
-            },
-          },
-          tweet: {
-            select: {
-              id: true,
+              email: true,
+              profilePhoto: true,
             },
           },
         },
@@ -89,6 +96,16 @@ export const id = async (req, res, next) => {
     const result = await prisma.comment.findUnique({
       where: {
         id: params.id,
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+            profilePhoto: true,
+          },
+        },
       },
     });
 
@@ -134,6 +151,16 @@ export const update = async (req, res, next) => {
       data: {
         ...data,
         updatedAt: new Date().toISOString(),
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+            profilePhoto: true,
+          },
+        },
       },
     });
 
