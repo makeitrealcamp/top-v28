@@ -7,7 +7,7 @@ import {
 } from './model.js';
 
 import { signToken } from '../auth.js';
-import { sendMail } from '../../../mail.js';
+import { transporter } from '../../../mail.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
@@ -70,7 +70,8 @@ export const confirmation = async (req, res, next) => {
     } else {
       const token = signToken({ email }, '2h');
 
-      await sendMail({
+      await transporter.sendMail({
+        from: `Twitter ${process.env.EMAIL_SENDER}`,
         to: email,
         subject: 'Activate your account',
         text: `
