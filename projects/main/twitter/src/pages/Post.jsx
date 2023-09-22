@@ -1,37 +1,13 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 import Tweet from '../components/Tweet';
-import { getTweet } from '../api/tweets';
+import useTweet from '../domain/useTweet';
 
 export default function Post() {
   const { id } = useParams();
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  async function loadTweet({ id }) {
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await getTweet({ id });
-
-      setData(response.data);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    if (id) {
-      loadTweet({ id });
-    }
-  }, [id]);
+  const { data, loading, error } = useTweet({ id });
 
   return (
     <>
