@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { createTweet } from '../api/tweets';
 
-import { getTweets } from '../api/tweets';
-
-export default function useTweets({ refresh }) {
+export default function useCreateTweet() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  async function loadTweets() {
+  async function create(payload) {
     setLoading(true);
     setError('');
 
     try {
-      const response = await getTweets();
-
+      const response = await createTweet(payload);
       setData(response.data);
     } catch (error) {
       setError(error);
@@ -22,13 +20,12 @@ export default function useTweets({ refresh }) {
     }
   }
 
-  useEffect(() => {
-    loadTweets();
-  }, [refresh]);
-
   return {
     data,
     loading,
     error,
+    actions: {
+      create,
+    },
   };
 }
