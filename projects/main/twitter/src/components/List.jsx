@@ -11,6 +11,7 @@ export default function List({ list = [], displayTweet }) {
         content={item.content}
         tweetPhoto={item.photo}
         createdAt={item.createdAt}
+        commentsCount={item._count.comments}
         onClick={() => displayTweet(item)}
       />
     );

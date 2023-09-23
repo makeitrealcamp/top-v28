@@ -14,15 +14,12 @@ export default function Tweet({
   profilePhoto = '',
   username = '',
   tweetPhoto = '',
-  statistics = {},
+  commentsCount = 0,
+  retweetsCount = 0,
+  likesCount = 0,
+  viewsCount = 0,
   onClick = () => undefined,
 }) {
-  const {
-    commentsCount = 0,
-    retweetsCount = 0,
-    likesCount = 0,
-    viewsCount = 0,
-  } = statistics;
   return (
     <section
       className="tweet d-flex gap-2 border-bottom py-3"
@@ -42,7 +39,7 @@ export default function Tweet({
           )}
         </div>
       </div>
-      <article className="d-flex flex-column gap-1">
+      <article className="d-flex flex-column gap-1 flex-grow-1">
         <header>
           <strong>{name}</strong>{' '}
           <span className="text-secondary">@{username}</span>
@@ -58,7 +55,7 @@ export default function Tweet({
             width="100%"
           />
         )}
-        <footer className="d-flex justify-content-between">
+        <footer className="d-flex justify-content-between mt-3 border-top pt-3">
           <StatisticContainer data-cy="comment">
             <i className="bi bi-chat"></i> {formatNumber(commentsCount)}
           </StatisticContainer>

@@ -1,13 +1,37 @@
+import styled from '@emotion/styled';
+import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
-import Tweet from '../components/Tweet';
+import useComments from '../domain/useComments';
 import useTweet from '../domain/useTweet';
+import Comment from '../components/Comment';
+import Create from '../components/Create';
+import Tweet from '../components/Tweet';
+import UserContext from '../containers/UserContext';
+
+const CommentsContainer = styled('div')(({ theme }) => {
+  return {
+    paddingLeft: theme.space[5],
+    paddingTop: theme.space[3],
+  };
+});
 
 export default function Post() {
   const { id } = useParams();
+  const { user } = useContext(UserContext);
   const { data, loading, error } = useTweet({ id });
+  const {
+    data: comments,
+    actions: { create },
+  } = useComments({ tweetId: id });
+
+  async function onCreate(payload) {
+    const formData = payload;
+    formData.append('tweetId', id);
+    await create(formData);
+  }
 
   return (
     <>
@@ -22,8 +46,28 @@ export default function Post() {
           content={data.content}
           tweetPhoto={data.photo}
           createdAt={data.createdAt}
+          commentsCount={data._count.comments}
         />
       )}
+      <CommentsContainer>
+        <Create
+          onCreate={onCreate}
+          profilePhoto={user.profilePhoto}
+          createLabel="Comment"
+        />
+        {comments &&
+          comments.map((item) => (
+            <Comment
+              key={item.id}
+              name={item.user.name}
+              username={item.user.username}
+              profilePhoto={item.user.profilePhoto}
+              content={item.content}
+              photo={item.photo}
+              createdAt={item.createdAt}
+            />
+          ))}
+      </CommentsContainer>
     </>
   );
 }

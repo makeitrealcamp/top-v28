@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 export default function Create({
   onCreate,
   profilePhoto = 'https://placehold.co/48x48',
+  placeholder = 'What is happening?!',
+  createLabel = 'Tweet',
 }) {
   function onSubmit(event) {
     event.preventDefault();
@@ -40,7 +42,7 @@ export default function Create({
               as="textarea"
               rows={2}
               className="border border-0"
-              placeholder="What is happening?!"
+              placeholder={placeholder}
               name="content"
             />
           </Form.Group>
@@ -49,10 +51,10 @@ export default function Create({
           </Form.Group>
           <Button
             variant="primary"
-            className="rounded-pill align-self-end text-white"
+            className="rounded-pill align-self-end text-white mt-2"
             type="submit"
           >
-            Tweet
+            {createLabel}
           </Button>
         </Form>
       </div>
