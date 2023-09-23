@@ -19,6 +19,7 @@ export default function Tweet({
   likesCount = 0,
   viewsCount = 0,
   onClick = () => undefined,
+  onLike = () => undefined,
 }) {
   return (
     <section
@@ -62,8 +63,12 @@ export default function Tweet({
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer data-cy="likes">
-            <i className="bi bi-heart"></i> {formatNumber(likesCount)}
+          <StatisticContainer data-cy="likes" onClick={onLike}>
+            <i
+              className={likesCount > 0 ? 'bi bi-heart-fill' : 'bi bi-heart'}
+              style={{ color: likesCount > 0 ? 'red' : 'inherit' }}
+            ></i>{' '}
+            {formatNumber(likesCount)}
           </StatisticContainer>
           <StatisticContainer>
             <i className="bi bi-bar-chart"></i> {formatNumber(viewsCount)}

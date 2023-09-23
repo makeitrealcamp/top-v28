@@ -10,6 +10,7 @@ import Comment from '../components/Comment';
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
 import UserContext from '../containers/UserContext';
+import useTweets from '../domain/useTweets';
 
 const CommentsContainer = styled('div')(({ theme }) => {
   return {
@@ -26,11 +27,25 @@ export default function Post() {
     data: comments,
     actions: { create },
   } = useComments({ tweetId: id });
+  const {
+    actions: { update },
+  } = useTweets();
 
   async function onCreate(payload) {
     const formData = payload;
     formData.append('tweetId', id);
     await create(formData);
+  }
+
+  async function onLike(event, item) {
+    event.stopPropagation();
+
+    const payload = {
+      id: item.id,
+      likes: item.likes + 1,
+    };
+
+    await update(payload);
   }
 
   return (
@@ -47,6 +62,8 @@ export default function Post() {
           tweetPhoto={data.photo}
           createdAt={data.createdAt}
           commentsCount={data._count.comments}
+          likesCount={data.likes}
+          onLike={(event) => onLike(event, data)}
         />
       )}
       <CommentsContainer>

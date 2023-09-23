@@ -14,6 +14,7 @@ model Tweet {
   id        String    @id @default(uuid()) @db.Uuid
   content   String
   photo     String?
+  likes     Int       @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   user      User      @relation(fields: [userId], references: [id])

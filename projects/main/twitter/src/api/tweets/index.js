@@ -41,3 +41,17 @@ export async function createTweet(payload) {
     return Promise.reject(error.message);
   }
 }
+
+export async function updateTweet(payload) {
+  const { id, ...rest } = payload;
+  try {
+    const { data: response } = await http.patch(`/tweets/${id}`, rest);
+    const data = await decodeTweetOutput(response.data);
+
+    return {
+      data,
+    };
+  } catch (error) {
+    return Promise.reject(error.message);
+  }
+}

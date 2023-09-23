@@ -16,11 +16,22 @@ export default function Home() {
     data,
     loading,
     error,
-    actions: { create },
+    actions: { create, update },
   } = useTweets();
 
-  function displayTweet({ id }) {
+  function displayTweet(event, { id }) {
     navigate(`/tweet/${id}`);
+  }
+
+  async function onLike(event, item) {
+    event.stopPropagation();
+
+    const payload = {
+      id: item.id,
+      likes: item.likes + 1,
+    };
+
+    await update(payload);
   }
 
   return (
@@ -29,7 +40,7 @@ export default function Home() {
       {user && <Create onCreate={create} profilePhoto={user.profilePhoto} />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
-      {data && <List list={data} displayTweet={displayTweet} />}
+      {data && <List list={data} onSelect={displayTweet} onLike={onLike} />}
     </>
   );
 }

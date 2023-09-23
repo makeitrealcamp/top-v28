@@ -1,6 +1,6 @@
 import Tweet from './Tweet';
 
-export default function List({ list = [], displayTweet }) {
+export default function List({ list = [], onSelect, onLike }) {
   return list.map(function (item) {
     return (
       <Tweet
@@ -12,7 +12,9 @@ export default function List({ list = [], displayTweet }) {
         tweetPhoto={item.photo}
         createdAt={item.createdAt}
         commentsCount={item._count.comments}
-        onClick={() => displayTweet(item)}
+        likesCount={item.likes}
+        onClick={(event) => onSelect(event, item)}
+        onLike={(event) => onLike(event, item)}
       />
     );
   });
