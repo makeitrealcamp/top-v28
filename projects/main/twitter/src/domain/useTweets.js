@@ -1,4 +1,4 @@
-import useSWR, { mutate as globalMutate } from 'swr';
+import useSWR from 'swr';
 
 import { createTweet, getTweets, updateTweet } from '../api/tweets';
 
@@ -30,14 +30,6 @@ export default function useTweets() {
       },
       false,
     );
-    globalMutate(`tweets/${payload.id}`, (prevData) => {
-      return {
-        data: {
-          ...prevData.data,
-          ...payload,
-        },
-      };
-    });
   }
 
   return {

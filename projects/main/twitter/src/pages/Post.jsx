@@ -22,14 +22,16 @@ const CommentsContainer = styled('div')(({ theme }) => {
 export default function Post() {
   const { id } = useParams();
   const { user } = useContext(UserContext);
-  const { data, loading, error } = useTweet({ id });
+  const {
+    data,
+    loading,
+    error,
+    actions: { update },
+  } = useTweet({ id });
   const {
     data: comments,
     actions: { create },
   } = useComments({ tweetId: id });
-  const {
-    actions: { update },
-  } = useTweets();
 
   async function onCreate(payload) {
     const formData = payload;
