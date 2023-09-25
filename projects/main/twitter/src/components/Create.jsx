@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -15,7 +14,9 @@ export default function Create({
     const formData = new FormData();
 
     formData.append('content', content.value);
-    formData.append('photo', photo.files[0]);
+    if (photo.files[0]) {
+      formData.append('photo', photo.files[0]);
+    }
 
     content.value = '';
     photo.value = '';
