@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 
+// This structure is only for Outlook
 export const transporter = nodemailer.createTransport({
   host: 'smtp.office365.com',
   port: 587,
