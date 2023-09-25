@@ -31,5 +31,7 @@ router
   .patch(auth, owner, upload.single('photo'), controller.update)
   .delete(auth, owner, controller.remove);
 
+router.route('/:id/like').patch(auth, controller.like);
+
 router.use('/:tweetId/comments', commentsRouter);
 // router.route('/:tweetId/comments').get(commentsAll);

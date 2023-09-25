@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-import { createTweet, getTweets, updateTweet } from '../api/tweets';
+import { createTweet, getTweets, likeTweet, updateTweet } from '../api/tweets';
 
 export default function useTweets() {
   const {
@@ -32,12 +32,28 @@ export default function useTweets() {
     );
   }
 
+  async function like({ id }) {
+    const { data: item } = await likeTweet({ id });
+    mutate(
+      {
+        data: response?.data.map((tweet) => {
+          if (tweet.id === item.id) {
+            return item;
+          }
+          return tweet;
+        }),
+      },
+      false,
+    );
+  }
+
   return {
     data: response?.data,
     loading: isLoading,
     error,
     actions: {
       create,
+      like,
       update,
     },
   };

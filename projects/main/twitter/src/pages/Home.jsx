@@ -16,7 +16,7 @@ export default function Home() {
     data,
     loading,
     error,
-    actions: { create, update },
+    actions: { create, like },
   } = useTweets();
 
   function displayTweet(event, { id }) {
@@ -25,13 +25,7 @@ export default function Home() {
 
   async function onLike(event, item) {
     event.stopPropagation();
-
-    const payload = {
-      id: item.id,
-      likes: item.likes + 1,
-    };
-
-    await update(payload);
+    await like({ id: item.id });
   }
 
   return (

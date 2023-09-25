@@ -192,6 +192,45 @@ export const update = async (req, res, next) => {
   }
 };
 
+export const like = async (req, res, next) => {
+  const { params = {} } = req;
+  const { id } = params;
+
+  try {
+    const result = await prisma.tweet.update({
+      where: {
+        id,
+      },
+      data: {
+        likes: {
+          increment: 1,
+        },
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+            email: true,
+            profilePhoto: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+    });
+
+    res.json({
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const remove = async (req, res) => {
   const { params = {} } = req;
   const { id } = params;

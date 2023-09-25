@@ -26,7 +26,7 @@ export default function Post() {
     data,
     loading,
     error,
-    actions: { update },
+    actions: { like },
   } = useTweet({ id });
   const {
     data: comments,
@@ -41,13 +41,7 @@ export default function Post() {
 
   async function onLike(event, item) {
     event.stopPropagation();
-
-    const payload = {
-      id: item.id,
-      likes: item.likes + 1,
-    };
-
-    await update(payload);
+    await like({ id: item.id });
   }
 
   return (
