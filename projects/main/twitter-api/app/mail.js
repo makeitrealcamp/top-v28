@@ -1,19 +1,12 @@
-import sgMail from '@sendgrid/mail';
+import nodemailer from 'nodemailer';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-export function sendMail({
-  to,
-  from = process.env.SENDGRID_API_SENDER,
-  subject,
-  text,
-  html,
-}) {
-  return sgMail.send({
-    to,
-    from,
-    subject,
-    text,
-    html,
-  });
-}
+// This structure is only for Outlook
+export const transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false, // upgrade later with STARTTLS
+  auth: {
+    user: process.env.NODEMAILER_EMAIL_SENDER,
+    pass: process.env.NODEMAILER_PASSWORD_SENDER,
+  },
+});
