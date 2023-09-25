@@ -14,15 +14,13 @@ export default function Tweet({
   profilePhoto = '',
   username = '',
   tweetPhoto = '',
-  statistics = {},
+  commentsCount = 0,
+  retweetsCount = 0,
+  likesCount = 0,
+  viewsCount = 0,
   onClick = () => undefined,
+  onLike = () => undefined,
 }) {
-  const {
-    commentsCount = 0,
-    retweetsCount = 0,
-    likesCount = 0,
-    viewsCount = 0,
-  } = statistics;
   return (
     <section
       className="tweet d-flex gap-2 border-bottom py-3"
@@ -42,7 +40,7 @@ export default function Tweet({
           )}
         </div>
       </div>
-      <article className="d-flex flex-column gap-1">
+      <article className="d-flex flex-column gap-1 flex-grow-1">
         <header>
           <strong>{name}</strong>{' '}
           <span className="text-secondary">@{username}</span>
@@ -58,15 +56,19 @@ export default function Tweet({
             width="100%"
           />
         )}
-        <footer className="d-flex justify-content-between">
+        <footer className="d-flex justify-content-between mt-3 border-top pt-3">
           <StatisticContainer data-cy="comment">
             <i className="bi bi-chat"></i> {formatNumber(commentsCount)}
           </StatisticContainer>
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer data-cy="likes">
-            <i className="bi bi-heart"></i> {formatNumber(likesCount)}
+          <StatisticContainer data-cy="likes" onClick={onLike}>
+            <i
+              className={likesCount > 0 ? 'bi bi-heart-fill' : 'bi bi-heart'}
+              style={{ color: likesCount > 0 ? 'red' : 'inherit' }}
+            ></i>{' '}
+            {formatNumber(likesCount)}
           </StatisticContainer>
           <StatisticContainer>
             <i className="bi bi-bar-chart"></i> {formatNumber(viewsCount)}

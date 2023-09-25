@@ -12,6 +12,8 @@ export const CommentSchema = z
       .transform(function (value) {
         return escape(value);
       }),
+    photo: z.string().optional(),
+    tweetId: z.string(),
   })
   .strict();
 

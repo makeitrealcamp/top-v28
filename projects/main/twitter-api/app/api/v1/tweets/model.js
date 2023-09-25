@@ -13,6 +13,7 @@ export const TweetSchema = z
         return escape(value);
       }),
     photo: z.string().optional(),
+    likes: z.number().int().optional(),
   })
   .strict();
 
