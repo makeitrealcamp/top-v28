@@ -12,7 +12,8 @@ export default function List({ list = [], onSelect, onLike }) {
         tweetPhoto={item.photo}
         createdAt={item.createdAt}
         commentsCount={item._count.comments}
-        likesCount={item.likes}
+        likesCount={item._count.likes}
+        liked={item.likes?.length > 0}
         onClick={(event) => onSelect(event, item)}
         onLike={(event) => onLike(event, item)}
       />

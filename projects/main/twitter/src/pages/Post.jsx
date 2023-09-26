@@ -58,7 +58,8 @@ export default function Post() {
           tweetPhoto={data.photo}
           createdAt={data.createdAt}
           commentsCount={data._count.comments}
-          likesCount={data.likes}
+          likesCount={data._count.likes}
+          liked={data.likes?.length > 0}
           onLike={(event) => onLike(event, data)}
         />
       )}
