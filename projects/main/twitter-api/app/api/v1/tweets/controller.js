@@ -232,22 +232,33 @@ export const like = async (req, res, next) => {
   const { id: userId } = decoded;
 
   try {
-    await prisma.like.upsert({
+    const liked = await prisma.like.findUnique({
       where: {
         userId_tweetId: {
           userId,
           tweetId,
         },
       },
-      create: {
-        userId,
-        tweetId,
-        updatedAt: new Date().toISOString(),
-      },
-      update: {
-        updatedAt: new Date().toISOString(),
-      },
     });
+
+    if (liked === null) {
+      await prisma.like.create({
+        data: {
+          userId,
+          tweetId,
+          updatedAt: new Date().toISOString(),
+        },
+      });
+    } else {
+      await prisma.like.delete({
+        where: {
+          userId_tweetId: {
+            userId,
+            tweetId,
+          },
+        },
+      });
+    }
 
     const result = await prisma.tweet.findUnique({
       where: {

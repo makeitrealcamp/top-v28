@@ -64,16 +64,7 @@ export default function Tweet({
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer
-            data-cy="likes"
-            onClick={(event) => {
-              if (liked) {
-                event.stopPropagation();
-              } else {
-                onLike(event);
-              }
-            }}
-          >
+          <StatisticContainer data-cy="likes" onClick={onLike}>
             <i
               className={liked ? 'bi bi-heart-fill' : 'bi bi-heart'}
               style={{ color: liked ? 'red' : 'inherit' }}
