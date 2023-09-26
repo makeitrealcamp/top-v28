@@ -18,6 +18,7 @@ export default function Tweet({
   retweetsCount = 0,
   likesCount = 0,
   viewsCount = 0,
+  liked = false,
   onClick = () => undefined,
   onLike = () => undefined,
 }) {
@@ -63,10 +64,19 @@ export default function Tweet({
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer data-cy="likes" onClick={onLike}>
+          <StatisticContainer
+            data-cy="likes"
+            onClick={(event) => {
+              if (liked) {
+                event.stopPropagation();
+              } else {
+                onLike(event);
+              }
+            }}
+          >
             <i
-              className={likesCount > 0 ? 'bi bi-heart-fill' : 'bi bi-heart'}
-              style={{ color: likesCount > 0 ? 'red' : 'inherit' }}
+              className={liked ? 'bi bi-heart-fill' : 'bi bi-heart'}
+              style={{ color: liked ? 'red' : 'inherit' }}
             ></i>{' '}
             {formatNumber(likesCount)}
           </StatisticContainer>

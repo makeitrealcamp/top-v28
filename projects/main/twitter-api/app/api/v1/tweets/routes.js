@@ -20,18 +20,16 @@ export const router = Router();
 router
   .route('/')
   .post(auth, upload.single('photo'), controller.create)
-  .get(controller.all);
-
-router.param('id', controller.id);
+  .get(auth, controller.all);
 
 router
   .route('/:id')
-  .get(controller.read)
-  .put(auth, owner, upload.single('photo'), controller.update)
-  .patch(auth, owner, upload.single('photo'), controller.update)
-  .delete(auth, owner, controller.remove);
+  .get(auth, controller.id, controller.read)
+  .put(auth, controller.id, owner, upload.single('photo'), controller.update)
+  .patch(auth, controller.id, owner, upload.single('photo'), controller.update)
+  .delete(auth, controller.id, owner, controller.remove);
 
-router.route('/:id/like').patch(auth, controller.like);
+router.route('/:id/like').patch(auth, controller.id, controller.like);
 
 router.use('/:tweetId/comments', commentsRouter);
 // router.route('/:tweetId/comments').get(commentsAll);

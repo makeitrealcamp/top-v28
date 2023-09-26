@@ -53,6 +53,8 @@ export const all = async (req, res, next) => {
     fields,
     ...query,
   });
+  const { decoded = {} } = req;
+  const { id: userId } = decoded;
 
   try {
     const [result, total] = await Promise.all([
@@ -74,6 +76,15 @@ export const all = async (req, res, next) => {
           _count: {
             select: {
               comments: true,
+              likes: true,
+            },
+          },
+          likes: {
+            select: {
+              userId: true,
+            },
+            where: {
+              userId,
             },
           },
         },
@@ -98,6 +109,9 @@ export const all = async (req, res, next) => {
 
 export const id = async (req, res, next) => {
   const { params = {} } = req;
+  const { decoded = {} } = req;
+  const { id: userId } = decoded;
+
   try {
     const result = await prisma.tweet.findUnique({
       where: {
@@ -115,6 +129,15 @@ export const id = async (req, res, next) => {
         _count: {
           select: {
             comments: true,
+            likes: true,
+          },
+        },
+        likes: {
+          select: {
+            userId: true,
+          },
+          where: {
+            userId,
           },
         },
       },
@@ -143,6 +166,8 @@ export const read = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { body = {}, params = {} } = req;
   const { id } = params;
+  const { decoded = {} } = req;
+  const { id: userId } = decoded;
 
   try {
     const { success, data, error } = await TweetSchema.partial().safeParseAsync(
@@ -179,6 +204,15 @@ export const update = async (req, res, next) => {
         _count: {
           select: {
             comments: true,
+            likes: true,
+          },
+        },
+        likes: {
+          select: {
+            userId: true,
+          },
+          where: {
+            userId,
           },
         },
       },
@@ -193,18 +227,31 @@ export const update = async (req, res, next) => {
 };
 
 export const like = async (req, res, next) => {
-  const { params = {} } = req;
-  const { id } = params;
+  const { params = {}, decoded = {} } = req;
+  const { id: tweetId } = params;
+  const { id: userId } = decoded;
 
   try {
-    const result = await prisma.tweet.update({
+    await prisma.like.upsert({
       where: {
-        id,
-      },
-      data: {
-        likes: {
-          increment: 1,
+        userId_tweetId: {
+          userId,
+          tweetId,
         },
+      },
+      create: {
+        userId,
+        tweetId,
+        updatedAt: new Date().toISOString(),
+      },
+      update: {
+        updatedAt: new Date().toISOString(),
+      },
+    });
+
+    const result = await prisma.tweet.findUnique({
+      where: {
+        id: params.id,
       },
       include: {
         user: {
@@ -218,6 +265,15 @@ export const like = async (req, res, next) => {
         _count: {
           select: {
             comments: true,
+            likes: true,
+          },
+        },
+        likes: {
+          select: {
+            userId: true,
+          },
+          where: {
+            userId,
           },
         },
       },
