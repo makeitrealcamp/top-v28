@@ -13,7 +13,7 @@ export default function useTweets() {
   async function create(payload) {
     const { data: item } = await createTweet(payload);
     mutate({
-      data: [item.data, ...response?.data],
+      data: [item, ...response?.data],
     });
   }
 
