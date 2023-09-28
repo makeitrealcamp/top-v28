@@ -1,5 +1,5 @@
 import { prisma } from '../../../database.js';
-import { fields, TweetSchema } from './model.js';
+import { fields, transformTweet, TweetSchema } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
@@ -34,12 +34,35 @@ export const create = async (req, res, next) => {
             profilePhoto: true,
           },
         },
+        // Count the number of likes
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+        // isLiked
+        likes: {
+          select: {
+            userId: true,
+          },
+          where: {
+            userId,
+          },
+        },
+        // Collection of comments
+        children: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
+    const tweet = transformTweet(result);
+
     res.status(201);
     res.json({
-      data: result,
+      data: tweet,
     });
   } catch (error) {
     next(error);
@@ -47,7 +70,7 @@ export const create = async (req, res, next) => {
 };
 
 export const all = async (req, res, next) => {
-  const { query } = req;
+  const { query, params = {} } = req;
   const { offset, limit } = parsePaginationParams(query);
   const { orderBy, direction } = parseOrderParams({
     fields,
@@ -56,9 +79,14 @@ export const all = async (req, res, next) => {
   const { decoded = {} } = req;
   const { id: userId } = decoded;
 
+  const parentId = params.id ? params.id : null;
+
   try {
     const [result, total] = await Promise.all([
       prisma.tweet.findMany({
+        where: {
+          parentId,
+        },
         skip: offset,
         take: limit,
         orderBy: {
@@ -73,12 +101,13 @@ export const all = async (req, res, next) => {
               profilePhoto: true,
             },
           },
+          // Count the number of likes
           _count: {
             select: {
-              comments: true,
               likes: true,
             },
           },
+          // isLiked
           likes: {
             select: {
               userId: true,
@@ -87,13 +116,25 @@ export const all = async (req, res, next) => {
               userId,
             },
           },
+          // Collection of comments
+          children: {
+            select: {
+              id: true,
+            },
+          },
         },
       }),
-      prisma.tweet.count(),
+      prisma.tweet.count({
+        where: {
+          parentId,
+        },
+      }),
     ]);
 
+    const data = result.map(transformTweet);
+
     res.json({
-      data: result,
+      data,
       meta: {
         limit,
         offset,
@@ -128,7 +169,6 @@ export const id = async (req, res, next) => {
         },
         _count: {
           select: {
-            comments: true,
             likes: true,
           },
         },
@@ -140,6 +180,11 @@ export const id = async (req, res, next) => {
             userId,
           },
         },
+        children: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
@@ -149,7 +194,8 @@ export const id = async (req, res, next) => {
         status: 404,
       });
     } else {
-      req.data = result;
+      const tweet = transformTweet(result);
+      req.data = tweet;
       next();
     }
   } catch (error) {
@@ -203,7 +249,6 @@ export const update = async (req, res, next) => {
         },
         _count: {
           select: {
-            comments: true,
             likes: true,
           },
         },
@@ -215,11 +260,18 @@ export const update = async (req, res, next) => {
             userId,
           },
         },
+        children: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
+    const tweet = transformTweet(result);
+
     res.json({
-      data: result,
+      data: tweet,
     });
   } catch (error) {
     next(error);
@@ -275,7 +327,6 @@ export const like = async (req, res, next) => {
         },
         _count: {
           select: {
-            comments: true,
             likes: true,
           },
         },
@@ -287,11 +338,18 @@ export const like = async (req, res, next) => {
             userId,
           },
         },
+        children: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
+    const tweet = transformTweet(result);
+
     res.json({
-      data: result,
+      data: tweet,
     });
   } catch (error) {
     next(error);

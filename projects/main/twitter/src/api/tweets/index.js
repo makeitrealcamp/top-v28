@@ -2,9 +2,10 @@ import http from '../http';
 
 import { decodeTweetOutput } from './decoders';
 
-export async function getTweets() {
+export async function getTweets({ parentId }) {
   try {
-    const { data: response } = await http.get('/tweets/');
+    const url = parentId ? `/tweets/${parentId}/comments` : '/tweets/';
+    const { data: response } = await http.get(url);
     const data = await Promise.all(response.data.map(decodeTweetOutput));
 
     return {
