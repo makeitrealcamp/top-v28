@@ -13,26 +13,9 @@ export const TweetSchema = z
         return escape(value);
       }),
     photo: z.string().optional(),
+    parentId: z.string().optional(),
   })
   .strict();
-
-// export const validateCreate = function (data) {
-//   return TweetSchema.safeParseAsync(data);
-// };
-
-// export const validateUpdate = function (data) {
-//   return TweetSchema.partial().safeParseAsync(data);
-// };
-
-// export const validate = function (partial = false) {
-//   return function (data) {
-//     if (partial) {
-//       return TweetSchema.partial().safeParseAsync(data);
-//     } else {
-//       return TweetSchema.safeParseAsync(data);
-//     }
-//   };
-// };
 
 export const fields = [
   ...Object.keys(TweetSchema.shape),
@@ -40,3 +23,13 @@ export const fields = [
   'createdAt',
   'updatedAt',
 ];
+
+export const transformTweet = (tweet) => ({
+  ...tweet,
+  commentsCount: tweet.children.length,
+  likesCount: tweet._count.likes,
+  isLiked: tweet.likes.length > 0,
+  _count: undefined,
+  children: undefined,
+  likes: undefined,
+});

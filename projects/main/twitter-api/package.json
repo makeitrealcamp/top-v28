@@ -22,12 +22,12 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-json": "^3.1.0",
-    "prisma": "^5.0.0",
+    "prisma": "^5.3.1",
     "supertest": "^6.3.3",
     "vitest": "^0.34.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
+    "@prisma/client": "^5.3.1",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",

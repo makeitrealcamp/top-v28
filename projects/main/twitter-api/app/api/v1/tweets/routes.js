@@ -1,9 +1,7 @@
 import { Router } from 'express';
 
 import * as controller from './controller.js';
-import { router as commentsRouter } from '../comments/routes.js';
 import { auth, owner } from '../auth.js';
-// import { all as commentsAll } from '../comments/controller.js';
 import { upload } from '../upload.js';
 
 // eslint-disable-next-line new-cap
@@ -30,6 +28,4 @@ router
   .delete(auth, controller.id, owner, controller.remove);
 
 router.route('/:id/like').patch(auth, controller.id, controller.like);
-
-router.use('/:tweetId/comments', commentsRouter);
-// router.route('/:tweetId/comments').get(commentsAll);
+router.route('/:id/comments').get(auth, controller.id, controller.all);

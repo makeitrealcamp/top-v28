@@ -1,6 +1,6 @@
 import useSWR, { mutate as globalMutate } from 'swr';
 
-import { createComment, getComments } from '../api/comments';
+import { createTweet, getTweets, likeTweet } from '../api/tweets';
 
 export default function useComments({ tweetId }) {
   const {
@@ -8,12 +8,31 @@ export default function useComments({ tweetId }) {
     error,
     isLoading,
     mutate,
-  } = useSWR(tweetId ? 'comments' : null, () => getComments({ tweetId }));
+  } = useSWR(tweetId ? `tweets/${tweetId}/comments` : null, () =>
+    getTweets({ parentId: tweetId }),
+  );
 
   async function create(payload) {
-    await createComment(payload);
-    await mutate(true);
-    globalMutate(`tweets/${id}`, true);
+    const { data: item } = await createTweet(payload);
+    mutate({
+      data: [item, ...response?.data],
+    });
+    globalMutate(`tweets/${tweetId}`, true);
+  }
+
+  async function like({ id }) {
+    const { data: item } = await likeTweet({ id });
+    mutate(
+      {
+        data: response?.data.map((tweet) => {
+          if (tweet.id === item.id) {
+            return item;
+          }
+          return tweet;
+        }),
+      },
+      false,
+    );
   }
 
   return {
@@ -22,6 +41,7 @@ export default function useComments({ tweetId }) {
     error,
     actions: {
       create,
+      like,
     },
   };
 }

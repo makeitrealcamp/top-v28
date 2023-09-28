@@ -1,16 +1,14 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 import useComments from '../domain/useComments';
 import useTweet from '../domain/useTweet';
-import Comment from '../components/Comment';
 import Create from '../components/Create';
 import Tweet from '../components/Tweet';
 import UserContext from '../containers/UserContext';
-import useTweets from '../domain/useTweets';
 
 const CommentsContainer = styled('div')(({ theme }) => {
   return {
@@ -22,6 +20,7 @@ const CommentsContainer = styled('div')(({ theme }) => {
 export default function Post() {
   const { id } = useParams();
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const {
     data,
     loading,
@@ -30,18 +29,27 @@ export default function Post() {
   } = useTweet({ id });
   const {
     data: comments,
-    actions: { create },
+    actions: { create, like: likeComment },
   } = useComments({ tweetId: id });
 
   async function onCreate(payload) {
     const formData = payload;
-    formData.append('tweetId', id);
+    formData.append('parentId', id);
     await create(formData);
   }
 
   async function onLike(event, item) {
     event.stopPropagation();
     await like({ id: item.id });
+  }
+
+  async function onLikeComment(event, item) {
+    event.stopPropagation();
+    await likeComment({ id: item.id });
+  }
+
+  function displayTweet(event, { id }) {
+    navigate(`/tweet/${id}`);
   }
 
   return (
@@ -57,9 +65,9 @@ export default function Post() {
           content={data.content}
           tweetPhoto={data.photo}
           createdAt={data.createdAt}
-          commentsCount={data._count.comments}
-          likesCount={data._count.likes}
-          liked={data.likes?.length > 0}
+          commentsCount={data.commentsCount}
+          likesCount={data.likesCount}
+          liked={data.isLiked}
           onLike={(event) => onLike(event, data)}
         />
       )}
@@ -71,14 +79,19 @@ export default function Post() {
         />
         {comments &&
           comments.map((item) => (
-            <Comment
+            <Tweet
               key={item.id}
               name={item.user.name}
               username={item.user.username}
               profilePhoto={item.user.profilePhoto}
               content={item.content}
-              photo={item.photo}
+              tweetPhoto={item.photo}
               createdAt={item.createdAt}
+              commentsCount={item.commentsCount}
+              likesCount={item.likesCount}
+              liked={item.isLiked}
+              onClick={(event) => displayTweet(event, item)}
+              onLike={(event) => onLikeComment(event, item)}
             />
           ))}
       </CommentsContainer>
