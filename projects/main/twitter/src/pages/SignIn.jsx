@@ -1,5 +1,5 @@
 import { Formik, ErrorMessage } from 'formik';
-import { useContext, useState } from 'react';
+import { useContext, useReducer } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,6 +10,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 import UserContext from '../containers/UserContext';
 import { signIn } from '../api/users';
 import { formatError } from '../utils';
+import useFetchState from '../domain/useFetchState';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -19,7 +20,7 @@ const signInSchema = z.object({
 export default function SignIn() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  const [error, setError] = useState('');
+  const [{ error, loading }, dispatch] = useFetchState();
 
   const initialValues = {
     email: '',
@@ -32,16 +33,18 @@ export default function SignIn() {
       {error && <Alert variant="danger">{error}</Alert>}
       <Formik
         initialValues={initialValues}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values) => {
+          dispatch({ type: 'INIT' });
           try {
+            dispatch({ type: 'FETCH' });
             const { data } = await signIn(values);
 
+            dispatch({ type: 'FULLFILLED' });
             setUser(data);
-            setSubmitting(false);
             navigate('/home');
           } catch (e) {
             const message = formatError(e);
-            setError(message);
+            dispatch({ type: 'REJECTED', payload: message });
           }
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
@@ -98,7 +101,7 @@ export default function SignIn() {
               variant="primary"
               type="submit"
               className="rounded-pill text-white px-4"
-              disabled={isSubmitting}
+              disabled={loading}
             >
               Submit
             </Button>
