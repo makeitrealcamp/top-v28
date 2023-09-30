@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
@@ -38,19 +38,20 @@ export default function Post() {
     await create(formData);
   }
 
-  async function onLike(event, item) {
+  const onLike = useCallback(async function (event, { id }) {
     event.stopPropagation();
-    await like({ id: item.id });
-  }
+    await like({ id });
+  }, []);
 
-  async function onLikeComment(event, item) {
+  const onSelectComment = useCallback(function (event, { id }) {
+    event.stopPropagation();
+    navigate(`/tweet/${id}`);
+  }, []);
+
+  const onLikeComment = useCallback(async function (event, item) {
     event.stopPropagation();
     await likeComment({ id: item.id });
-  }
-
-  function displayTweet(event, { id }) {
-    navigate(`/tweet/${id}`);
-  }
+  }, []);
 
   return (
     <>
@@ -59,6 +60,7 @@ export default function Post() {
       {error && <Alert variant="danger">{error}</Alert>}
       {data && (
         <Tweet
+          id={data.id}
           name={data.user.name}
           username={data.user.username}
           profilePhoto={data.user.profilePhoto}
@@ -68,7 +70,7 @@ export default function Post() {
           commentsCount={data.commentsCount}
           likesCount={data.likesCount}
           liked={data.isLiked}
-          onLike={(event) => onLike(event, data)}
+          onLike={onLike}
         />
       )}
       <CommentsContainer>
@@ -81,6 +83,7 @@ export default function Post() {
           comments.map((item) => (
             <Tweet
               key={item.id}
+              id={item.id}
               name={item.user.name}
               username={item.user.username}
               profilePhoto={item.user.profilePhoto}
@@ -90,8 +93,8 @@ export default function Post() {
               commentsCount={item.commentsCount}
               likesCount={item.likesCount}
               liked={item.isLiked}
-              onClick={(event) => displayTweet(event, item)}
-              onLike={(event) => onLikeComment(event, item)}
+              onSelect={onSelectComment}
+              onLike={onLikeComment}
             />
           ))}
       </CommentsContainer>
