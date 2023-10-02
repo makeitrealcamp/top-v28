@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { formatRelative } from 'date-fns';
 
 import { formatNumber } from '../utils';
@@ -7,7 +8,8 @@ const StatisticContainer = styled('div')(({ theme }) => ({
   fontSize: theme.fonts[0],
 }));
 
-export default function Tweet({
+const Tweet = memo(function Tweet({
+  id = '',
   content = '',
   createdAt = '',
   name = '',
@@ -19,13 +21,18 @@ export default function Tweet({
   likesCount = 0,
   viewsCount = 0,
   liked = false,
-  onClick = () => undefined,
-  onLike = () => undefined,
+  onSelect = () => {},
+  onLike = () => {},
 }) {
+  console.count(`render Tweet ${id}`);
+
+  const handleSelect = (event) => onSelect(event, { id });
+  const handleLike = (event) => onLike(event, { id });
+
   return (
     <section
       className="tweet d-flex gap-2 border-bottom py-3"
-      onClick={onClick}
+      onClick={handleSelect}
     >
       <div className="d-flex">
         <div className="p-2">
@@ -64,7 +71,7 @@ export default function Tweet({
           <StatisticContainer>
             <i className="bi bi-repeat"></i> {formatNumber(retweetsCount)}
           </StatisticContainer>
-          <StatisticContainer data-cy="likes" onClick={onLike}>
+          <StatisticContainer data-cy="likes" onClick={handleLike}>
             <i
               className={liked ? 'bi bi-heart-fill' : 'bi bi-heart'}
               style={{ color: liked ? 'red' : 'inherit' }}
@@ -81,4 +88,6 @@ export default function Tweet({
       </article>
     </section>
   );
-}
+});
+
+export default Tweet;

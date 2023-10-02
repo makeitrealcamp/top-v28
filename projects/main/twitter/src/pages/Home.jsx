@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
@@ -19,14 +19,15 @@ export default function Home() {
     actions: { create, like },
   } = useTweets();
 
-  function displayTweet(event, { id }) {
-    navigate(`/tweet/${id}`);
-  }
-
-  async function onLike(event, item) {
+  const onSelect = useCallback(function (event, { id }) {
     event.stopPropagation();
-    await like({ id: item.id });
-  }
+    navigate(`/tweet/${id}`);
+  }, []);
+
+  const onLike = useCallback(async function (event, { id }) {
+    event.stopPropagation();
+    await like({ id });
+  }, []);
 
   return (
     <>
@@ -34,7 +35,7 @@ export default function Home() {
       {user && <Create onCreate={create} profilePhoto={user.profilePhoto} />}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
-      {data && <List list={data} onSelect={displayTweet} onLike={onLike} />}
+      {data && <List list={data} onSelect={onSelect} onLike={onLike} />}
     </>
   );
 }
