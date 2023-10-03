@@ -49,7 +49,7 @@ export const confirmation = async (req, res, next) => {
   const { email } = body;
 
   try {
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: {
         email,
         active: false,
@@ -68,33 +68,59 @@ export const confirmation = async (req, res, next) => {
         status: 400,
       });
     } else {
-      const token = signToken({ email }, '2h');
+      if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test' ||
+        process.env.NODEMAILER_SKIP
+      ) {
+        user = await prisma.user.update({
+          where: {
+            email,
+          },
+          data: {
+            active: true,
+          },
+          select: {
+            name: true,
+            email: true,
+            username: true,
+            profilePhoto: true,
+          },
+        });
 
-      await transporter.sendMail({
-        from: `Twitter ${process.env.EMAIL_SENDER}`,
-        to: email,
-        subject: 'Activate your account',
-        text: `
-          Visit the following link to activate your account:
-          ${process.env.WEB_URL}/activate/${token}
-        `,
-        html: `
-          <p>
+        res.status(201);
+        res.json({
+          data: user,
+        });
+      } else {
+        const token = signToken({ email }, '2h');
+
+        await transporter.sendMail({
+          from: `Twitter ${process.env.EMAIL_SENDER}`,
+          to: email,
+          subject: 'Activate your account',
+          text: `
             Visit the following link to activate your account:
-            <a 
-              href="${process.env.WEB_URL}/activate/${token}"
-              target="_blank"
-            >
-              Activate
-            </a>
-          </p>
-        `,
-      });
+            ${process.env.WEB_URL}/activate/${token}
+          `,
+          html: `
+            <p>
+              Visit the following link to activate your account:
+              <a 
+                href="${process.env.WEB_URL}/activate/${token}"
+                target="_blank"
+              >
+                Activate
+              </a>
+            </p>
+          `,
+        });
 
-      res.status(201);
-      res.json({
-        data: user,
-      });
+        res.status(201);
+        res.json({
+          data: user,
+        });
+      }
     }
   } catch (error) {
     next(error);
