@@ -10,7 +10,7 @@ describe('Profile component', () => {
     const user = getUser();
 
     renderWithTheme(
-      <UserProvider overrides={user}>
+      <UserProvider overrides={{ user }}>
         <Profile />
       </UserProvider>,
     );
