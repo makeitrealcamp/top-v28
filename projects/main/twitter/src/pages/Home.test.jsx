@@ -6,11 +6,13 @@ import { ThemeProvider } from '@emotion/react';
 import theme from '../theme';
 import Home from './Home';
 import { getTweet } from '../fixtures/tweet.fixture';
-import { getTweets } from '../api/tweets';
+import useTweets from '../domain/useTweets';
+import { UserProvider } from '../containers/UserContext';
+import { getUser } from '../fixtures/user.fixture';
 
-vi.mock('../api/tweets', () => {
+vi.mock('../domain/useTweets', () => {
   return {
-    getTweets: vi.fn(),
+    default: vi.fn(),
   };
 });
 
@@ -21,13 +23,26 @@ describe('Home Page', () => {
 
   test('display tweets', async () => {
     const tweet = getTweet();
+    const user = getUser();
 
-    getTweets.mockResolvedValueOnce([tweet]);
+    useTweets.mockImplementation(() => {
+      return {
+        data: [tweet],
+        loading: false,
+        error: null,
+        actions: {
+          create: () => {},
+          like: () => {},
+        },
+      };
+    });
 
     render(
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Home />
+          <UserProvider overrides={{ user }}>
+            <Home />
+          </UserProvider>
         </ThemeProvider>
       </BrowserRouter>,
     );
