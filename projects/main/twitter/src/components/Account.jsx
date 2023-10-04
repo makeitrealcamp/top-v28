@@ -1,16 +1,24 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function Account() {
-  const navigate = useNavigate();
+  const { loginWithRedirect } = useAuth0();
 
   function onSignUp() {
-    navigate('/signup');
+    loginWithRedirect({
+      authorizationParams: {
+        screen_hint: 'signup',
+      },
+    });
   }
 
   function onSignIn() {
-    navigate('/signin');
+    loginWithRedirect({
+      authorizationParams: {
+        screen_hint: 'signin',
+      },
+    });
   }
 
   return (

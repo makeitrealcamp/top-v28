@@ -1,10 +1,9 @@
-import { useContext } from 'react';
-import User from './User';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useAuth0 } from '@auth0/auth0-react';
 import styled from '@emotion/styled';
-import UserContext from '../containers/UserContext';
-import { clearSession } from '../api/session';
+
+import User from './User';
 
 const ProfileContainer = styled('div')(({ theme }) => ({
   borderRadius: theme.border.radius.pill,
@@ -15,21 +14,16 @@ const ProfileContainer = styled('div')(({ theme }) => ({
 }));
 
 export default function Profile() {
-  const { setUser, user } = useContext(UserContext);
+  const { logout, user } = useAuth0();
 
   function SignOut() {
-    setUser(null);
-    clearSession();
+    logout();
   }
 
   return (
     user && (
       <ProfileContainer>
-        <User
-          name={user.name}
-          username={user.username}
-          photo={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`}
-        >
+        <User name={user.name} username={user.nickname} photo={user.picture}>
           <div className="d-flex align-items-center">
             <DropdownButton
               drop="up"

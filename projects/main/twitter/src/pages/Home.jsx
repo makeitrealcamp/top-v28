@@ -1,15 +1,15 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import { useAuth0 } from '@auth0/auth0-react';
 
-import UserContext from '../containers/UserContext';
 import Create from '../components/Create';
 import List from '../components/List';
 import useTweets from '../domain/useTweets';
 
 export default function Home() {
-  const { user } = useContext(UserContext);
+  const { isAuthenticated, user } = useAuth0();
   const navigate = useNavigate();
 
   const {
@@ -32,7 +32,9 @@ export default function Home() {
   return (
     <>
       <h1 className="fs-4 my-2 fw-bolder">Home</h1>
-      {user && <Create onCreate={create} profilePhoto={user.profilePhoto} />}
+      {isAuthenticated && (
+        <Create onCreate={create} profilePhoto={user.picture} />
+      )}
       {loading && <Spinner />}
       {error && <Alert variant="danger">{error}</Alert>}
       {data && <List list={data} onSelect={onSelect} onLike={onLike} />}

@@ -16,6 +16,7 @@
     "e2e:run": "cypress run"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "axios": "^1.4.0",

@@ -1,10 +1,8 @@
-import { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
-import styled from '@emotion/styled';
 import { NavLink, useNavigate } from 'react-router-dom';
-
-import UserContext from '../containers/UserContext';
+import styled from '@emotion/styled';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const NavLinkStyled = styled(NavLink)(({ theme }) => {
   const color = theme.colors['gray-900'];
@@ -46,7 +44,7 @@ const IconStyled = styled('i')(({ theme }) => ({
 }));
 
 export default function Navigation() {
-  const { user } = useContext(UserContext);
+  const { isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   return (
@@ -66,7 +64,7 @@ export default function Navigation() {
           <IconStyled className="bi bi-hash" />
           Explore
         </NavLinkStyled>
-        {user && (
+        {isAuthenticated && (
           <>
             <NavLinkStyled to="/notifications" className="nav-link">
               <IconStyled className="bi bi-bell" />
@@ -95,7 +93,7 @@ export default function Navigation() {
           </>
         )}
       </Nav>
-      {user && (
+      {isAuthenticated && (
         <div className="d-flex">
           <Button
             className="rounded-pill text-white flex-grow-1 m-2 py-2 fs-5"

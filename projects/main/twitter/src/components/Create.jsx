@@ -29,7 +29,7 @@ export default function Create({
       <div className="d-flex">
         <div className="p-2">
           <img
-            src={`${import.meta.env.VITE_API_URL}/${profilePhoto}`}
+            src={profilePhoto}
             className="rounded-circle object-fit-cover"
             width={48}
             height={48}

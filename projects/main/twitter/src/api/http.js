@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { clearSession, getSession } from './session';
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -8,12 +7,6 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-
-    // Append token in Authorization header if is present
-    const token = getSession();
-    if (token && config.method !== 'GET') {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
 
     return config;
   },
@@ -35,7 +28,6 @@ instance.interceptors.response.use(
     // Do something with response error
 
     if (error.response?.status === 401) {
-      clearSession();
       window.location = '/signin';
     }
 

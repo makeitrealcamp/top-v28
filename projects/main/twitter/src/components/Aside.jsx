@@ -1,13 +1,13 @@
-import { useContext } from 'react';
 import Form from 'react-bootstrap/Form';
+import { useAuth0 } from '@auth0/auth0-react';
+
 import Account from './Account';
-import UserContext from '../containers/UserContext';
 
 export default function Aside() {
-  const { user } = useContext(UserContext);
+  const { isAuthenticated } = useAuth0();
   return (
     <aside>
-      {user ? (
+      {isAuthenticated ? (
         <>
           <Form.Control
             type="search"
