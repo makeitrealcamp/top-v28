@@ -58,7 +58,7 @@ Pueden ocurrir varias actividades en este rango de tiempo
 - **Sprint 5**: Diseno de base de datos, Modelo de datos y servidor express.
 - **Sprint 6**: Servicios backend conectores a base de datos: REST API.
 - **Sprint 7**: Pruebas: Backend y Frontend.
-- **Sprint 8**: Envio de email e Integración con pasarela de pagos.
+- **Sprint 8**: Envio de email y (Pasarela de pagos o Mapa o Sockets).
 - **Sprint 9**: CI/CD del backend y el frontend.
 - **Sprint 10**: `DEMO Publico` 🎊🎉💻🎊🎉
 
@@ -83,13 +83,13 @@ Los lineamientos para los proyectos individuales y grupales son estos:
 
 - Registro y autenticación de usuarios.
 - Almacenar información en una base de datos (Postgresql).
-- El backend debe estar implementado en Node.js (Express) usando TypeScript y el frontend en React.
+- El backend debe estar implementado en Node.js (Express) ~~usando TypeScript~~ y el frontend en React.
 - Debe incluir carga de imágenes y envío de correos.
 - Debe tener al menos una de las siguientes funcionalidades:
   - Pagos
   - Presentar información en un mapa.
   - Tiempo Real (Web Sockets).
-- Debe estar desplegada en Internet (Netllify, Heroku, Vercel)
+- Debe estar desplegada en Internet (Netllify, Heroku, Vercel, Render, etc)
 - Debe al menos tener pruebas end-to-end con Cypress.
 
 **El Proyecto Individual:**
