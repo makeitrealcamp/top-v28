@@ -9,6 +9,7 @@ export default function Account() {
     loginWithRedirect({
       authorizationParams: {
         screen_hint: 'signup',
+        redirect_uri: `${window.location.origin}/account`,
       },
     });
   }

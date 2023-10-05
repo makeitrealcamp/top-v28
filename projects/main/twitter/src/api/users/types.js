@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const UserOutput = z.object({
-  name: z.string(),
-  nickname: z.string(),
-  email: z.string(),
+  name: z.string().optional(),
+  nickname: z.string().optional(),
+  email: z.string().optional(),
   picture: z.string().nullable().optional(),
 });

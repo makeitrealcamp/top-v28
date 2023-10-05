@@ -8,6 +8,7 @@ import Navigation from './components/Navigation';
 import Profile from './components/Profile';
 import Aside from './components/Aside';
 import ProtectedRoute from './containers/ProtectedRoute';
+import Account from './pages/Account';
 
 const Home = lazy(() => import('./pages/Home.jsx'));
 const Blank = lazy(() => import('./pages/Blank.jsx'));
@@ -27,14 +28,8 @@ function App() {
         <Col md={6} className="border-start border-end">
           <Suspense fallback={null}>
             <Routes>
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/home" element={<Home />} />
+              <Route path="/account" element={<Account />} />
               <Route
                 path="/compose"
                 element={
