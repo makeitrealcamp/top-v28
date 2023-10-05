@@ -1,90 +1,24 @@
-import jwt from 'jsonwebtoken';
-import { RateLimiterMemory } from 'rate-limiter-flexible';
+import { expressjwt as jwt } from 'express-jwt';
+import jwksRsa from 'jwks-rsa';
 
-import { configuration } from '../../config.js';
+export const auth = jwt({
+  // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+  }),
 
-const { token, rateLimit } = configuration;
-const { secret, expires } = token;
-const { points, duration } = rateLimit;
-
-const rateLimiter = new RateLimiterMemory({
-  points,
-  duration,
+  // Validate the audience and the issuer.
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+  algorithms: ['RS256'],
 });
 
-export const signToken = (payload, expiresIn = expires) => {
-  return jwt.sign(payload, secret, {
-    expiresIn,
-  });
-};
-
-export const auth = (req, res, next) => {
-  let token = req.headers.authorization || '';
-  if (token.startsWith('Bearer')) {
-    token = token.substring(7);
-  }
-
-  if (!token) {
-    return next({
-      message: 'Unauthorized',
-      status: 401,
-    });
-  }
-
-  jwt.verify(token, secret, function (err, decoded) {
-    if (err) {
-      return next({
-        message: 'Unauthorized',
-        status: 401,
-      });
-    }
-
-    req.decoded = decoded;
-    next();
-  });
-};
-
-export const activate = (req, res, next) => {
-  let token = req.params.token || '';
-
-  if (!token) {
-    return next({
-      message: 'No correct link for activation has been provided',
-      status: 400,
-    });
-  }
-
-  jwt.verify(token, secret, function (err, decoded) {
-    if (err) {
-      return next({
-        message: 'No valid',
-        status: 400,
-      });
-    }
-
-    req.decoded = decoded;
-    next();
-  });
-};
-
-export const me = (req, res, next) => {
-  const { decoded = {}, params = {} } = req;
-  const { username } = decoded;
-  const { username: usernameParam } = params;
-
-  if (username !== usernameParam) {
-    return next({
-      message: 'Forbidden',
-      status: 403,
-    });
-  }
-
-  next();
-};
-
 export const owner = (req, res, next) => {
-  const { decoded = {}, data = {} } = req;
-  const { id: ownerId } = decoded;
+  const { auth = {}, data = {} } = req;
+  const { sub: ownerId } = auth;
   const { userId } = data;
 
   if (ownerId !== userId) {
@@ -95,17 +29,4 @@ export const owner = (req, res, next) => {
   }
 
   next();
-};
-
-export const limit = async (req, res, next) => {
-  const ip = req.ip;
-  try {
-    await rateLimiter.consume(ip, 1);
-    next();
-  } catch (error) {
-    next({
-      status: 429,
-      message: 'Too many requests',
-    });
-  }
 };

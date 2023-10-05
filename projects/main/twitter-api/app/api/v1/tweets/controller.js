@@ -3,8 +3,8 @@ import { fields, transformTweet, TweetSchema } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
 export const create = async (req, res, next) => {
-  const { body = {}, decoded = {} } = req;
-  const { id: userId } = decoded;
+  const { body = {}, auth = {} } = req;
+  const { sub: userId } = auth;
 
   try {
     const { success, data, error } = await TweetSchema.safeParseAsync({
@@ -29,9 +29,9 @@ export const create = async (req, res, next) => {
         user: {
           select: {
             name: true,
-            username: true,
+            nickname: true,
             email: true,
-            profilePhoto: true,
+            picture: true,
           },
         },
         // Count the number of likes
@@ -76,8 +76,8 @@ export const all = async (req, res, next) => {
     fields,
     ...query,
   });
-  const { decoded = {} } = req;
-  const { id: userId } = decoded;
+  const { auth = {} } = req;
+  const { sub: userId } = auth;
 
   const parentId = params.id ? params.id : null;
 
@@ -96,9 +96,9 @@ export const all = async (req, res, next) => {
           user: {
             select: {
               name: true,
-              username: true,
+              nickname: true,
               email: true,
-              profilePhoto: true,
+              picture: true,
             },
           },
           // Count the number of likes
@@ -150,8 +150,8 @@ export const all = async (req, res, next) => {
 
 export const id = async (req, res, next) => {
   const { params = {} } = req;
-  const { decoded = {} } = req;
-  const { id: userId } = decoded;
+  const { auth = {} } = req;
+  const { sub: userId } = auth;
 
   try {
     const result = await prisma.tweet.findUnique({
@@ -162,9 +162,9 @@ export const id = async (req, res, next) => {
         user: {
           select: {
             name: true,
-            username: true,
+            nickname: true,
             email: true,
-            profilePhoto: true,
+            picture: true,
           },
         },
         _count: {
@@ -212,8 +212,8 @@ export const read = async (req, res, next) => {
 export const update = async (req, res, next) => {
   const { body = {}, params = {} } = req;
   const { id } = params;
-  const { decoded = {} } = req;
-  const { id: userId } = decoded;
+  const { auth = {} } = req;
+  const { sub: userId } = auth;
 
   try {
     const { success, data, error } = await TweetSchema.partial().safeParseAsync(
@@ -242,9 +242,9 @@ export const update = async (req, res, next) => {
         user: {
           select: {
             name: true,
-            username: true,
+            nickname: true,
             email: true,
-            profilePhoto: true,
+            picture: true,
           },
         },
         _count: {
@@ -279,9 +279,9 @@ export const update = async (req, res, next) => {
 };
 
 export const like = async (req, res, next) => {
-  const { params = {}, decoded = {} } = req;
+  const { params = {}, auth = {} } = req;
   const { id: tweetId } = params;
-  const { id: userId } = decoded;
+  const { sub: userId } = auth;
 
   try {
     const liked = await prisma.like.findUnique({
@@ -320,9 +320,9 @@ export const like = async (req, res, next) => {
         user: {
           select: {
             name: true,
-            username: true,
+            nickname: true,
             email: true,
-            profilePhoto: true,
+            picture: true,
           },
         },
         _count: {

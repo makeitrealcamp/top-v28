@@ -16,8 +16,8 @@ model Tweet {
   photo     String?
   createdAt DateTime  @default(now())
   updatedAt DateTime?
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [sub])
+  userId    String
   likes     Like[]
   parentId  String?   @db.Uuid
   parent    Tweet?    @relation("TweetToTwet", fields: [parentId], references: [id])
@@ -25,24 +25,20 @@ model Tweet {
 }
 
 model User {
-  id           String    @id @default(uuid()) @db.Uuid
-  name         String
-  username     String    @unique
-  email        String    @unique
-  biography    String?
-  location     String?
-  profilePhoto String?
-  password     String
-  active       Boolean   @default(false)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime?
-  tweets       Tweet[]
-  likes        Like[]
+  sub            String    @id
+  name           String
+  nickname       String    @unique
+  email          String    @unique
+  picture        String?
+  email_verified Boolean   @default(false)
+  updated_at     DateTime?
+  tweets         Tweet[]
+  likes          Like[]
 }
 
 model Like {
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [sub])
+  userId    String
   tweet     Tweet     @relation(fields: [tweetId], references: [id])
   tweetId   String    @db.Uuid
   updatedAt DateTime?
