@@ -1,24 +1,33 @@
 import useSWR from 'swr';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { createTweet, getTweets, likeTweet, updateTweet } from '../api/tweets';
 
 export default function useTweets() {
+  const { getAccessTokenSilently } = useAuth0();
+
   const {
     data: response,
     error,
     isLoading,
     mutate,
-  } = useSWR('tweets', getTweets);
+  } = useSWR('tweets', async () => {
+    const token = await getAccessTokenSilently();
+    return getTweets({}, token);
+  });
 
   async function create(payload) {
-    const { data: item } = await createTweet(payload);
+    const token = await getAccessTokenSilently();
+    console.log('token', token);
+    const { data: item } = await createTweet(payload, token);
     mutate({
       data: [item, ...response?.data],
     });
   }
 
   async function update(payload) {
-    const { data: item } = await updateTweet(payload);
+    const token = await getAccessTokenSilently();
+    const { data: item } = await updateTweet(payload, token);
     mutate(
       {
         data: response?.data.map((tweet) => {
@@ -33,7 +42,8 @@ export default function useTweets() {
   }
 
   async function like({ id }) {
-    const { data: item } = await likeTweet({ id });
+    const token = await getAccessTokenSilently();
+    const { data: item } = await likeTweet({ id }, token);
     mutate(
       {
         data: response?.data.map((tweet) => {

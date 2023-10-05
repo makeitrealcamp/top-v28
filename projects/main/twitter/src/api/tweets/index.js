@@ -2,10 +2,14 @@ import http from '../http';
 
 import { decodeTweetOutput } from './decoders';
 
-export async function getTweets({ parentId }) {
+export async function getTweets({ parentId }, token) {
   try {
     const url = parentId ? `/tweets/${parentId}/comments` : '/tweets/';
-    const { data: response } = await http.get(url);
+    const { data: response } = await http.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await Promise.all(response.data.map(decodeTweetOutput));
 
     return {
@@ -17,9 +21,13 @@ export async function getTweets({ parentId }) {
   }
 }
 
-export async function getTweet({ id }) {
+export async function getTweet({ id }, token) {
   try {
-    const { data: response } = await http.get(`/tweets/${id}`);
+    const { data: response } = await http.get(`/tweets/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await decodeTweetOutput(response.data);
 
     return {
@@ -30,9 +38,13 @@ export async function getTweet({ id }) {
   }
 }
 
-export async function createTweet(payload) {
+export async function createTweet(payload, token) {
   try {
-    const { data: response } = await http.post(`/tweets/`, payload);
+    const { data: response } = await http.post(`/tweets/`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await decodeTweetOutput(response.data);
 
     return {
@@ -43,10 +55,14 @@ export async function createTweet(payload) {
   }
 }
 
-export async function updateTweet(payload) {
+export async function updateTweet(payload, token) {
   const { id, ...rest } = payload;
   try {
-    const { data: response } = await http.patch(`/tweets/${id}`, rest);
+    const { data: response } = await http.patch(`/tweets/${id}`, rest, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await decodeTweetOutput(response.data);
 
     return {
@@ -57,9 +73,17 @@ export async function updateTweet(payload) {
   }
 }
 
-export async function likeTweet({ id }) {
+export async function likeTweet({ id }, token) {
   try {
-    const { data: response } = await http.patch(`/tweets/${id}/like`, {});
+    const { data: response } = await http.patch(
+      `/tweets/${id}/like`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
     const data = await decodeTweetOutput(response.data);
 
     return {
