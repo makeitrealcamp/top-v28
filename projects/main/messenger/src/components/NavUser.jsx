@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import { Nav, NavLink } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import UserContext from '../containers/UserContext';
+
 export default function NavUser() {
-  const user = null;
-  const isAuthenticated = false;
+  const { user } = useContext(UserContext);
+  const isAuthenticated = user !== null;
 
   return isAuthenticated ? (
     <Nav>

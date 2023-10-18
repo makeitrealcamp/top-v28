@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <Navbar expand="lg" className="bg-light">
       <Container>
-        <Link to="/" className="navbar-brand">
+        <Link to="/home" className="navbar-brand">
           Messenger
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

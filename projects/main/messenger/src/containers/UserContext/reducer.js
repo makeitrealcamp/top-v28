@@ -1,9 +1,4 @@
-import { UserType } from '../../api/users/types';
-import { UserState } from './state';
-
-export type ActionType = { type: 'SET_USER'; payload: UserType | null };
-
-const reducer = (state: UserState, action: ActionType): UserState => {
+const reducer = (state, action) => {
   let draft = {
     ...state,
   };

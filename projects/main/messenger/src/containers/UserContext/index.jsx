@@ -1,31 +1,18 @@
 import React, { createContext, useReducer } from 'react';
 import reducer from './reducer';
 import { initialState } from './state';
-import { UserType } from '../../api/users/types';
 
-type UserContextValue = {
-  user: UserType | null;
-  setUser: (payload: UserType | null) => void;
-};
-
-const UserContext = createContext<UserContextValue>({
+const UserContext = createContext({
   user: null,
   setUser: () => {},
 });
 
-type UserProviderProps = {
-  children: React.ReactNode;
-  overrides?: {
-    user: UserType | null;
-  };
-};
-
-export function UserProvider({ children, overrides }: UserProviderProps) {
+export function UserProvider({ children, overrides }) {
   const [state, dispatch] = useReducer(reducer, initialState, () =>
     Object.assign(initialState, overrides),
   );
 
-  function setUser(payload: UserType | null) {
+  function setUser(payload) {
     dispatch({
       type: 'SET_USER',
       payload,
