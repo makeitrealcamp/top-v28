@@ -1,20 +1,19 @@
-import { useState } from 'react';
 import { Formik, ErrorMessage } from 'formik';
+import { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
-import { z } from 'zod';
-
 import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
+
+import { signUp } from '../api/users';
 
 const signUpSchema = z.object({
   username: z.string(),
   email: z.string().email(),
   password: z.string().min(6).max(16),
 });
-
-function signUp() {}
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -33,18 +32,9 @@ export default function SignUp() {
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
           try {
-            const formData = new FormData();
-            for (const value in values) {
-              formData.append(value, values[value]);
-            }
-
-            const { data } = await signUp(formData);
+            await signUp(values);
             setSubmitting(false);
-            navigate('/signed', {
-              state: {
-                email: data.email,
-              },
-            });
+            navigate('/signin');
           } catch (e) {
             if (e instanceof Error) {
               setError(e.message);

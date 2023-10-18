@@ -7,14 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 
+import { signIn } from '../api/users';
 import UserContext from '../containers/UserContext';
 
 const signInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6).max(16),
 });
-
-function signIn() {}
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -35,8 +34,8 @@ export default function SignIn() {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             setSubmitting(true);
-            const { data } = await signIn(values);
-            setUser(data);
+            const user = await signIn(values);
+            setUser(user);
             setSubmitting(false);
             navigate('/home');
           } catch (e) {

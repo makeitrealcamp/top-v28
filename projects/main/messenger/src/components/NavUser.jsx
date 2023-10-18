@@ -2,20 +2,26 @@ import { useContext } from 'react';
 import { Nav, NavLink } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import { clearSession } from '../api/session';
 import UserContext from '../containers/UserContext';
 
 export default function NavUser() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const isAuthenticated = user !== null;
+
+  function SignOut() {
+    setUser(null);
+    clearSession();
+  }
 
   return isAuthenticated ? (
     <Nav>
       <NavLink className="nav-link" href="#">
         @{user.username}
       </NavLink>
-      <Link to="/signout" className="nav-link">
+      <NavLink className="nav-link" onClick={SignOut}>
         Sign Out
-      </Link>
+      </NavLink>
     </Nav>
   ) : (
     <Nav>
