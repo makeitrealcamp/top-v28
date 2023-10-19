@@ -4,8 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import ProtectedRoute from './containers/ProtectedRoute';
 import { UserProvider } from './containers/UserContext';
-import Home from './pages/Home';
 import Blank from './pages/Blank';
+import Create from './pages/Create';
+import Home from './pages/Home';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 
@@ -22,6 +23,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/create"
+                element={
+                  <ProtectedRoute>
+                    <Create />
                   </ProtectedRoute>
                 }
               />

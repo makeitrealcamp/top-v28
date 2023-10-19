@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import reducer from './reducer';
 import { initialState } from './state';
 
@@ -7,6 +7,7 @@ const UserContext = createContext({
   setUser: () => {},
 });
 
+// eslint-disable-next-line react/prop-types
 export function UserProvider({ children, overrides }) {
   const [state, dispatch] = useReducer(reducer, initialState, () =>
     Object.assign(initialState, overrides),

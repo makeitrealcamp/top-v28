@@ -1,45 +1,24 @@
 import { Badge, ListGroup } from 'react-bootstrap';
 
-export default function List() {
+// eslint-disable-next-line react/prop-types
+export default function List({ list = [], selected, onSelect }) {
   return (
     <ListGroup as="ul">
-      <ListGroup.Item
-        as="li"
-        className="d-flex justify-content-between align-items-start"
-        active
-      >
-        <div className="ms-2 me-auto">
-          <div className="fw-bold">gmorales</div>
-          gustavo.morales@gmail.com
-        </div>
-        <Badge bg="success" pill>
-          Active
-        </Badge>
-      </ListGroup.Item>
-      <ListGroup.Item
-        as="li"
-        className="d-flex justify-content-between align-items-start"
-      >
-        <div className="ms-2 me-auto">
-          <div className="fw-bold">gmorales</div>
-          gustavo.morales@gmail.com
-        </div>
-        <Badge bg="secondary" pill>
-          Inactive
-        </Badge>
-      </ListGroup.Item>
-      <ListGroup.Item
-        as="li"
-        className="d-flex justify-content-between align-items-start"
-      >
-        <div className="ms-2 me-auto">
-          <div className="fw-bold">gmorales</div>
-          gustavo.morales@gmail.com
-        </div>
-        <Badge bg="success" pill>
-          Active
-        </Badge>
-      </ListGroup.Item>
+      {list.map((item) => (
+        <ListGroup.Item
+          active={selected === item.id}
+          as="li"
+          className="d-flex justify-content-between align-items-start"
+          key={item.id}
+          onClick={() => onSelect(item.id)}
+        >
+          <div className="ms-2 me-auto">
+            <div className="fw-bold">{item.username}</div>
+            {item.email}
+          </div>
+          <Badge bg="success" pill></Badge>
+        </ListGroup.Item>
+      ))}
     </ListGroup>
   );
 }
