@@ -53,7 +53,17 @@ export async function list(req, res, next) {
       },
     });
 
-    res.json(conversations);
+    const data = conversations.map((conversation) => {
+      const user =
+        conversation.userAId === userId
+          ? conversation.userB
+          : conversation.userA;
+      return {
+        ...user,
+        id: conversation.id,
+      };
+    });
+    res.json(data);
   } catch (error) {
     next(error);
   }
