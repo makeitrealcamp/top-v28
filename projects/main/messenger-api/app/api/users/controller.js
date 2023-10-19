@@ -63,7 +63,6 @@ export async function signin(req, res, next) {
 
     res.json({
       ...user,
-      id: undefined,
       password: undefined,
       token,
     });
