@@ -1,5 +1,5 @@
 import { mutate } from 'swr';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import UserContext from '../containers/UserContext';
 import useConversations from '../domain/useConversations';
 import useConversation from '../domain/useConversation';
 import { createmessage } from '../api/messages';
+import socket from '../socket';
 
 export default function Home() {
   const { state } = useLocation();
@@ -35,8 +36,41 @@ export default function Home() {
         },
         false,
       );
+
+      socket.emit('message', {
+        newMessage,
+        conversationId: selected,
+        recepientId:
+          conversation?.userAId === user?.id
+            ? conversation?.userBId
+            : conversation?.userAId,
+      });
     }
   }
+
+  useEffect(() => {
+    socket.on('message', (payload) => {
+      const { conversationId, recepientId } = payload;
+      if (recepientId === user.id && conversationId === selected) {
+        const { newMessage } = payload;
+
+        mutate(
+          `/conversations/${selected}`,
+          (prevData) => {
+            return {
+              ...prevData,
+              messages: [newMessage, ...prevData.messages],
+            };
+          },
+          false,
+        );
+      }
+    });
+
+    return () => {
+      socket.off('message');
+    };
+  }, [selected, user.id]);
 
   return (
     <Row className="mt-4 d-flex flex-grow-1">
