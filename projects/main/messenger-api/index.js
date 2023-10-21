@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import { config } from './app/config.js';
 import { app } from './app/index.js';
 import { connect } from './app/database.js';
+import client, { connect as cacheConnect } from './app/cache.js';
 
 const { port } = config;
 
@@ -12,6 +13,9 @@ const server = http.createServer(app);
 
 // Connect to the database
 connect();
+
+// Connect REDIS Client
+cacheConnect();
 
 // Create Socket Server
 const io = new Server(server, {
@@ -30,6 +34,19 @@ io.on('connection', (socket) => {
 
   socket.on('message', (payload) => {
     socket.broadcast.emit('message', payload);
+  });
+
+  socket.on('online', async (user) => {
+    console.log(`⚡ User online: ${user.id}`);
+    await client.hSet('users', `user-${user.id}`, user.id);
+
+    socket.broadcast.emit('online', user);
+  });
+
+  socket.on('offline', async (user) => {
+    await client.hDel('users', `user-${user.id}`);
+
+    socket.broadcast.emit('offline', user);
   });
 });
 

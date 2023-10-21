@@ -1,4 +1,5 @@
 import { prisma } from '../../database.js';
+import client from '../../cache.js';
 
 export async function create(req, res, next) {
   const { body = {}, auth = {} } = req;
@@ -53,6 +54,9 @@ export async function list(req, res, next) {
       },
     });
 
+    const users = await client.hGetAll('users');
+    const usersIds = Object.values(users).map((id) => Number(id));
+
     const data = conversations.map((conversation) => {
       const user =
         conversation.userAId === userId
@@ -60,6 +64,8 @@ export async function list(req, res, next) {
           : conversation.userA;
       return {
         ...user,
+        userId: user.id,
+        online: usersIds.includes(user.id),
         id: conversation.id,
       };
     });
