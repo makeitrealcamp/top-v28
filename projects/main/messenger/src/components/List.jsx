@@ -16,7 +16,9 @@ export default function List({ list = [], selected, onSelect }) {
             <div className="fw-bold">{item.username}</div>
             {item.email}
           </div>
-          <Badge bg="success" pill></Badge>
+          <Badge bg={item.online ? 'success' : 'secondary'} pill>
+            {item.online ? 'online' : 'offline'}
+          </Badge>
         </ListGroup.Item>
       ))}
     </ListGroup>

@@ -67,6 +67,43 @@ export default function Home() {
       }
     });
 
+    socket.on('online', (user) => {
+      mutate(
+        '/conversations',
+        (prevData) => {
+          return prevData.map((conversation) => {
+            if (conversation.userId === user.id) {
+              return {
+                ...conversation,
+                online: true,
+              };
+            }
+            return conversation;
+          });
+        },
+        false,
+      );
+    });
+
+    socket.on('offline', (user) => {
+      mutate(
+        '/conversations',
+        (prevData) => {
+          return prevData.map((conversation) => {
+            if (conversation.userId === user.id) {
+              return {
+                ...conversation,
+                ...conversation.user,
+                online: false,
+              };
+            }
+            return conversation;
+          });
+        },
+        false,
+      );
+    });
+
     return () => {
       socket.off('message');
     };
