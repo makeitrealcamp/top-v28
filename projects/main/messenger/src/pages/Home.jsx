@@ -1,4 +1,3 @@
-import { mutate } from 'swr';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
@@ -16,8 +15,14 @@ export default function Home() {
   const { state } = useLocation();
   const { user } = useContext(UserContext);
   const [selected, setSelected] = useState(state?.selected || 0);
-  const { data: conversations } = useConversations();
-  const { data: conversation } = useConversation({ id: selected });
+  const {
+    data: conversations,
+    actions: { setOnlineStatus },
+  } = useConversations();
+  const {
+    data: conversation,
+    actions: { addMessage },
+  } = useConversation({ id: selected });
 
   async function onMessage(content) {
     if (content && selected) {
@@ -26,16 +31,7 @@ export default function Home() {
         conversationId: selected,
       });
 
-      mutate(
-        `/conversations/${selected}`,
-        (prevData) => {
-          return {
-            ...prevData,
-            messages: [newMessage, ...prevData.messages],
-          };
-        },
-        false,
-      );
+      addMessage({ newMessage });
 
       socket.emit('message', {
         newMessage,
@@ -54,60 +50,24 @@ export default function Home() {
       if (recepientId === user.id && conversationId === selected) {
         const { newMessage } = payload;
 
-        mutate(
-          `/conversations/${selected}`,
-          (prevData) => {
-            return {
-              ...prevData,
-              messages: [newMessage, ...prevData.messages],
-            };
-          },
-          false,
-        );
+        addMessage({ newMessage });
       }
     });
 
     socket.on('online', (user) => {
-      mutate(
-        '/conversations',
-        (prevData) => {
-          return prevData.map((conversation) => {
-            if (conversation.userId === user.id) {
-              return {
-                ...conversation,
-                online: true,
-              };
-            }
-            return conversation;
-          });
-        },
-        false,
-      );
+      setOnlineStatus({ user, state: true });
     });
 
     socket.on('offline', (user) => {
-      mutate(
-        '/conversations',
-        (prevData) => {
-          return prevData.map((conversation) => {
-            if (conversation.userId === user.id) {
-              return {
-                ...conversation,
-                ...conversation.user,
-                online: false,
-              };
-            }
-            return conversation;
-          });
-        },
-        false,
-      );
+      setOnlineStatus({ user, state: false });
     });
 
     return () => {
       socket.off('message');
+      socket.off('online');
+      socket.off('offline');
     };
-  }, [selected, user.id]);
+  }, [addMessage, selected, setOnlineStatus, user]);
 
   return (
     <Row className="mt-4 d-flex flex-grow-1">
