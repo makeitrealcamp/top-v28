@@ -5,7 +5,11 @@ import { router as api } from './api/index.js';
 
 export const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+  }),
+);
 
 // Parse JSON
 app.use(express.json());

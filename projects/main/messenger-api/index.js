@@ -20,7 +20,7 @@ cacheConnect();
 // Create Socket Server
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: process.env.CORS_ORIGIN,
   },
 });
 
