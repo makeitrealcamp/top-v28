@@ -76,39 +76,54 @@ export async function list(req, res, next) {
 }
 
 export async function get(req, res, next) {
-  const { params = {}, auth = {} } = req;
+  const { params = {}, auth = {}, query = {} } = req;
   const { id: conversationId } = params;
   const { id: userId } = auth;
+  const { skip = '0', limit = '100' } = query;
 
   try {
-    const conversations = await prisma.conversation.findFirst({
-      where: {
-        AND: [
-          {
-            id: Number(conversationId),
-          },
-          {
-            OR: [
-              {
-                userAId: userId,
-              },
-              {
-                userBId: userId,
-              },
-            ],
-          },
-        ],
-      },
-      include: {
-        messages: {
-          orderBy: {
-            createdAt: 'desc',
+    const [conversations, total] = await Promise.all([
+      prisma.conversation.findFirst({
+        where: {
+          AND: [
+            {
+              id: Number(conversationId),
+            },
+            {
+              OR: [
+                {
+                  userAId: userId,
+                },
+                {
+                  userBId: userId,
+                },
+              ],
+            },
+          ],
+        },
+        skip: Number(skip),
+        take: Number(limit),
+        include: {
+          messages: {
+            orderBy: {
+              createdAt: 'desc',
+            },
           },
         },
-      },
-    });
+      }),
+      prisma.message.count({
+        where: {
+          conversationId: Number(conversationId),
+        },
+      }),
+    ]);
 
-    res.json(conversations);
+    res.json({
+      ...conversations,
+      limit: Number(limit),
+      skip: Number(skip),
+      total,
+    });
   } catch (error) {
     next(error);
   }
