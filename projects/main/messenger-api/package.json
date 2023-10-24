@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "prestart": "cross-env NODE_ENV=production npx prisma db push",
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "cross-env NODE_ENV=test vitest"
   },
