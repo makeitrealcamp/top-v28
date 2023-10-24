@@ -17,12 +17,27 @@ export default function useConversations() {
     return conversation;
   }
 
+  function setOnlineStatus({ user, state }) {
+    mutate((prevData) => {
+      return prevData.map((conversation) => {
+        if (conversation.userId === user.id) {
+          return {
+            ...conversation,
+            online: state,
+          };
+        }
+        return conversation;
+      });
+    }, false);
+  }
+
   return {
     data,
     error,
     isLoading,
     actions: {
       create,
+      setOnlineStatus,
     },
   };
 }

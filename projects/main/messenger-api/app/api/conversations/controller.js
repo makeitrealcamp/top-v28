@@ -1,4 +1,5 @@
 import { prisma } from '../../database.js';
+import client from '../../cache.js';
 
 export async function create(req, res, next) {
   const { body = {}, auth = {} } = req;
@@ -53,6 +54,9 @@ export async function list(req, res, next) {
       },
     });
 
+    const users = await client.hGetAll('users');
+    const usersIds = Object.values(users).map((id) => Number(id));
+
     const data = conversations.map((conversation) => {
       const user =
         conversation.userAId === userId
@@ -60,6 +64,8 @@ export async function list(req, res, next) {
           : conversation.userA;
       return {
         ...user,
+        userId: user.id,
+        online: usersIds.includes(user.id),
         id: conversation.id,
       };
     });
@@ -70,39 +76,54 @@ export async function list(req, res, next) {
 }
 
 export async function get(req, res, next) {
-  const { params = {}, auth = {} } = req;
+  const { params = {}, auth = {}, query = {} } = req;
   const { id: conversationId } = params;
   const { id: userId } = auth;
+  const { skip = '0', limit = '100' } = query;
 
   try {
-    const conversations = await prisma.conversation.findFirst({
-      where: {
-        AND: [
-          {
-            id: Number(conversationId),
-          },
-          {
-            OR: [
-              {
-                userAId: userId,
-              },
-              {
-                userBId: userId,
-              },
-            ],
-          },
-        ],
-      },
-      include: {
-        messages: {
-          orderBy: {
-            createdAt: 'desc',
+    const [conversations, total] = await Promise.all([
+      prisma.conversation.findFirst({
+        where: {
+          AND: [
+            {
+              id: Number(conversationId),
+            },
+            {
+              OR: [
+                {
+                  userAId: userId,
+                },
+                {
+                  userBId: userId,
+                },
+              ],
+            },
+          ],
+        },
+        skip: Number(skip),
+        take: Number(limit),
+        include: {
+          messages: {
+            orderBy: {
+              createdAt: 'desc',
+            },
           },
         },
-      },
-    });
+      }),
+      prisma.message.count({
+        where: {
+          conversationId: Number(conversationId),
+        },
+      }),
+    ]);
 
-    res.json(conversations);
+    res.json({
+      ...conversations,
+      limit: Number(limit),
+      skip: Number(skip),
+      total,
+    });
   } catch (error) {
     next(error);
   }

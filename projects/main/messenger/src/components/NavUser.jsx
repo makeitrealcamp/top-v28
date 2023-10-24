@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 
 import { clearSession } from '../api/session';
 import UserContext from '../containers/UserContext';
+import socket from '../socket';
 
 export default function NavUser() {
   const { user, setUser } = useContext(UserContext);
   const isAuthenticated = user !== null;
 
   function SignOut() {
+    socket.emit('offline', user);
     setUser(null);
     clearSession();
   }

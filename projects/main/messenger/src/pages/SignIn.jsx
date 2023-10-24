@@ -9,6 +9,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 
 import { signIn } from '../api/users';
 import UserContext from '../containers/UserContext';
+import socket from '../socket';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -36,6 +37,7 @@ export default function SignIn() {
             setSubmitting(true);
             const user = await signIn(values);
             setUser(user);
+            socket.emit('online', user);
             setSubmitting(false);
             navigate('/home');
           } catch (e) {
