@@ -31,6 +31,14 @@ const styles = StyleSheet.create({
     padding: 12,
     width: '100%',
   },
+  input: {
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    borderRadius: 12,
+    fontSize: 16,
+    padding: 12,
+    width: '100%',
+  },
   primary: {
     background: {
       backgroundColor: '#1D9CF0',
