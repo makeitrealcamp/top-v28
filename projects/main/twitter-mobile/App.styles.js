@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  top: {
+    justifyContent: 'start',
+  },
   wrapper: {
     width: '90%',
   },
