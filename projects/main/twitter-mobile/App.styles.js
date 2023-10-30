@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
     padding: 12,
     width: '100%',
   },
+  inputError: {
+    borderColor: 'red',
+  },
   primary: {
     background: {
       backgroundColor: '#1D9CF0',

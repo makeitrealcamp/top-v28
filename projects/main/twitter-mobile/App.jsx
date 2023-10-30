@@ -10,7 +10,7 @@ import Create from './screens/Create';
 export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Welcome />
+      <SignIn />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
