@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native';
 
-import Welcome from './screens/Welcome.js';
-import SignIn from './screens/SignIn.js';
-import SignUp from './screens/SignUp.js';
-import Home from './screens/Home.js';
-import Create from './screens/Create.js';
+import Welcome from './screens/Welcome';
+import SignIn from './screens/SignIn';
+import SignUp from './screens/SignUp';
+import Home from './screens/Home';
+import Create from './screens/Create';
 
 export default function App() {
   return (
