@@ -17,7 +17,7 @@ const initialValues = {
   password: '',
 };
 
-export default function SignIn() {
+export default function SignIn({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <Image
@@ -76,7 +76,16 @@ export default function SignIn() {
       </View>
       <Text style={globalStyles.space}>Do you want to create an account?</Text>
       <View style={[globalStyles.wrapper]}>
-        <TouchButton title="Sign Up" variant="secondary" />
+        <TouchButton
+          title="Sign Up"
+          variant="secondary"
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Home' }],
+            })
+          }
+        />
       </View>
     </View>
   );

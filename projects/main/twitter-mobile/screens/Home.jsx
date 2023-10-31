@@ -1,5 +1,8 @@
-import { FlatList, ScrollView, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import { Button, FlatList, Image, View } from 'react-native';
+
 import Tweet from '../components/Tweet';
+import globalStyles from '../App.styles.js';
 
 const data = [
   {
@@ -70,9 +73,28 @@ const data = [
   },
 ];
 
-export default function Home() {
+const LogoTitle = () => (
+  <Image
+    source={require('../assets/logo.png')}
+    style={globalStyles.logo.small}
+  />
+);
+
+export default function Home({ navigation }) {
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: (props) => <LogoTitle {...props} />,
+      headerLeft: () => (
+        <Button onPress={() => alert('This is a button!')} title="Profile" />
+      ),
+      headerRight: () => (
+        <Button onPress={() => navigation.navigate('Create')} title="Create" />
+      ),
+    });
+  }, [navigation]);
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={[globalStyles.container, globalStyles.top]}>
       <FlatList
         data={data}
         renderItem={({ item }) => (

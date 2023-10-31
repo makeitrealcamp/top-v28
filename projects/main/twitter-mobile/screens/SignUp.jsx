@@ -21,7 +21,7 @@ const initialValues = {
   password: '',
 };
 
-export default function SignUp() {
+export default function SignUp({ navigation }) {
   return (
     <View style={globalStyles.container}>
       <Image
@@ -106,7 +106,11 @@ export default function SignUp() {
       </View>
       <Text style={globalStyles.space}>Do you already have an account?</Text>
       <View style={[globalStyles.wrapper]}>
-        <TouchButton title="Sign In" variant="secondary" />
+        <TouchButton
+          title="Sign In"
+          variant="secondary"
+          onPress={() => navigation.navigate('Sign In')}
+        />
       </View>
     </View>
   );

@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
       height: 128,
       resizeMode: 'contain',
     },
+    small: {
+      width: 32,
+      height: 32,
+      resizeMode: 'contain',
+    },
   },
   h1: {
     fontSize: 24,
