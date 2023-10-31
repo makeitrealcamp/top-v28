@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
   },
+  colors: {
+    primary: '#1D9CF0',
+  },
 });
 
 export default styles;

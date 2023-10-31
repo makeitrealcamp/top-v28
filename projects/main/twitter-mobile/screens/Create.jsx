@@ -7,7 +7,9 @@ import TouchButton from '../components/TouchButton';
 export default function Create() {
   const [content, setContent] = useState('');
   return (
-    <View style={[globalStyles.container, globalStyles.top]}>
+    <View
+      style={[globalStyles.container, globalStyles.top, { paddingTop: 12 }]}
+    >
       <View style={globalStyles.wrapper}>
         <TextInput
           style={[

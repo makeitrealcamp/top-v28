@@ -79,12 +79,7 @@ export default function SignIn({ navigation }) {
         <TouchButton
           title="Sign Up"
           variant="secondary"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Home' }],
-            })
-          }
+          onPress={() => navigation.navigate('Sign Up')}
         />
       </View>
     </View>
