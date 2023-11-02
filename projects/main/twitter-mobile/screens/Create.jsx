@@ -3,9 +3,19 @@ import { TextInput, View } from 'react-native';
 
 import globalStyles from '../App.styles';
 import TouchButton from '../components/TouchButton';
+import useTweets from '../domain/useTweets';
 
-export default function Create() {
+export default function Create({ navigation }) {
   const [content, setContent] = useState('');
+  const {
+    actions: { create },
+  } = useTweets();
+
+  async function onSubmit() {
+    await create({ content });
+    setContent('');
+    navigation.navigate('List');
+  }
   return (
     <View
       style={[globalStyles.container, globalStyles.top, { paddingTop: 12 }]}
@@ -23,7 +33,7 @@ export default function Create() {
           onChangeText={(text) => setContent(text)}
           value={content}
         />
-        <TouchButton title="Tweet" />
+        <TouchButton title="Tweet" onPress={onSubmit} />
       </View>
     </View>
   );

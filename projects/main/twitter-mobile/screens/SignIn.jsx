@@ -1,11 +1,15 @@
 import { Formik } from 'formik';
+import { useContext } from 'react';
 import { Image, Text, TextInput, View } from 'react-native';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { z } from 'zod';
 
 import globalStyles from '../App.styles.js';
+
+import { signIn } from '../api/users/index.js';
 import TouchButton from '../components/TouchButton.jsx';
 import Separator from '../components/Separator.jsx';
+import UserContext from '../containers/UserContext/index.jsx';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -18,6 +22,7 @@ const initialValues = {
 };
 
 export default function SignIn({ navigation }) {
+  const { setUser } = useContext(UserContext);
   return (
     <View style={globalStyles.container}>
       <Image
@@ -28,7 +33,12 @@ export default function SignIn({ navigation }) {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log(values);
+          const user = await signIn(values);
+          setUser(user);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          });
         }}
         validationSchema={toFormikValidationSchema(signInSchema)}
       >

@@ -3,16 +3,20 @@ import { View } from 'react-native';
 import Tweet from '../components/Tweet';
 
 import globalStyles from '../App.styles.js';
+import useTweet from '../domain/useTweet.js';
 
 export default function Post({ route }) {
-  const { item } = route.params;
+  const { id } = route.params;
+  const { data: item } = useTweet({ id });
   return (
     <View style={[globalStyles.container, globalStyles.top, { paddingTop: 4 }]}>
-      <Tweet
-        content={item.content}
-        createdAt={item.createdAt}
-        user={item.user}
-      />
+      {item && (
+        <Tweet
+          content={item.content}
+          createdAt={item.createdAt}
+          user={item.user}
+        />
+      )}
     </View>
   );
 }

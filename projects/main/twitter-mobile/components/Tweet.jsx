@@ -1,3 +1,4 @@
+import { formatRelative } from 'date-fns';
 import { EvilIcons } from '@expo/vector-icons';
 import { Dimensions, Image, Text, View } from 'react-native';
 
@@ -25,7 +26,7 @@ export default function Tweet({ content, createdAt, user }) {
       >
         <Image
           source={{
-            uri: user.photo ?? 'https://placehold.co/48/png',
+            uri: user.profilePhoto ?? 'https://placehold.co/48/png',
           }}
           style={styles.photo}
         />
@@ -34,7 +35,10 @@ export default function Tweet({ content, createdAt, user }) {
         <View style={styles.header}>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={{ color: 'gray' }}>@{user.username}</Text>
-          <Text style={{ color: 'gray' }}> · {createdAt}</Text>
+          <Text style={{ color: 'gray' }}>
+            {' '}
+            · {formatRelative(new Date(createdAt), new Date())}
+          </Text>
         </View>
         <Text style={{ lineHeight: 20 }}>{content}</Text>
         <View style={styles.iconsContainer}>

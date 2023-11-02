@@ -6,6 +6,7 @@ import { z } from 'zod';
 import globalStyles from '../App.styles.js';
 import TouchButton from '../components/TouchButton.jsx';
 import Separator from '../components/Separator.jsx';
+import { signUp } from '../api/users/index.js';
 
 const signUpSchema = z.object({
   name: z.string(),
@@ -33,7 +34,8 @@ export default function SignUp({ navigation }) {
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { setSubmitting }) => {
-          console.log(values);
+          await signUp(values);
+          navigation.navigate('Sign In');
         }}
         validationSchema={toFormikValidationSchema(signUpSchema)}
       >

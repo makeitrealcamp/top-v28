@@ -8,21 +8,37 @@ import SignUp from './screens/SignUp';
 import Home from './screens/Home';
 import Create from './screens/Create';
 import Post from './screens/Post';
+import UserContext, { UserProvider } from './containers/UserContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen name="Sign In" component={SignIn} />
-        <Stack.Screen name="Sign Up" component={SignUp} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Create" component={Create} />
-        <Stack.Screen name="Post" component={Post} />
-      </Stack.Navigator>
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <UserProvider>
+      <UserContext.Consumer>
+        {({ user }) => (
+          <NavigationContainer>
+            <Stack.Navigator>
+              {user ? (
+                <Stack.Group>
+                  <Stack.Screen name="Home" component={Home} />
+                  <Stack.Screen name="Create" component={Create} />
+                  <Stack.Screen name="Post" component={Post} />
+                </Stack.Group>
+              ) : (
+                <Stack.Group>
+                  <Stack.Screen name="Sign In" component={SignIn} />
+                  <Stack.Screen name="Sign Up" component={SignUp} />
+                </Stack.Group>
+              )}
+              <Stack.Group>
+                <Stack.Screen name="Welcome" component={Welcome} />
+              </Stack.Group>
+            </Stack.Navigator>
+            <StatusBar style="auto" />
+          </NavigationContainer>
+        )}
+      </UserContext.Consumer>
+    </UserProvider>
   );
 }
