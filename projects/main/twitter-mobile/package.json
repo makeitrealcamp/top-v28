@@ -24,7 +24,8 @@
     "react-native-screens": "~3.22.0",
     "swr": "^2.2.4",
     "zod": "^3.22.4",
-    "zod-formik-adapter": "^1.2.0"
+    "zod-formik-adapter": "^1.2.0",
+    "expo-image-picker": "~14.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -22,6 +22,7 @@ export default function List({ navigation }) {
             <Tweet
               content={item.content}
               createdAt={item.createdAt}
+              photo={item.photo}
               user={item.user}
             />
           </TouchableOpacity>

@@ -14,6 +14,7 @@ export default function Post({ route }) {
         <Tweet
           content={item.content}
           createdAt={item.createdAt}
+          photo={item.photo}
           user={item.user}
         />
       )}

@@ -11,8 +11,8 @@ const IconGroup = ({ name, count }) => (
   </View>
 );
 
-export default function Tweet({ content, createdAt, user }) {
-  const deviceWith = Dimensions.get('window').width;
+export default function Tweet({ content, createdAt, photo, user }) {
+  const deviceWidth = Dimensions.get('window').width;
   const photoWidth = 64;
   const photoHeight = 64;
 
@@ -31,7 +31,7 @@ export default function Tweet({ content, createdAt, user }) {
           style={styles.photo}
         />
       </View>
-      <View style={{ width: deviceWith - 96 }}>
+      <View style={{ width: deviceWidth - 96 }}>
         <View style={styles.header}>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={{ color: 'gray' }}>@{user.username}</Text>
@@ -41,6 +41,18 @@ export default function Tweet({ content, createdAt, user }) {
           </Text>
         </View>
         <Text style={{ lineHeight: 20 }}>{content}</Text>
+        {photo && (
+          <Image
+            source={{
+              uri: `${process.env.EXPO_PUBLIC_API_URL}/${photo}`,
+            }}
+            style={{
+              height: 200,
+              width: deviceWidth - 96,
+              resizeMode: 'cover',
+            }}
+          />
+        )}
         <View style={styles.iconsContainer}>
           <IconGroup name="comment" count={0} />
           <IconGroup name="retweet" count={0} />
