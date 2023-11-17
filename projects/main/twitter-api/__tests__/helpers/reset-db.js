@@ -1,4 +1,4 @@
-import { prisma } from '../../app/database.js';
+import { prisma } from '../../../database/prismaConnection.js'; from '../../app/database.js';
 
 export const resetDb = async () => {
   await prisma.$transaction([

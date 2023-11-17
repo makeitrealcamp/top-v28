@@ -1,4 +1,4 @@
-import { prisma } from '../../../database.js';
+import { prisma } from '../../../database/prismaConnection.js';
 import { fields, transformTweet, TweetSchema } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 

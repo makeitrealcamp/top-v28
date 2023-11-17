@@ -1,4 +1,4 @@
-import { prisma } from '../app/database.js';
+import { prisma } from '../../../database/prismaConnection.js'; from '../app/database.js';
 import { getUser } from './fixtures/user.fixture.js';
 import { getTweet } from './fixtures/tweet.fixture.js';
 import { encryptPassword } from '../app/api/v1/users/model.js';

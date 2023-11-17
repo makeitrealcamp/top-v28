@@ -1,4 +1,4 @@
-import { prisma } from '../../../database.js';
+import { prisma } from '../../../database/prismaConnection.js';
 import {
   encryptPassword,
   verifyPassword,
