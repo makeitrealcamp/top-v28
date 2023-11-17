@@ -1,64 +1,16 @@
 import { prisma } from '../../../database/prismaConnection.js';
-import { fields, transformTweet, TweetSchema } from './model.js';
+import { fields, transformTweet, TweetSchema } from './middlewares/model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
+import * as tweetService from './service.js';
 
 export const create = async (req, res, next) => {
   const { body = {}, decoded = {} } = req;
   const { id: userId } = decoded;
-
+  const tweetData = req.validatedTweet;
   try {
-    const { success, data, error } = await TweetSchema.safeParseAsync({
-      ...body,
-      photo: req.file?.path,
-    });
+    const savedTweet = await tweetService.createTweet(userId, tweetData);
 
-    if (!success) {
-      return next({
-        message: 'Validator error',
-        status: 400,
-        error,
-      });
-    }
-
-    const result = await prisma.tweet.create({
-      data: {
-        ...data,
-        userId,
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            username: true,
-            email: true,
-            profilePhoto: true,
-          },
-        },
-        // Count the number of likes
-        _count: {
-          select: {
-            likes: true,
-          },
-        },
-        // isLiked
-        likes: {
-          select: {
-            userId: true,
-          },
-          where: {
-            userId,
-          },
-        },
-        // Collection of comments
-        children: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-
-    const tweet = transformTweet(result);
+    const tweet = transformTweet(savedTweet);
 
     res.status(201);
     res.json({

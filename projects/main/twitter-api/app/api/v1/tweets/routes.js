@@ -3,6 +3,7 @@ import { Router } from 'express';
 import * as controller from './controller.js';
 import { auth, owner } from '../auth.js';
 import { upload } from '../upload.js';
+import { createTweetValidator } from './middlewares/CreateTweetValidator.js';
 
 // eslint-disable-next-line new-cap
 export const router = Router();
@@ -17,7 +18,7 @@ export const router = Router();
 
 router
   .route('/')
-  .post(auth, upload.single('photo'), controller.create)
+  .post(auth, upload.single('photo'), createTweetValidator, controller.create)
   .get(auth, controller.all);
 
 router
