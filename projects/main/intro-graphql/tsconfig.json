@@ -1,0 +1,27 @@
+{
+  "extends": "ts-node/node16/tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    // Tell ts-node CLI to install the --loader automatically, explained below
+    "esm": true,
+    "compilerOptions": {
+      "module": "ESNext"
+    }
+  },
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "rootDir": "./",
+    "resolveJsonModule": true /* in case you are importing JSON files */,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}
