@@ -18,7 +18,7 @@ export const router = Router();
 router
   .route('/')
   .post(auth, upload.single('photo'), controller.create)
-  .get(auth, controller.all);
+  .get(controller.all);
 
 router
   .route('/:id')

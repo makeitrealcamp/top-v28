@@ -5,12 +5,26 @@ import { v4 as uuidv4 } from 'uuid';
 import swaggerUI from 'swagger-ui-express';
 import multer from 'multer';
 
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+
 import { router as api } from './api/v1/index.js';
 import { swaggerDefinition } from './api/v1/docs.js';
 import { logger, HTTPlogger } from './logger.js';
 import { payments } from './api/v1/stripe.js';
+import {typeDefs, resolvers} from './api/graphql/index.js';
 
 export const app = express();
+
+
+const serverOptions= {
+  typeDefs,
+  resolvers,
+};
+
+const server = new ApolloServer(serverOptions);
+
+await server.start();
 
 // Reduce Fingerprinting
 app.disable('x-powered-by');
@@ -52,6 +66,14 @@ app.use('/api/v1/docs', swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
 
 // Uploads
 app.use('/api/uploads', express.static('uploads'));
+
+app.use('/graphql', 
+
+cors({ origin: ['http://localhost:3000', 'https://studio.apollographql.com'], credentials: true }),
+expressMiddleware(server, {
+  context: async ({ req }) => ({ token: req.headers.authorization }),
+}));
+
 
 // No route found handler
 app.use((req, res, next) => {

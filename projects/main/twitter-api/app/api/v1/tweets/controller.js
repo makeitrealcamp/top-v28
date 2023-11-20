@@ -2,6 +2,8 @@ import { prisma } from '../../../database.js';
 import { fields, transformTweet, TweetSchema } from './model.js';
 import { parseOrderParams, parsePaginationParams } from '../../../utils.js';
 
+import * as tweetService from './service.js';
+
 export const create = async (req, res, next) => {
   const { body = {}, decoded = {} } = req;
   const { id: userId } = decoded;
@@ -19,44 +21,8 @@ export const create = async (req, res, next) => {
         error,
       });
     }
-
-    const result = await prisma.tweet.create({
-      data: {
-        ...data,
-        userId,
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            username: true,
-            email: true,
-            profilePhoto: true,
-          },
-        },
-        // Count the number of likes
-        _count: {
-          select: {
-            likes: true,
-          },
-        },
-        // isLiked
-        likes: {
-          select: {
-            userId: true,
-          },
-          where: {
-            userId,
-          },
-        },
-        // Collection of comments
-        children: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
+    const result = await tweetService.createTweet(data, userId);
+   
 
     const tweet = transformTweet(result);
 
@@ -82,54 +48,7 @@ export const all = async (req, res, next) => {
   const parentId = params.id ? params.id : null;
 
   try {
-    const [result, total] = await Promise.all([
-      prisma.tweet.findMany({
-        where: {
-          parentId,
-        },
-        skip: offset,
-        take: limit,
-        orderBy: {
-          [orderBy]: direction,
-        },
-        include: {
-          user: {
-            select: {
-              name: true,
-              username: true,
-              email: true,
-              profilePhoto: true,
-            },
-          },
-          // Count the number of likes
-          _count: {
-            select: {
-              likes: true,
-            },
-          },
-          // isLiked
-          likes: {
-            select: {
-              userId: true,
-            },
-            where: {
-              userId,
-            },
-          },
-          // Collection of comments
-          children: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      }),
-      prisma.tweet.count({
-        where: {
-          parentId,
-        },
-      }),
-    ]);
+    const [result, total] = await tweetService.getAllTweets({parentId, offset, limit, orderBy, direction, userId});
 
     const data = result.map(transformTweet);
 
