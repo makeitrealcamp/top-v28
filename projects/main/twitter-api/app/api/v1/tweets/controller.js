@@ -149,43 +149,7 @@ export const update = async (req, res, next) => {
       });
     }
 
-    const result = await prisma.tweet.update({
-      where: {
-        id,
-      },
-      data: {
-        ...data,
-        updatedAt: new Date().toISOString(),
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            username: true,
-            email: true,
-            profilePhoto: true,
-          },
-        },
-        _count: {
-          select: {
-            likes: true,
-          },
-        },
-        likes: {
-          select: {
-            userId: true,
-          },
-          where: {
-            userId,
-          },
-        },
-        children: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
+    const result = await tweetService.updateTweet(id, data);
 
     const tweet = transformTweet(result);
 

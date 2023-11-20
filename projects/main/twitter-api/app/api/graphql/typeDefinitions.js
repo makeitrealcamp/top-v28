@@ -38,16 +38,30 @@ type Tweet {
     tweetId: ID!
     updatedAt: String
   }
+type AllTweets{
+ tweets: [Tweet]
+ totals: Int
+}
 
 
+input createUserInput {
+    name: String!
+    username: String!
+    email: String!
+    password: String!
+}
 
   type Query {
     createTweet(content: String!, photo: String, parentId: ID): Tweet!,
-    getAllTweets(parentId: ID, offset: Int, limit: Int, orderBy: String, direction: String, userId: ID): [Tweet],
+    getAllTweets(parentId: ID, offset: Int, limit: Int, orderBy: String, direction: String, userId: ID): AllTweets,
   }
 
   type Mutation {
     createTweet(content: String!, photo: String, parentId: ID): Tweet!
+    updateTweet(id: ID!, content: String, photo: String, parentId: ID): Tweet!
+    createUser(input:createUserInput): User!
+
+
   }
 
 `;

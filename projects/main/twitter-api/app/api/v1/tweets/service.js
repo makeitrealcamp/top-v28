@@ -8,7 +8,11 @@ export const createTweet = async (data, userId) => {
     return await prismaRepository.createTweet(data, userId);
 };
 
-export const getAllTweets = async ({parentId, offset, limit, orderBy=order.orderBy, direction=order.direction, userId}) => {
-    console.log({parentId, offset, limit, orderBy, direction, userId});
-    return await Promise.all([prismaRepository.getAllTweets({parentId, offset, limit, orderBy, direction, userId}), prismaRepository.countTweets(parentId)]);
+export const getAllTweets = async ({ parentId, offset, limit, orderBy = order.orderBy, direction = order.direction, userId }) => {
+    console.log({ parentId, offset, limit, orderBy, direction, userId });
+    return await Promise.all([prismaRepository.getAllTweets({ parentId, offset, limit, orderBy, direction, userId }), prismaRepository.countTweets(parentId)]);
+};
+
+export const updateTweet = async (id, data) => {
+    return await prismaRepository.updateTweet(id, data);
 };
