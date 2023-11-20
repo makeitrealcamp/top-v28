@@ -40,17 +40,17 @@ function App() {
                 <Route
                   path="/home"
                   element={
-                    <ProtectedRoute>
+
                       <Home />
-                    </ProtectedRoute>
+
                   }
                 />
                 <Route
                   path="/compose"
                   element={
-                    <ProtectedRoute>
+
                       <Compose />
-                    </ProtectedRoute>
+
                   }
                 />
                 <Route
