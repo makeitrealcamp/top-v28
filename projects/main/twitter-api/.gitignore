@@ -4,3 +4,5 @@ Thumbs.db
 .env
 coverage/
 uploads/
+.vscode/
+```
