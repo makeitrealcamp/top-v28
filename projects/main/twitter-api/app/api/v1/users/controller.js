@@ -15,21 +15,8 @@ export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
-    const { success, data, error } = await UserSchema.safeParseAsync({
-      ...body,
-      profilePhoto: req.file?.path,
-    });
 
-    if (!success) {
-      return next({
-        message: 'Validator error',
-        status: 400,
-        error,
-      });
-    }
-
-    const password = await encryptPassword(data.password);
-    const user = await userService.createUser(data, password);
+    const user = await userService.createUser(body);
     // const user = await prisma.user.create({
     //   data: {
     //     ...data,
