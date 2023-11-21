@@ -38,13 +38,14 @@ type Tweet {
     tweetId: ID!
     updatedAt: String
   }
+
 type AllTweets{
  tweets: [Tweet]
  totals: Int
 }
 
 
-input createUserInput {
+input CreateUserInput {
     name: String!
     username: String!
     email: String!
@@ -59,7 +60,7 @@ input createUserInput {
   type Mutation {
     createTweet(content: String!, photo: String, parentId: ID): Tweet!
     updateTweet(id: ID!, content: String, photo: String, parentId: ID): Tweet!
-    createUser(input:createUserInput): User!
+    createUser(name: String!,username: String!,email: String!,password: String!): String!
 
 
   }

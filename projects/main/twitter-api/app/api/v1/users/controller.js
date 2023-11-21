@@ -9,6 +9,8 @@ import {
 import { signToken } from '../auth.js';
 import { transporter } from '../../../mail.js';
 
+import * as userService from './users.service.js';
+
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
 
@@ -27,15 +29,16 @@ export const signup = async (req, res, next) => {
     }
 
     const password = await encryptPassword(data.password);
-    const user = await prisma.user.create({
-      data: {
-        ...data,
-        password,
-      },
-      select: {
-        email: true,
-      },
-    });
+    const user = await userService.createUser(data, password);
+    // const user = await prisma.user.create({
+    //   data: {
+    //     ...data,
+    //     password,
+    //   },
+    //   select: {
+    //     email: true,
+    //   },
+    // });
 
     req.body.email = user.email;
     next();

@@ -1,5 +1,6 @@
 
 import * as tweetService from '../v1/tweets/service.js';
+import * as userService from '../v1/users/users.service.js';
 import { v4 as uuid } from 'uuid'
 
 /*
@@ -26,8 +27,8 @@ export const resolvers = {
         createTweet: async (_, { content, photo, parentId }, { userId = uuid() }) => {
             return await tweetService.createTweet({ content, photo, parentId }, userId);
         },
-        // createUser: async (_, { input }, { userId = uuid() }) => {
-        //     return await tweetService.createUser(input, userId);
-        // }
+        createUser: async (_, { name, username, email, password },) => {
+            return await userService.createUser({ name, username, email }, password);
+        }
     }
 };
