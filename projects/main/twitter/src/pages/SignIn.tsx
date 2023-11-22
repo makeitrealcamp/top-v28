@@ -10,6 +10,7 @@ import { toFormikValidationSchema } from 'zod-formik-adapter';
 import UserContext from '../containers/UserContext';
 import { signIn } from '../api/users';
 import { formatError } from '../utils';
+import { login } from '../api/graphql/users';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -35,7 +36,7 @@ export default function SignIn() {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             setSubmitting(true);
-            const { data } = await signIn(values);
+            const { data } = await login(values);
             setUser(data);
             setSubmitting(false);
             navigate('/home');
