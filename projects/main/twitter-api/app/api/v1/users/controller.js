@@ -13,10 +13,10 @@ import * as userService from './users.service.js';
 
 export const signup = async (req, res, next) => {
   const { body = {} } = req;
-
+  const filePath = req.file?.path;
   try {
 
-    const user = await userService.createUser(body);
+    const user = await userService.createUser(body, filePath);
     // const user = await prisma.user.create({
     //   data: {
     //     ...data,
@@ -153,52 +153,9 @@ export const activate = async (req, res, next) => {
 };
 
 export const signin = async (req, res, next) => {
-  const { body } = req;
-
+  const { email, password } = req;
   try {
-    const { success, data, error } = await LoginSchema.safeParseAsync(body);
-    if (!success) {
-      return next({
-        message: 'Validator error',
-        status: 400,
-        error,
-      });
-    }
-
-    const { email, password } = data;
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-        active: true,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        username: true,
-        password: true,
-        profilePhoto: true,
-      },
-    });
-
-    if (user === null) {
-      return next({
-        message: 'Invalid email or password',
-        status: 400,
-      });
-    }
-
-    const passwordMatch = await verifyPassword(password, user.password);
-
-    if (!passwordMatch) {
-      return next({
-        message: 'Invalid email or password',
-        status: 400,
-      });
-    }
-
-    const { id, username } = user;
-    const token = signToken({ id, username });
+    const { user, token } = await userService.loginUser({ email, password });
 
     res.json({
       data: {
