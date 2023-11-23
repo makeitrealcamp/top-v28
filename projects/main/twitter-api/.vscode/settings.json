@@ -12,7 +12,7 @@
   "prettier.trailingComma": "all",
   "prettier.singleQuote": true,
   "workbench.editor.untitled.hint": "hidden",
-  "workbench.sideBar.location": "right",
+  "workbench.sideBar.location": "left",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

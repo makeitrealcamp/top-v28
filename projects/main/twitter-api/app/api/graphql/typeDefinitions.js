@@ -1,7 +1,7 @@
 import { gql } from 'graphql-tag';
 
 export const typeDefs = gql`
-type Tweet {
+  type Tweet {
     id: ID!
     content: String
     photo: String
@@ -14,7 +14,7 @@ type Tweet {
     parent: Tweet
     children: [Tweet]
   }
-  
+
   type User {
     id: ID!
     name: String!
@@ -30,7 +30,7 @@ type Tweet {
     tweets: [Tweet]
     likes: [Like]
   }
-  
+
   type Like {
     user: User!
     userId: ID!
@@ -39,38 +39,47 @@ type Tweet {
     updatedAt: String
   }
 
-type AllTweets{
- tweets: [Tweet]
- totals: Int
-}
-type LoginUser{
-  token: String
-  user: User
-}
+  type AllTweets {
+    tweets: [Tweet]
+    totals: Int
+  }
+  type LoginUser {
+    token: String
+    user: User
+  }
 
-type UserCreated{
-  email: String
-}
+  type UserCreated {
+    email: String
+  }
 
-
-input CreateUserInput {
+  input CreateUserInput {
     name: String!
     username: String!
     email: String!
     password: String!
-}
+  }
+  # ROOT TYPES
 
   type Query {
-    createTweet(content: String!, photo: String, parentId: ID): Tweet!,
-    getAllTweets(parentId: ID, offset: Int, limit: Int, orderBy: String, direction: String, userId: ID): AllTweets,
+    getAllTweets(
+      parentId: ID
+      offset: Int
+      limit: Int
+      orderBy: String
+      direction: String
+      userId: ID
+    ): AllTweets
   }
 
   type Mutation {
     createTweet(content: String!, photo: String, parentId: ID): Tweet!
     updateTweet(id: ID!, content: String, photo: String, parentId: ID): Tweet!
-    createUser(name: String!,username: String!,email: String!,password: String!): UserCreated!
-    loginUser(email: String!,password: String!): LoginUser!
-
+    createUser(
+      name: String!
+      username: String!
+      email: String!
+      password: String!
+    ): UserCreated!
+    loginUser(email: String!, password: String!): LoginUser!
   }
-
 `;
