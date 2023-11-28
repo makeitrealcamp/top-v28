@@ -1,10 +1,19 @@
-import { useSearchParams } from "next/navigation";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-    const { searchParams } = new URL(request.url)
-    console.log({searchParams});
-    const id = searchParams.get('id')
+interface Params {
+    id: string;
+}
+
+export async function GET(request: NextRequest, { params }: { params: Params }) {
+    const { searchParams } = new URL(request.url);
+    console.log({ params });
+    const id = params.id;
     console.log(id);
-  return NextResponse.json({ message:''});
+
+    return new NextResponse(JSON.stringify({ message: 'Success', id }), {
+        status: 200,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 }
