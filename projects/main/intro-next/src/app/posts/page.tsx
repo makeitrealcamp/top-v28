@@ -11,7 +11,7 @@ async function fetchPosts() {
 
 export default async function postPages() {
   const posts = await fetchPosts();
-  console.log({ posts });
+  // console.log({ posts });
   return (
     <div>
       <h1>Posts</h1>

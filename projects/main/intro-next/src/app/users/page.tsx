@@ -1,17 +1,21 @@
-
 import { Alert } from '@/components';
-import { useState } from 'react';
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/options';
 
-export default function UsersPage() {
+export default async function UsersPage() {
+  const session = await getServerSession(authOptions);
+  console.log({ session });
+  if (!session || !session.user) {
+    redirect('/api/auth/signin');
+  }
 
-    // const [showAlert, setShowAlert] = useState(true)
+  // const [showAlert, setShowAlert] = useState(true)
   return (
     <>
       <h2>Users Page</h2>
-      <Alert   />
-      <table className="table-auto">
-        ...
-        </table>
+      <Alert />
+      <table className="table-auto">...</table>
     </>
   );
 }

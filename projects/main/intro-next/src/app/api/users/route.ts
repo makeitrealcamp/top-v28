@@ -5,6 +5,10 @@ export async function GET(request: Request) {
     console.log({searchParams});
     const id = searchParams.get('id')
     console.log(id);
+    // zod validate user
+
+  // call getUserService
+
 
   const users = await fetch('https://jsonplaceholder.typicode.com/users');
   const usersJson = await users.json();
