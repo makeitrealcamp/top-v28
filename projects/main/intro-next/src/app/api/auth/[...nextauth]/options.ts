@@ -1,17 +1,20 @@
 import GitHubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { userService } from '../../users/(services)';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { prisma } from '@/libs/prismaClient';
 
 export const authOptions = {
   secret: process.env.AUTH_SECRET,
-  // Configure one or more authentication providers
+
+  adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
 
-    CredentialsProvider({      
+    CredentialsProvider({
       name: 'Credentials',
       credentials: {
         username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
@@ -20,7 +23,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
         const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
-// userService.getUserByEmail()
+        // userService.getUserByEmail()
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
@@ -34,13 +37,14 @@ export const authOptions = {
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
   // callbacks: {
-    
   //   async session({ session, token, user }) {
   //     // Send properties to the client, like an access_token from a provider.
-  //     session.accessToken = token.accessToken
-  //     return session
-  //   }
-  // }
-
+  //     session.accessToken = token.accessToken;
+  //     return session;
+  //   },
+  // },
 };
