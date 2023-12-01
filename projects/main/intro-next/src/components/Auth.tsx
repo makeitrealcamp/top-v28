@@ -7,7 +7,7 @@ function Auth() {
   console.log({ session });
   return (
     <>
-      {!session?.user?.name ? (
+      {!session?.user?.email ? (
         <button onClick={() => signIn()}>Sign In</button>
       ) : (
         <button onClick={() => signOut()}>Sign Out</button>

@@ -1,7 +1,10 @@
 import { UserRepository } from '../(domain)/(repositories)/user.repository';
 import { UserInput } from '../(domain)/entities/user.entity';
+import { UserServiceType } from './types';
 
-export const UserService = (userDataSource: UserRepository) => {
+export const UserService = (
+  userDataSource: UserRepository
+): UserServiceType => {
   const getUser = async (id: number) => {
     return await userDataSource.getUser(id);
   };
@@ -18,11 +21,16 @@ export const UserService = (userDataSource: UserRepository) => {
   const deleteUser = async (id: number) => {
     return await userDataSource.deleteUser(id);
   };
+  const getUserByEmail = async (email: string) => {
+    return await userDataSource.getUserByEmail(email);
+  };
+
   return {
     getUser,
     getUsers,
     createUser,
     updateUser,
     deleteUser,
+    getUserByEmail,
   };
 };

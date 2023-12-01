@@ -3,36 +3,41 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { userService } from '../../users/(services)';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/libs/prismaClient';
+import { NextAuthOptions } from 'next-auth';
+import { authService } from '../(authService)';
+import { config } from '@/libs';
 
-export const authOptions = {
-  secret: process.env.AUTH_SECRET,
+export const authOptions: NextAuthOptions = {
+  secret: config.getNextAuthSecret(),
 
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
+      clientId: config.getGithubClientId(),
+      clientSecret: config.getGithubSecret(),
     }),
-
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        email: {
+          label: 'email',
+          type: 'email',
+          placeholder: 'jsmith@email.com',
+        },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' };
-        // userService.getUserByEmail()
-
+        const user = await authService.loginUser({
+          email: credentials?.email,
+          password: credentials?.password,
+        });
         if (user) {
-          // Any object returned will be saved in `user` property of the JWT
+          console.log('*****');
+          console.log({ user });
+          console.log('*****');
           return user;
         } else {
-          // If you return null then an error will be displayed advising the user to check their details.
           return null;
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
     }),
@@ -40,11 +45,30 @@ export const authOptions = {
   session: {
     strategy: 'jwt',
   },
-  // callbacks: {
-  //   async session({ session, token, user }) {
-  //     // Send properties to the client, like an access_token from a provider.
-  //     session.accessToken = token.accessToken;
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async session({ session, token, user }) {
+      console.log({ session, token, user });
+
+      if (user) {
+        return {
+          ...session,
+          id: user.id,
+          email: user.email,
+        };
+      }
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      console.log({ token, user, account, profile, isNewUser });
+
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          email: user.email,
+        };
+      }
+      return token;
+    },
+  },
 };

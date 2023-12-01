@@ -9,7 +9,7 @@ const UserSchema = z
   })
   .strict();
 
-export type User = z.infer<typeof UserSchema>;
+// export type User = z.infer<typeof UserSchema>;
 
 export const UserInputSchema = z
   .object({
@@ -19,3 +19,14 @@ export const UserInputSchema = z
   .strict();
 
 export type UserInput = z.infer<typeof UserInputSchema>;
+
+export interface User {
+  id: string;
+  name?: string;
+  email: string;
+  emailVerified?: Date;
+  image?: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

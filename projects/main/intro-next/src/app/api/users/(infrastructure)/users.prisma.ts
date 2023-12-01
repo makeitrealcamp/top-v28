@@ -46,10 +46,21 @@ const deleteUser = async (id: number) => {
   return user.id ? true : false;
 };
 
+const getUserByEmail = async (email: string) => {
+  const user = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+
+  return user;
+};
+
 export const userPrismaDataSource: UserRepository = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  getUserByEmail,
 };
