@@ -3,7 +3,7 @@ import { ConfigurationError } from './errors';
 export const config = {
   getNextAuthSecret: () => {
     if (!process.env.NEXTAUTH_SECRET) {
-      throw new ConfigurationError('NEXT_AUTH_SECRET is not defined');
+      throw new ConfigurationError('NEXT_NEXTAUTH_SECRET is not defined');
     }
     return process.env.NEXTAUTH_SECRET;
   },

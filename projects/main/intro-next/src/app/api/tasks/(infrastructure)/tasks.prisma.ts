@@ -3,10 +3,10 @@ import { Prisma } from '@prisma/client';
 import { TaskRepository } from '../(domain)/(repositories)/task.respository';
 import { TaskInput } from '../(domain)';
 
-const createTask = async (data: TaskInput) => {
+const createTask = async (taskInput: TaskInput) => {
   const task = await prisma.task.create({
     data: {
-      ...data,
+      ...taskInput,
     },
   });
 

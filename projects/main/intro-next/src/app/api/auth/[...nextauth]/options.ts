@@ -32,9 +32,7 @@ export const authOptions: NextAuthOptions = {
           password: credentials?.password,
         });
         if (user) {
-          console.log('*****');
-          console.log({ user });
-          console.log('*****');
+        
           return user;
         } else {
           return null;
@@ -47,7 +45,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async session({ session, token, user }) {
-      console.log({ session, token, user });
+
 
       if (user) {
         return {
@@ -58,8 +56,8 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      console.log({ token, user, account, profile, isNewUser });
+    async jwt({ token, user, }) {
+
 
       if (user) {
         return {

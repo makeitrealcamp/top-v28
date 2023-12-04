@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
   const { title, description } = await request.json();
   const userId = 1;
   // const userId = request.locals.user.id;
+  console.log({ title, description, userId });
   try {
     const parseResult = await TaskInputSchema.safeParseAsync({
       title,
@@ -26,9 +27,11 @@ export async function POST(request: NextRequest) {
       userId,
     });
 
+    
     if (!parseResult.success) {
       return NextResponse.json({ error: 'bad request' }, { status: 400 });
     }
+    console.log(parseResult.data);
     const newTask = await taskService.createTask(parseResult.data);
 
     return NextResponse.json({ newTask }, { status: 201 });
